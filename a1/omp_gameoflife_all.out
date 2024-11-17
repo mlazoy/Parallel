@@ -1,0 +1,30 @@
+Running with OMP_NUM_THREADS=1
+GameOfLife: Size 64 Steps 1000 Time 0.023112
+GameOfLife: Size 1024 Steps 1000 Time 10.965944
+GameOfLife: Size 4096 Steps 1000 Time 175.900314
+Finished run with OMP_NUM_THREADS=1
+--------------------------------------------------
+Running with OMP_NUM_THREADS=2
+GameOfLife: Size 64 Steps 1000 Time 0.013583
+GameOfLife: Size 1024 Steps 1000 Time 5.458949
+GameOfLife: Size 4096 Steps 1000 Time 88.263665
+Finished run with OMP_NUM_THREADS=2
+--------------------------------------------------
+Running with OMP_NUM_THREADS=4
+GameOfLife: Size 64 Steps 1000 Time 0.010134
+GameOfLife: Size 1024 Steps 1000 Time 2.723798
+GameOfLife: Size 4096 Steps 1000 Time 45.901567
+Finished run with OMP_NUM_THREADS=4
+--------------------------------------------------
+Running with OMP_NUM_THREADS=6
+GameOfLife: Size 64 Steps 1000 Time 0.009383
+GameOfLife: Size 1024 Steps 1000 Time 1.832227
+GameOfLife: Size 4096 Steps 1000 Time 43.661123
+Finished run with OMP_NUM_THREADS=6
+--------------------------------------------------
+Running with OMP_NUM_THREADS=8
+GameOfLife: Size 64 Steps 1000 Time 0.010417
+GameOfLife: Size 1024 Steps 1000 Time 1.389175
+GameOfLife: Size 4096 Steps 1000 Time 43.186379
+Finished run with OMP_NUM_THREADS=8
+--------------------------------------------------
