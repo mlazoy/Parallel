@@ -1,4 +1,3 @@
-# import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 #import pandas
@@ -37,13 +36,14 @@ titles = ["Shared Clusters (naive)",
           "Copied Clusters & Reduction", 
           "Copied Clusters & Reduction with First-Touch Policy",
           "Copied Clusters & Reduction with First-Touch Policy & NUMA-aware initialization",
-          "Copied Clusters & Reduction with First-Touch Policy & NUMA-aware initialization"]
+          "Copied Clusters & Reduction with First-Touch Policy & NUMA-aware initialization",
+          "Shared Clusters with GOMP_CPU_AFFINITY[0-7][32-40]"]
 
 subtitles = ["{Size, Coords, Clusters, Loops} = {256, 16, 32, 10}",
              "{Size, Coords, Clusters, Loops} = {256, 1, 4, 10}",
              "{Size, Coords, Clusters, Loops} = {256, 16, 32, 10}"]
 
-for i in range(0,7):
+for i in range(0,8):
     x_axis = threads
     y_axis = total_times[i*nthreads:i*nthreads+nthreads]
     if (i==3 or i==4 or i==5) : seq_time = seq_totals[1]

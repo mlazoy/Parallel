@@ -58,3 +58,11 @@
         nloops =  10   (total =  0.9116s)  (per loop =  0.0912s)
         nloops =  10   (total =  0.4870s)  (per loop =  0.0487s)
         nloops =  10   (total =  0.4016s)  (per loop =  0.0402s) 
+------------------------------------   Hyperthreading  --------------------------------
+        nloops =  10   (total = 17.7304s)  (per loop =  1.7730s)
+        nloops =  10   (total = 10.7197s)  (per loop =  1.0720s)
+        nloops =  10   (total =  7.5509s)  (per loop =  0.7551s)
+        nloops =  10   (total =  4.1792s)  (per loop =  0.4179s)
+        nloops =  10   (total =  2.9797s)  (per loop =  0.2980s)
+        nloops =  10   (total = 10.3044s)  (per loop =  1.0304s)
+        nloops =  10   (total =  8.9117s)  (per loop =  0.8912s)
