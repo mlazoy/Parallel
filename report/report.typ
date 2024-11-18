@@ -167,7 +167,7 @@ gun για τις οποίες η εξέλιξη των γενιών σε μορ
 
 #pagebreak() 
 
-= KMeans
+= KMEANS
 \
 == 1) Shared Clusters
 === Υλοποίηση
@@ -248,3 +248,74 @@ Tέλος με όλες τις προηγούμενες αλλαγές δοκι�
 #image("../a2/kmeans/results/fig6.png")
 
 Παρατηρούμε πως υπάρχει τέλεια κλιμάκωση του αλγορίθμου. Οπότε bottleneck θα μπορούσε να θεωρηθεί το computive intensity για κάθε object.
+
+#pagebreak() 
+
+= FLOYD WARSHALL
+
+== 1) Recursive 
+
+=== Υλοποίηση
+
+\
+Δημιουργούμε ένα παράλληλο section κατά την πρώτη κλήση αφού έχουμε ενεργοποιήσει την επιλογή για nested tasks μέσω τηw  omp_set_nested(1). (*Μπορούμε να το θέσουμε και ως environmental variable (OMP_NESTED=TRUE)*)
+Για την διατήρηση των εξαρτήσεων κατά τον υπολογισμό των blocks (A11) -> (A12 A21) -> A22 και αντιστρόφως τοποθετούμε κατάλληλα barriers έμμεσα με τα taskwait directives. 
+
+#my_sourcefile("../a2/FW/fw_sr.c")
+
+\
+Πειραματιστήκαμε σχετικά με την βέλτιστη τιμή του BSIZE τρέχοντας τις προσομοιώσεις που ακολουθούν. Διαισθητικά η optimal τιμή οφείλει να εκμεταλλεύεται πλήρως το cache size και δεδομένου ότι έχουμε τετράγωνο grid για 1 recursive call που δημιουργεί 4 sub-blocks μεγέθους B θα είναι Βopt = sqrt(cache size).
+
+== Aποτελέσματα 
+\
+#align(center)[
+===  {N = 1024}
+#image("../a2/FW/results/fig1024_16.png", width:60%)
+#image("../a2/FW/results/fig1024_32.png", width:60%)
+#image("../a2/FW/results/fig1024_64.png", width:60%)
+#image("../a2/FW/results/fig1024_128.png", width:60%)
+#image("../a2/FW/results/fig1024_256.png", width:60%)
+
+=== {N = 2048}
+#image("../a2/FW/results/fig2048_16.png", width:60%)
+#image("../a2/FW/results/fig2048_32.png", width:60%)
+#image("../a2/FW/results/fig2048_64.png", width:60%)
+#image("../a2/FW/results/fig2048_128.png", width:60%)
+#image("../a2/FW/results/fig2048_256.png", width:60%)
+
+=== { N = 4096 }
+#image("../a2/FW/results/fig4096_16.png", width:60%)
+#image("../a2/FW/results/fig4096_32.png", width:60%)
+#image("../a2/FW/results/fig4096_64.png", width:60%)
+#image("../a2/FW/results/fig4096_128.png", width:60%)
+#image("../a2/FW/results/fig4096_256.png", width:60%)
+]
+
+Kαταλήξαμε πως η ιδανική τιμή είναι Β=64 και ο καλύτερος χρόνος που πετύχαμε χρησιμοποιώντας αυτήν για 4096 μέγεθος πίνακα ήταν 10.4486 με 16 threads. Από το σημείο αυτό και έπειτα ο αλγόριθμος δεν κλιμακώνει και φανερώνει την αδυναμία του χάρη στην αναδρομή.
+
+#pagebreak() 
+
+== 2) TILED
+
+=== Υλοποίηση 
+
+Φτιάχνουμε 1 παράλληλo section με κατάλληλα barriers ώστε να υπλογίζεται πρώτα (single) το k-οστό στοιχείο στην διαγώνιο, έπειτα όσα βρίσκονται κατά μήκος του "σταυρού" που σχηματίζεται εκατέρωθεν αυτού, και τέλος τα blocks στοιχείων που απομένουν. Καθένα από τα στάδια 2 και 3 έχει 4 for loops που μπορούν να παραλληλοποιηθούν με parallel for και επειδή είναι ανεξάρτητα μεταξύ τους με παράμετρο nowait. Το collapse(2) πραγματοποιεί flattening για καλύτερη λειτουργία του parallel for για nested loops.
+\
+
+#my_sourcefile("../a2/FW/fw_tiled.c")
+
+=== Aποτελέσματα 
+
+
+#pagebreak() 
+
+== Παράρτημα 
+\
+Για την δημιουργία των γραφικών παραστάσεων χρημιοποίηθηκε oι εξής κώδικες σε Python :
+
+#my_sourcefile("../a2/kmeans/results/results.py")
+\
+\
+#my_sourcefile("../a2/FW/results/plots.py")
+
+

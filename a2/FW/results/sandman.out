@@ -1,0 +1,161 @@
+-----------------------------------------------
+GRID=1024
+-----------------------------------------------
+
+BSIZE=256
+
+omp_num_threads=1: FW_SR,1024,256,0.8112
+omp_num_threads=2: FW_SR,1024,256,0.5856
+omp_num_threads=4: FW_SR,1024,256,0.5843
+omp_num_threads=8: FW_SR,1024,256,0.6357
+omp_num_threads=16: FW_SR,1024,256,0.6229
+omp_num_threads=32: FW_SR,1024,256,0.6844
+omp_num_threads=64: FW_SR,1024,256,0.6698
+
+BSIZE=128
+
+omp_num_threads=1: FW_SR,1024,128,0.6628
+omp_num_threads=2: FW_SR,1024,128,0.4570
+omp_num_threads=4: FW_SR,1024,128,0.4391
+omp_num_threads=8: FW_SR,1024,128,0.5049
+omp_num_threads=16: FW_SR,1024,128,0.5145
+omp_num_threads=32: FW_SR,1024,128,0.5342
+omp_num_threads=64: FW_SR,1024,128,0.5509
+
+BSIZE=64
+
+omp_num_threads=1: FW_SR,1024,64,0.7134
+omp_num_threads=2: FW_SR,1024,64,0.4088
+omp_num_threads=4: FW_SR,1024,64,0.3606
+omp_num_threads=8: FW_SR,1024,64,0.3189
+omp_num_threads=16: FW_SR,1024,64,0.3506
+omp_num_threads=32: FW_SR,1024,64,0.3858
+omp_num_threads=64: FW_SR,1024,64,0.5345
+
+BSIZE=32
+
+omp_num_threads=1: FW_SR,1024,32,0.8240
+omp_num_threads=2: FW_SR,1024,32,0.4721
+omp_num_threads=4: FW_SR,1024,32,0.4201
+omp_num_threads=8: FW_SR,1024,32,0.3709
+omp_num_threads=16: FW_SR,1024,32,0.3981
+omp_num_threads=32: FW_SR,1024,32,0.5945
+omp_num_threads=64: FW_SR,1024,32,0.8952
+
+BSIZE=16
+
+omp_num_threads=1: FW_SR,1024,16,1.1651
+omp_num_threads=2: FW_SR,1024,16,0.7302
+omp_num_threads=4: FW_SR,1024,16,0.7311
+omp_num_threads=8: FW_SR,1024,16,0.7452
+omp_num_threads=16: FW_SR,1024,16,1.6004
+omp_num_threads=32: FW_SR,1024,16,2.8265
+omp_num_threads=64: FW_SR,1024,16,5.1609
+
+-----------------------------------------------
+GRID=2048
+-----------------------------------------------
+
+BSIZE=256
+
+omp_num_threads=1: FW_SR,2048,256,5.4693
+omp_num_threads=2: FW_SR,2048,256,3.4903
+omp_num_threads=4: FW_SR,2048,256,3.0600
+omp_num_threads=8: FW_SR,2048,256,3.1497
+omp_num_threads=16: FW_SR,2048,256,3.2941
+omp_num_threads=32: FW_SR,2048,256,3.4715
+omp_num_threads=64: FW_SR,2048,256,3.6022
+
+BSIZE=128
+
+omp_num_threads=1: FW_SR,2048,128,4.8016
+omp_num_threads=2: FW_SR,2048,128,2.8583
+omp_num_threads=4: FW_SR,2048,128,2.7000
+omp_num_threads=8: FW_SR,2048,128,2.6059
+omp_num_threads=16: FW_SR,2048,128,2.7749
+omp_num_threads=32: FW_SR,2048,128,2.9180
+omp_num_threads=64: FW_SR,2048,128,2.9732
+
+BSIZE=64
+
+omp_num_threads=1: FW_SR,2048,64,5.3382
+omp_num_threads=2: FW_SR,2048,64,2.8218
+omp_num_threads=4: FW_SR,2048,64,2.4561
+omp_num_threads=8: FW_SR,2048,64,1.8944
+omp_num_threads=16: FW_SR,2048,64,1.9720
+omp_num_threads=32: FW_SR,2048,64,2.1752
+omp_num_threads=64: FW_SR,2048,64,2.9367
+
+BSIZE=32
+
+omp_num_threads=1: FW_SR,2048,32,6.5688
+omp_num_threads=2: FW_SR,2048,32,3.6033
+omp_num_threads=4: FW_SR,2048,32,3.1852
+omp_num_threads=8: FW_SR,2048,32,2.1078
+omp_num_threads=16: FW_SR,2048,32,2.2700
+omp_num_threads=32: FW_SR,2048,32,3.7305
+omp_num_threads=64: FW_SR,2048,32,6.1319
+
+BSIZE=16
+
+omp_num_threads=1: FW_SR,2048,16,9.4335
+omp_num_threads=2: FW_SR,2048,16,5.6042
+omp_num_threads=4: FW_SR,2048,16,5.0532
+omp_num_threads=8: FW_SR,2048,16,5.3309
+omp_num_threads=16: FW_SR,2048,16,11.1443
+omp_num_threads=32: FW_SR,2048,16,23.4172
+omp_num_threads=64: FW_SR,2048,16,36.0300
+
+-----------------------------------------------
+GRID=4096
+-----------------------------------------------
+
+BSIZE=256
+
+omp_num_threads=1: FW_SR,4096,256,43.5044
+omp_num_threads=2: FW_SR,4096,256,24.8205
+omp_num_threads=4: FW_SR,4096,256,19.2124
+omp_num_threads=8: FW_SR,4096,256,19.0095
+omp_num_threads=16: FW_SR,4096,256,18.9908
+omp_num_threads=32: FW_SR,4096,256,19.8311
+omp_num_threads=64: FW_SR,4096,256,19.9327
+
+BSIZE=128
+
+omp_num_threads=1: FW_SR,4096,128,36.4263
+omp_num_threads=2: FW_SR,4096,128,20.2772
+omp_num_threads=4: FW_SR,4096,128,16.0171
+omp_num_threads=8: FW_SR,4096,128,15.0594
+omp_num_threads=16: FW_SR,4096,128,15.2234
+omp_num_threads=32: FW_SR,4096,128,16.5137
+omp_num_threads=64: FW_SR,4096,128,17.3957
+
+BSIZE=64
+
+omp_num_threads=1: FW_SR,4096,64,42.4605
+omp_num_threads=2: FW_SR,4096,64,21.8048
+omp_num_threads=4: FW_SR,4096,64,18.0785
+omp_num_threads=8: FW_SR,4096,64,11.6506
+omp_num_threads=16: FW_SR,4096,64,10.4486
+omp_num_threads=32: FW_SR,4096,64,12.3486
+omp_num_threads=64: FW_SR,4096,64,17.0466
+
+BSIZE=32
+
+omp_num_threads=1: FW_SR,4096,32,55.9672
+omp_num_threads=2: FW_SR,4096,32,29.1839
+omp_num_threads=4: FW_SR,4096,32,24.0249
+omp_num_threads=8: FW_SR,4096,32,14.3796
+omp_num_threads=16: FW_SR,4096,32,13.4289
+omp_num_threads=32: FW_SR,4096,32,25.8646
+omp_num_threads=64: FW_SR,4096,32,39.7945
+
+BSIZE=16
+
+omp_num_threads=1: FW_SR,4096,16,75.4969
+omp_num_threads=2: FW_SR,4096,16,43.7685
+omp_num_threads=4: FW_SR,4096,16,38.3321
+omp_num_threads=8: FW_SR,4096,16,40.0757
+omp_num_threads=16: FW_SR,4096,16,84.8214
+omp_num_threads=32: FW_SR,4096,16,164.3315
+omp_num_threads=64: FW_SR,4096,16,247.4087
