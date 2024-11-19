@@ -97,12 +97,12 @@ int main(int argc, char **argv)
 	gettimeofday(&t2,0);
 
 	time=(double)((t2.tv_sec-t1.tv_sec)*1000000+t2.tv_usec-t1.tv_usec)/1000000;
-	fprintf(stderr,"FW_TILED,%d,%d,%.4f\n", N,B,time);
+	fprintf(stdout,"FW_TILED,%d,%d,%.4f\n", N,B,time);
 
-	
+	/*
 	for(i=0; i<N; i++)
 		for(j=0; j<N; j++) fprintf(stdout,"%d\n", A[i][j]);
-        
+    */
 	
 	
 	// Free memory
@@ -120,44 +120,29 @@ inline void FW(int **A, int K, int I, int J, int N)
     
     for (k = K; k < K + N; k++) {
         for (i = I; i < I + N; i++) {
-            // Load 8 integers from A and B into AVX registers
-            __m256i A_i_j = _mm256_load_si256((__m256i*)&A[i][J]);
+                for (j = 0; j < N; j += 8) { // Process 4 elements at a time (because AVX1.0 uses 128-bit registers)
+            // Load 4 integers from A and B into AVX registers (SSE4.2/AVX1.0)
+            __m128i A_i_j = _mm_load_si128((__m128i*)&A[i][J + j]);
+            __m128i A_i_k = _mm_load_si128((__m128i*)&A[i][k]);
+            __m128i A_k_j = _mm_load_si128((__m128i*)&A[k][J + j]);
+            // Add A_i_k and A_k_j element-wise
+            __m128i A_plus = _mm_add_epi32(A_i_k, A_k_j);
+            // Compute the minimum of A_i_j and A_plus element-wise
+            __m128i result = _mm_min_epu32(A_i_j, A_plus);
+            // Store the result back into the array
+            _mm_store_si128((__m128i*)&A[i][J + j], result);
 
-            __m256i A_i_k = _mm256_load_si256((__m256i*)&A[i][k]);
-            __m256i A_k_j = _mm256_load_si256((__m256i*)&A[k][J]);
-            __m256i A_plus = _mm256_add_epi32(A_i_k, A_k_j);
+            __m128i A_i_j4 = _mm_load_si128((__m128i*)&A[i][J + j+4]);
+            __m128i A_i_k4 = _mm_load_si128((__m128i*)&A[i][k]);
+            __m128i A_k_j4 = _mm_load_si128((__m128i*)&A[k][J + j + 4]);
+            // Add A_i_k and A_k_j element-wise
+            __m128i A_plus4 = _mm_add_epi32(A_i_k, A_k_j);
+            // Compute the minimum of A_i_j and A_plus element-wise
+            __m128i result4 = _mm_min_epu32(A_i_j, A_plus);
+            // Store the result back into the array
+            _mm_store_si128((__m128i*)&A[i][J + j+4], result4);
 
-            // Minimum of A and B element-wise
-            __m256i result = _mm256_min_epi32(A_i_j, A_plus);
-            // store
-            _mm256_store_si256((__m256i*)&A[i][J], result);
-
-            __m256i A_i_j = _mm256_load_si256((__m256i*)&A[i][J+8]);
-            __m256i A_i_k = _mm256_load_si256((__m256i*)&A[i][k]);
-            __m256i A_k_j = _mm256_load_si256((__m256i*)&A[k][J+8]);
-            __m256i A_plus = _mm256_add_epi32(A_i_k, A_k_j);
-            // Minimum of A and B element-wise
-            __m256i result = _mm256_min_epi32(A_i_j, A_plus);
-            // store
-            _mm256_store_si256((__m256i*)&A[i][J+8], result);
-
-            __m256i A_i_j = _mm256_load_si256((__m256i*)&A[i][J+16]);
-            __m256i A_i_k = _mm256_load_si256((__m256i*)&A[i][k]);
-            __m256i A_k_j = _mm256_load_si256((__m256i*)&A[k][J+16]);
-            __m256i A_plus = _mm256_add_epi32(A_i_k, A_k_j);
-            // Minimum of A and B element-wise
-            __m256i result = _mm256_min_epi32(A_i_j, A_plus);
-            // store
-            _mm256_store_si256((__m256i*)&A[i][J+16], result);
-
-            __m256i A_i_j = _mm256_load_si256((__m256i*)&A[i][J+24]);
-            __m256i A_i_k = _mm256_load_si256((__m256i*)&A[i][k]);
-            __m256i A_k_j = _mm256_load_si256((__m256i*)&A[k][J+24]);
-            __m256i A_plus = _mm256_add_epi32(A_i_k, A_k_j);
-            // Minimum of A and B element-wise
-            __m256i result = _mm256_min_epi32(A_i_j, A_plus);
-            // store
-            _mm256_store_si256((__m256i*)&A[i][J+24], result);
+            }
 	    }
     }
 }   
