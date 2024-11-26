@@ -41,6 +41,8 @@ int main(int argc, char **argv)
 	graph_init_random(A,-1,N,128*N);
 	//enable nested task generation
 	omp_set_nested(1);
+	// default is equal to 1
+	omp_set_max_active_levels(64);
 	
 	gettimeofday(&t1,0);
 

@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "kmeans.h"
@@ -80,10 +81,17 @@ void kmeans(double * objects,          /* in: [numObjs][numCoords] */
 	 * This is noticed when numCoords is low (and neighboring local_newClusters exist close to each other).
 	 * Allocate local cluster data with a "first-touch" policy.
 	 */
+	// Initialize local (per-thread) arrays (and later collect result on global arrays)
+	for (k=0; k<nthreads; k++)
+	{
+		local_newClusterSize[k] = (typeof(*local_newClusterSize)) calloc(numClusters, sizeof(**local_newClusterSize));
+		local_newClusters[k] = (typeof(*local_newClusters)) calloc(numClusters * numCoords, sizeof(**local_newClusters));
+	}
 
 	timing = wtime();
 	do {
 		// before each loop, set cluster data to 0
+		// #pragma omp parallel for private(i,j)
 		for (i=0; i<numClusters; i++) {
 			for (j=0; j<numCoords; j++)
 				newClusters[i*numCoords + j] = 0.0;
@@ -95,18 +103,15 @@ void kmeans(double * objects,          /* in: [numObjs][numCoords] */
 		/* 
 		 * TODO: Initiliaze local cluster data to zero (separate for each thread)
 		 */
-
-		#pragma omp parallel for private(k,i,j) schedule(static)
+		#pragma omp parallel for private(k, i, j) shared(local_newClusters, local_newClusterSize) schedule(static)
 		for (k=0; k<nthreads; ++k){
-			local_newClusterSize[k] = (typeof(*local_newClusterSize)) calloc(numClusters, sizeof(**local_newClusterSize));
-			local_newClusters[k] = (typeof(*local_newClusters)) calloc(numClusters * numCoords, sizeof(**local_newClusters));
-
 			for (i=0; i<numClusters; i++) {
 				for (j=0; j<numCoords; j++)
 					local_newClusters[k][i*numCoords + j] = 0.0;
 				local_newClusterSize[k][i] = 0;
 			}
 		}
+
 		int thread_id;
 
 		#pragma omp parallel for private(i, j, thread_id, index) shared(local_newClusters, local_newClusterSize) reduction(+:delta) schedule(static)
@@ -125,12 +130,21 @@ void kmeans(double * objects,          /* in: [numObjs][numCoords] */
 			membership[i] = index;
 			
 			// update new cluster centers : sum of all objects located within (average will be performed later) 
+			/* 
+			 * TODO: Collect cluster data in local arrays (local to each thread)
+			 *       Replace global arrays with local per-thread
+			 */
 
 			local_newClusterSize[thread_id][index]++;
 			for (j=0; j<numCoords; j++)
 				local_newClusters[thread_id][index*numCoords + j] += objects[i*numCoords + j];
 
 		}
+
+		/*
+		 * TODO: Reduction of cluster data from local arrays to shared.
+		 *       This operation will be performed by one thread
+		 */
 		
 		for (i=0; i<numClusters; ++i){
 			for (k=0; k<nthreads; ++k){
@@ -140,6 +154,9 @@ void kmeans(double * objects,          /* in: [numObjs][numCoords] */
 			}	
 		}
 
+
+		// average the sum and replace old cluster centers with newClusters 
+		// #pragma omp parallel for private(i,j)
 		for (i=0; i<numClusters; i++) {
 			if (newClusterSize[i] > 0) {
 				for (j=0; j<numCoords; j++) {
@@ -148,6 +165,7 @@ void kmeans(double * objects,          /* in: [numObjs][numCoords] */
 			}
 		}
 
+		// Get fraction of objects whose membership changed during this loop. This is used as a convergence criterion.
 		delta /= numObjs;
 
 		loop++;
