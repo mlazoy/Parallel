@@ -1,0 +1,44 @@
+\BSIZE=32
+
+Number of nthreads: 1
+FW_TILED,4096,32,36.2930
+
+Number of nthreads: 2
+FW_TILED,4096,32,18.4096
+
+Number of nthreads: 4
+FW_TILED,4096,32,9.5379
+
+Number of nthreads: 8
+FW_TILED,4096,32,4.9165
+
+Number of nthreads: 16
+FW_TILED,4096,32,3.2848
+
+Number of nthreads: 32
+FW_TILED,4096,32,2.6472
+
+Number of nthreads: 64
+FW_TILED,4096,32,1.8452
+\BSIZE=64
+
+Number of nthreads: 1
+FW_TILED,4096,64,28.4854
+
+Number of nthreads: 2
+FW_TILED,4096,64,15.1396
+
+Number of nthreads: 4
+FW_TILED,4096,64,7.8114
+
+Number of nthreads: 8
+FW_TILED,4096,64,4.0009
+
+Number of nthreads: 16
+FW_TILED,4096,64,2.4131
+
+Number of nthreads: 32
+FW_TILED,4096,64,2.3263
+
+Number of nthreads: 64
+FW_TILED,4096,64,1.7206

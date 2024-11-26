@@ -1,0 +1,20 @@
+Number of threads: 1
+FW_TILED,4096,32,33.8411
+
+Number of threads: 2
+FW_TILED,4096,32,17.0405
+
+Number of threads: 4
+FW_TILED,4096,32,8.7231
+
+Number of threads: 8
+FW_TILED,4096,32,4.5795
+
+Number of threads: 16
+FW_TILED,4096,32,2.9022
+
+Number of threads: 32
+FW_TILED,4096,32,2.3016
+
+Number of threads: 64
+FW_TILED,4096,32,1.3925

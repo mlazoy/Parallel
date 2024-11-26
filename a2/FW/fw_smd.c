@@ -106,13 +106,16 @@ inline void FW(int **A, int K, int I, int J, int B)
     // Iterate over a block of tiles (3D loop over the block)
     for (k = K; k < K + B; k++) {
         for (i = I; i < I + B; i++) {
+                // _mm_prefetch((const char*)&A[i][j], _MM_HINT_T0);
+                // _mm_prefetch((const char*)&A[k][j], _MM_HINT_T0);
+                // _mm_prefetch((const char*)&A[i][j + 16], _MM_HINT_T0);
+                // _mm_prefetch((const char*)&A[k][j + 16], _MM_HINT_T0);
+
              __m128i A_i_k = _mm_load_si128((__m128i*)&A[i][k]); 
 
-            for (j=J; j < J + B; j+=16){     
-                // prefetch next iteration
-                // _mm_prefetch((const char*)&A[i][j + 16], _MM_HINT_T0);
-                // _mm_prefetch((const char*)&A[k][j + 16], _MM_HINT_T0); 
-                  
+
+                for (j = J; j < J + B; j+=16){
+
                 __m128i A_i_j = _mm_load_si128((__m128i*)&A[i][j]);      
                 __m128i A_k_j = _mm_load_si128((__m128i*)&A[k][j]);      
 
@@ -148,6 +151,8 @@ inline void FW(int **A, int K, int I, int J, int B)
 
                 _mm_store_si128((__m128i*)&A[i][j+12], result);
 
+                // if(j == J)
+                //     _mm_prefetch((const char*)&A[i+1][k], _MM_HINT_T0);
             }
         }
         // if (k + 1 < K + B) {

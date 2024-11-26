@@ -41,30 +41,30 @@
   ]
 }
 
-#let bash_box(file, ..args) = {
+#let bash_box(file, lang: auto, ..args) = {
+  show table.cell.where(y: 0): set text(weight: "regular")
+
   showybox(
     frame: (
-      body-color: black,                 // Black background for terminal look
-      thickness: 0.6pt
+      body-color: rgb("#111"),
+      thickness: 0.6pt,
     ),
-    breakable: true,
-    width: 100%,  // Fill the available width
+    breakable: false,
+    width: 100%,
     align: center,
-    color: rgb(0, 255, 0),  // Set default text color to green
   )[
-    // Set the text style to green for all code
     #set text(
-      font: "DejaVu Sans Mono",   // Monospaced font for terminal look
-      size: 0.7em,               // Set text size
-      fill: rgb(0, 255, 0)       // Green text color for terminal style
+      font: "DejaVu Sans Mono",
+      size: 0.8em,
+      fill: lime, // Green text color for terminal style
     )
-    
-    // Read and display the file content
     #sourcefile(
-      read(file), 
-      file: file, 
-      ..args, 
+      read(file),
+      file: file,
+      // lang: "bash",
+      ..args,
       frame: none,
+      numbering: none,
     )
   ]
 }
@@ -98,7 +98,9 @@
  === Υλοποίηση
 Για την παραλληλοποίηση του αλγορίθμου τροποποίησαμε τον κώδικα που δίνεται προσθέτοντας απλώς το \#pragma directive στο κύριο loop για τα (i,j) του body: 
 
-#my_sourcefile("../a1/Game_Of_Life.c")
+#my_sourcefile("../a1/Game_Of_Life.c",
+highlighted: (63),
+  highlight-color: green.lighten(60%))
 \
 
 Για την μεταγλώτιση και εκτέλεση στον scirouter χρησιμοποίησαμε το ακόλουθα scripts :
@@ -173,7 +175,9 @@ gun για τις οποίες η εξέλιξη των γενιών σε μορ
 === Υλοποίηση
 Για την παραλληλοποίηση της συγκεκριμένης έκδοσης χρησιμοπιήσαμε το parallel for directive του οmp και για την αποφυγή race conditions τα omp atomic directives. Αυτά εμφανίζονται όταν περισσότερα από 1 νήματα προσπαθούν να ανανεώσουν τιμές στους shared πίνακες newClusters και newClusterSize σε indexes τα οποία δεν είναι μοναδικά για το καθένα καθώς και στην shared μεταβλητή delta. Για αυτήν προσφέρεται η χρήση reduction και εδώ μπορεί να αγνοηθεί εντελώς αφού η σύγκλιση του αλγορίθμου καθορίζεται από των πολύ μικρό αριθμό των επαναλήψεων(10). Ωστόσω, χρησιμοποιούμε atomic για ορθότητα της τιμής του και για παρατήρηση με βάση το μεγαλύετρο δυνατό overhead.
 
-#my_sourcefile("../a2/kmeans/omp_naive_kmeans.c") 
+#my_sourcefile("../a2/kmeans/omp_naive_kmeans.c",
+highlighted: (89,90,91,92,93,94,95,96,97,98,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114),
+  highlight-color: green.lighten(60%)) 
 \
 Απεικονίζουμε παρακάτω τα αποτελέσματα των δοκιμών στον sandman για τις διάφορες τιμές της environmental variable OMP_NUM_THREADS:
 \
@@ -238,7 +242,12 @@ gun για τις οποίες η εξέλιξη των γενιών σε μορ
 === Υλοποίηση 
 Τροποποιούμε το file_io.c που δίνεται : 
 // TODO add code here !
-#my_sourcefile("../a2/kmeans/file_io.c")
+#my_sourcefile("../a2/kmeans/file_io.c",
+highlighted: (28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50),
+  highlight-color: green.lighten(60%),
+)
+
+
 
 \
 === Αποτελέσματα 
@@ -268,7 +277,9 @@ Tέλος με όλες τις προηγούμενες αλλαγές δοκι�
 Δημιουργούμε ένα παράλληλο section κατά την πρώτη κλήση αφού έχουμε ενεργοποιήσει την επιλογή για nested tasks μέσω τηw  omp_set_nested(1). (*Μπορούμε να το θέσουμε και ως environmental variable (OMP_NESTED=TRUE)*)
 Για την διατήρηση των εξαρτήσεων κατά τον υπολογισμό των blocks (A11) -> (A12 A21) -> A22 και αντιστρόφως τοποθετούμε κατάλληλα barriers έμμεσα με τα taskwait directives. 
 
-#my_sourcefile("../a2/FW/fw_sr.c")
+#my_sourcefile("../a2/FW/fw_sr.c",
+highlighted: (13,43,47,48,49,50,51,52,53,93,95,97,100,102,104),
+  highlight-color: green.lighten(60%))
 
 \
 Πειραματιστήκαμε σχετικά με την βέλτιστη τιμή του BSIZE τρέχοντας τις προσομοιώσεις που ακολουθούν. Διαισθητικά η optimal τιμή οφείλει να εκμεταλλεύεται πλήρως το cache size και δεδομένου ότι έχουμε τετράγωνο grid για 1 recursive call που δημιουργεί 4 sub-blocks μεγέθους B θα είναι Βopt = sqrt(cache size).
@@ -306,12 +317,20 @@ Kαταλήξαμε πως η ιδανική τιμή είναι Β=64 και ο
 
 === Υλοποίηση 
 
-Φτιάχνουμε 1 παράλληλo section με κατάλληλα barriers ώστε να υπλογίζεται πρώτα (single) το k-οστό στοιχείο στην διαγώνιο, έπειτα όσα βρίσκονται κατά μήκος του "σταυρού" που σχηματίζεται εκατέρωθεν αυτού, και τέλος τα blocks στοιχείων που απομένουν. Καθένα από τα στάδια 2 και 3 έχει 4 for loops που μπορούν να παραλληλοποιηθούν με parallel for και επειδή είναι ανεξάρτητα μεταξύ τους με παράμετρο nowait. Το collapse(2) πραγματοποιεί flattening για καλύτερη λειτουργία του parallel for για nested loops.
+Φτιάχνουμε 1 παράλληλo section με κατάλληλα barriers ώστε να υπλογίζεται πρώτα (single) το k-οστό στοιχείο στην διαγώνιο, έπειτα όσα βρίσκονται κατά μήκος του "σταυρού" που σχηματίζεται εκατέρωθεν αυτού, και τέλος τα blocks στοιχείων που απομένουν. Καθένα από τα στάδια 2 και 3 έχει 4 for loops που μπορούν να παραλληλοποιηθούν με parallel for και επειδή είναι ανεξάρτητα μεταξύ τους με παράμετρο nowait. Το collapse(2) πραγματοποιεί flattening για καλύτερη λειτουργία του parallel for για nested loops. Mε χρήση μόνο των παραπάνω επιτυγχάνουμε χρόνο εκτέλεσης 2.2 secs.  
+\
+Για περαιτέρω βελτίωση επιχειρήσαμε να χρησιμοποιήσουμε SIMD εντολές αρχικά μέσω του OpenMP με το αντίστοιχο directive και στην συνέχεια γράφοντας χειροκίνητα τις intrinsics εντολές για AVX μοντέλο που υποστηρίζει 4-size vector operations καθώς διαπιστώσαμε ότι vector operations μεγαλύτερου μεγέθους (π.χ με 8 στοιχεία AVX2) δεν υποστηρίζεται στο εν λόγω μηχάνημα και λαμβάνουμε σφάλμα Illegal hardware instruction. Στην πρώτη εκδοχή λάβαμε συνολικό χρόνο εκτέλεσης 1.7secs. 
+\
+H χρήση των intrisincs απευθείας μας δίνει την δυνατότητα να εκμεταλλευτούμε πλήρως και την αρχιτεκτονική της κρυφής μνήμης μέσω loop unrolling. Συγκεκριμένα, αναγνωρίσαμε ότι το size του cacheline είναι 64bytes, συνεπώς χωράνε 16 integers, ή 4 vectors 4άδων σε όρους AVX. Άρα επιτυγχάνουμε μέγιστο locality exploitation κάνοντας unroll με παράγοντα 4 και αυξάνοντας το j κατά 16 σε κάθε iteration. Ακόμη, παρατηρούμε ότι τα στοιχεία Α[i][k] είναι ανεξάρτητα του j  και η φόρτωση αυτών των vectors μπορεί να γίνει στο εξωτερικό loop. O καλύτερος χρόνος εκτέλεσης που επιτύχαμεμε αυτήν την εκδοχή είναι *1.39 secs!*
 \
 
-#my_sourcefile("../a2/FW/fw_tiled.c")
+#my_sourcefile("../a2/FW/fw_smd.c")
 
 === Aποτελέσματα 
+
+#image("../a2/FW/results/tiled.png")
+
+Βλέπουμε πως υπάρχει τέλεια κλιμάκωση με αύξηση των threads. 
 
 
 #pagebreak() 
@@ -324,5 +343,6 @@ Kαταλήξαμε πως η ιδανική τιμή είναι Β=64 και ο
 \
 \
 #my_sourcefile("../a2/FW/results/plots.py")
+
 
 
