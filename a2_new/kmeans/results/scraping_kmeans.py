@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 #replace with the actual path
 folder_path = "../"
-file_name = "run_kmeans.err"
+file_name = "run_kmeans_hyper.err"
 
 total_path = os.path.join(folder_path, file_name)
 
@@ -48,5 +48,5 @@ plt.ylabel('Time for execution (s)')
 plt.title("Perfomance of the different techniques")
 plt.grid(True)
 plt.legend(loc='best')
-plt.savefig("kmeans_results.png")
+plt.savefig("kmeans_results_hyper.png")
 plt.close()
