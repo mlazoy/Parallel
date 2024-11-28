@@ -1,0 +1,196 @@
+Setting OMP_NUM_THREADS=1
+Running ./kmeans_omp_array_lock
+
+        nloops =  10   (total =  1.9048s)  (per loop =  0.1905s)
+Running ./kmeans_omp_clh_lock
+
+        nloops =  10   (total =  1.8506s)  (per loop =  0.1851s)
+Running ./kmeans_omp_critical
+
+        nloops =  10   (total =  1.8622s)  (per loop =  0.1862s)
+Running ./kmeans_omp_naive
+
+        nloops =  10   (total =  2.1547s)  (per loop =  0.2155s)
+Running ./kmeans_omp_nosync_lock
+
+        nloops =  10   (total =  1.8355s)  (per loop =  0.1836s)
+Running ./kmeans_omp_pthread_mutex_lock
+
+        nloops =  10   (total =  1.6387s)  (per loop =  0.1639s)
+Running ./kmeans_omp_pthread_spin_lock
+
+        nloops =  10   (total =  1.8502s)  (per loop =  0.1850s)
+Running ./kmeans_omp_tas_lock
+
+        nloops =  10   (total =  1.8473s)  (per loop =  0.1847s)
+Running ./kmeans_omp_ttas_lock
+
+        nloops =  10   (total =  1.8478s)  (per loop =  0.1848s)
+Setting OMP_NUM_THREADS=2
+Running ./kmeans_omp_array_lock
+
+        nloops =  10   (total =  1.0718s)  (per loop =  0.1072s)
+Running ./kmeans_omp_clh_lock
+
+        nloops =  10   (total =  1.0512s)  (per loop =  0.1051s)
+Running ./kmeans_omp_critical
+
+        nloops =  10   (total =  1.0492s)  (per loop =  0.1049s)
+Running ./kmeans_omp_naive
+
+        nloops =  10   (total =  1.2097s)  (per loop =  0.1210s)
+Running ./kmeans_omp_nosync_lock
+
+        nloops =  10   (total =  0.9604s)  (per loop =  0.0960s)
+Running ./kmeans_omp_pthread_mutex_lock
+
+        nloops =  10   (total =  0.9409s)  (per loop =  0.0941s)
+Running ./kmeans_omp_pthread_spin_lock
+
+        nloops =  10   (total =  0.9815s)  (per loop =  0.0982s)
+Running ./kmeans_omp_tas_lock
+
+        nloops =  10   (total =  0.9796s)  (per loop =  0.0980s)
+Running ./kmeans_omp_ttas_lock
+
+        nloops =  10   (total =  0.9977s)  (per loop =  0.0998s)
+Setting OMP_NUM_THREADS=4
+Running ./kmeans_omp_array_lock
+
+        nloops =  10   (total =  0.5860s)  (per loop =  0.0586s)
+Running ./kmeans_omp_clh_lock
+
+        nloops =  10   (total =  0.5731s)  (per loop =  0.0573s)
+Running ./kmeans_omp_critical
+
+        nloops =  10   (total =  0.5834s)  (per loop =  0.0583s)
+Running ./kmeans_omp_naive
+
+        nloops =  10   (total =  0.6847s)  (per loop =  0.0685s)
+Running ./kmeans_omp_nosync_lock
+
+        nloops =  10   (total =  0.5210s)  (per loop =  0.0521s)
+Running ./kmeans_omp_pthread_mutex_lock
+
+        nloops =  10   (total =  0.8247s)  (per loop =  0.0825s)
+Running ./kmeans_omp_pthread_spin_lock
+
+        nloops =  10   (total =  0.5422s)  (per loop =  0.0542s)
+Running ./kmeans_omp_tas_lock
+
+        nloops =  10   (total =  0.5525s)  (per loop =  0.0553s)
+Running ./kmeans_omp_ttas_lock
+
+        nloops =  10   (total =  0.5495s)  (per loop =  0.0549s)
+Setting OMP_NUM_THREADS=8
+Running ./kmeans_omp_array_lock
+
+        nloops =  10   (total =  0.5136s)  (per loop =  0.0514s)
+Running ./kmeans_omp_clh_lock
+
+        nloops =  10   (total =  0.4690s)  (per loop =  0.0469s)
+Running ./kmeans_omp_critical
+
+        nloops =  10   (total =  0.7793s)  (per loop =  0.0779s)
+Running ./kmeans_omp_naive
+
+        nloops =  10   (total =  0.4195s)  (per loop =  0.0419s)
+Running ./kmeans_omp_nosync_lock
+
+        nloops =  10   (total =  0.2932s)  (per loop =  0.0293s)
+Running ./kmeans_omp_pthread_mutex_lock
+
+        nloops =  10   (total =  1.0368s)  (per loop =  0.1037s)
+Running ./kmeans_omp_pthread_spin_lock
+
+        nloops =  10   (total =  0.8986s)  (per loop =  0.0899s)
+Running ./kmeans_omp_tas_lock
+
+        nloops =  10   (total =  1.1258s)  (per loop =  0.1126s)
+Running ./kmeans_omp_ttas_lock
+
+        nloops =  10   (total =  0.8288s)  (per loop =  0.0829s)
+Setting OMP_NUM_THREADS=16
+Running ./kmeans_omp_array_lock
+
+        nloops =  10   (total =  1.4064s)  (per loop =  0.1406s)
+Running ./kmeans_omp_clh_lock
+
+        nloops =  10   (total =  1.1428s)  (per loop =  0.1143s)
+Running ./kmeans_omp_critical
+
+        nloops =  10   (total =  4.6267s)  (per loop =  0.4627s)
+Running ./kmeans_omp_naive
+
+        nloops =  10   (total =  0.7329s)  (per loop =  0.0733s)
+Running ./kmeans_omp_nosync_lock
+
+        nloops =  10   (total =  0.5755s)  (per loop =  0.0576s)
+Running ./kmeans_omp_pthread_mutex_lock
+
+        nloops =  10   (total =  2.9197s)  (per loop =  0.2920s)
+Running ./kmeans_omp_pthread_spin_lock
+
+        nloops =  10   (total =  3.2685s)  (per loop =  0.3269s)
+Running ./kmeans_omp_tas_lock
+
+        nloops =  10   (total =  4.4722s)  (per loop =  0.4472s)
+Running ./kmeans_omp_ttas_lock
+
+        nloops =  10   (total =  3.0249s)  (per loop =  0.3025s)
+Setting OMP_NUM_THREADS=32
+Running ./kmeans_omp_array_lock
+
+        nloops =  10   (total =  1.9914s)  (per loop =  0.1991s)
+Running ./kmeans_omp_clh_lock
+
+        nloops =  10   (total =  1.6757s)  (per loop =  0.1676s)
+Running ./kmeans_omp_critical
+
+        nloops =  10   (total =  8.0882s)  (per loop =  0.8088s)
+Running ./kmeans_omp_naive
+
+        nloops =  10   (total =  1.1047s)  (per loop =  0.1105s)
+Running ./kmeans_omp_nosync_lock
+
+        nloops =  10   (total =  0.9772s)  (per loop =  0.0977s)
+Running ./kmeans_omp_pthread_mutex_lock
+
+        nloops =  10   (total =  4.0346s)  (per loop =  0.4035s)
+Running ./kmeans_omp_pthread_spin_lock
+
+        nloops =  10   (total =  8.1887s)  (per loop =  0.8189s)
+Running ./kmeans_omp_tas_lock
+
+        nloops =  10   (total = 10.7921s)  (per loop =  1.0792s)
+Running ./kmeans_omp_ttas_lock
+
+        nloops =  10   (total =  8.0252s)  (per loop =  0.8025s)
+Setting OMP_NUM_THREADS=64
+Running ./kmeans_omp_array_lock
+
+        nloops =  10   (total =  2.1604s)  (per loop =  0.2160s)
+Running ./kmeans_omp_clh_lock
+
+        nloops =  10   (total =  1.4915s)  (per loop =  0.1491s)
+Running ./kmeans_omp_critical
+
+        nloops =  10   (total =  6.5249s)  (per loop =  0.6525s)
+Running ./kmeans_omp_naive
+
+        nloops =  10   (total =  0.9490s)  (per loop =  0.0949s)
+Running ./kmeans_omp_nosync_lock
+
+        nloops =  10   (total =  0.7233s)  (per loop =  0.0723s)
+Running ./kmeans_omp_pthread_mutex_lock
+
+        nloops =  10   (total =  4.0851s)  (per loop =  0.4085s)
+Running ./kmeans_omp_pthread_spin_lock
+
+        nloops =  10   (total =  4.9585s)  (per loop =  0.4959s)
+Running ./kmeans_omp_tas_lock
+
+        nloops =  10   (total = 10.4150s)  (per loop =  1.0415s)
+Running ./kmeans_omp_ttas_lock
+
+        nloops =  10   (total =  5.2745s)  (per loop =  0.5274s)
