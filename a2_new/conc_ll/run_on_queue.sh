@@ -42,16 +42,16 @@ for lsize in 1024 8192; do
 				# Default case for n=1, 2, 4, ..., 64
 				export MT_CONF=$(seq -s, 0 $((n-1)))
 			fi
-                        echo "coarse-grain"
-                        ./x.cgl $LSIZE $CONTAINS_PCT $ADD_PCT $REMOVE_PCT
-                        echo "fine-grain"
-                        ./x.fgl $LSIZE $CONTAINS_PCT $ADD_PCT $REMOVE_PCT
-                        echo "optimistic"
-                        ./x.opt $LSIZE $CONTAINS_PCT $ADD_PCT $REMOVE_PCT
-                        echo "lazy"
-                        ./x.lazy $LSIZE $CONTAINS_PCT $ADD_PCT $REMOVE_PCT
-                        echo "non-blocking"
-                        ./x.nb $LSIZE $CONTAINS_PCT $ADD_PCT $REMOVE_PCT
+				echo "coarse-grain"
+				./x.cgl $LSIZE $CONTAINS_PCT $ADD_PCT $REMOVE_PCT
+				echo "fine-grain"
+				./x.fgl $LSIZE $CONTAINS_PCT $ADD_PCT $REMOVE_PCT
+				echo "optimistic"
+				./x.opt $LSIZE $CONTAINS_PCT $ADD_PCT $REMOVE_PCT
+				echo "lazy"
+				./x.lazy $LSIZE $CONTAINS_PCT $ADD_PCT $REMOVE_PCT
+				echo "non-blocking"
+				./x.nb $LSIZE $CONTAINS_PCT $ADD_PCT $REMOVE_PCT
 		done
 	done
 done
