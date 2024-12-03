@@ -68,7 +68,7 @@ for i in range(0, len(workloads)):
     plt.xticks(nthreads, [str(t) for t in nthreads])
     plt.xlabel("Number of Threads", fontsize=12)
     plt.ylabel("Throughput (Kops/sec)", fontsize=12)
-    plt.title(f"Throughput for Workload Pattern:\n Search/Insert/Delete: {workloads[i]}, Size=8192", fontsize=14)
+    plt.title(f"Throughput for Workload Pattern:\n Search/Insert/Delete: {workloads[i]}, Size=1024", fontsize=14)
     plt.grid(which="major", axis="y", linestyle="--", alpha=0.7)
     plt.legend(title="Locking Mechanism", fontsize=10)
     plt.tight_layout()

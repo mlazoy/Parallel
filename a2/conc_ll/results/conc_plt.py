@@ -6,7 +6,7 @@ import numpy as np
 outfile1 = "./conc_ll_1024.out"
 outfile2 = "./conc_ll_8196.out"
 size1 = 1024
-size2 = 8196
+size2 = 8192
 
 throughputs = defaultdict(dict)
 
