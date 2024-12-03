@@ -83,35 +83,58 @@ for workload in workloads:
 # Bar Plot settings
 bar_width = 0.2
 x_indices = np.arange(len(mechanisms))
-color_palette = ["#1f77b4", "#2ca02c", "#9467bd", "#17becf"]  # Blue, Green, Purple, Cyan
 
+serial = [mech for mech in mechanisms if mech == "serial"]
+non_serial_mechanisms = [mech for mech in mechanisms if mech != "serial"]
+
+
+color_palette = ["#1f77b4", "#2ca02c", "#9467bd", "#17becf"]  # Blue, Green, Purple, Cyan
+serial_palette = ["#ff9999", "#ff6666", "#ff3333", "#cc0000"]  # Shades of red for serial
 
 for n in threads:
     plt.figure(figsize=(12, 8))
-    
+
+    # Plot serial bars first
+    if serial:
+        for idx, workload in enumerate(workloads):
+            serial_throughput = throughputs.get((serial[0], workload), {}).get(1, 0)  # Serial only at n=1
+            plt.bar(
+                x_indices[0] + idx * bar_width,  
+                serial_throughput,
+                width=bar_width,
+                color=serial_palette[idx % len(serial_palette)],
+                label=f"Serial: {workload}" 
+            )
+
     throughput_data = {
         mech: [throughputs.get((mech, workload), {}).get(n, 0) for workload in workloads]
-        for mech in mechanisms
+        for mech in non_serial_mechanisms
     }
 
     for idx, workload in enumerate(workloads):
-        workload_throughput = [throughput_data[mech][idx] for mech in mechanisms]
+        workload_throughput = [throughput_data[mech][idx] for mech in non_serial_mechanisms]
+        workload_norm = np.divide(workload_throughput, n)
         plt.bar(
-            x_indices + idx * bar_width,  # Offset bars for grouping
-            workload_throughput,
+            x_indices[1:] + idx * bar_width,  # Offset bars for non-serial mechanisms
+            workload_norm,
             width=bar_width,
             color=color_palette[idx % len(color_palette)],
-            label=f"Search/Insert/Delete {workload}",
+            label=f"Search/Insert/Delete {workload}" 
         )
-    
+
+    # Formatting the plot
     plt.gca().set_facecolor("#e6e6fa")
-    plt.xticks(x_indices + bar_width * (len(workloads) - 1) / 2, mechanisms, rotation=45)
+    plt.xticks(
+        x_indices + bar_width * (len(workloads) - 1) / 2, 
+        ["Serial"] + non_serial_mechanisms,  # Add "Serial" as the first x-axis label
+        rotation=45
+    )
     plt.xlabel("Locking Mechanism", fontsize=12)
-    plt.ylabel("Throughput (Kops/sec)", fontsize=12)
-    plt.title(f"Throughput vs Locking Mechanism\n (Size={size}, Threads={n})", fontsize=14)
+    plt.ylabel("(Kops/sec) per thread", fontsize=12)
+    plt.title(f"Throughput Per Thread vs Locking Mechanism\n (Size={size}, Threads={n})", fontsize=14)
     plt.legend(title="Workload", fontsize=10)
     plt.grid(axis="y", linestyle="--", alpha=0.7)
- 
+    
+    # Save the figure
     plt.tight_layout()
-    plt.savefig(f"conc_{size}_{n}.png", dpi=300)  # Save with thread info
-
+    plt.savefig(f"conc_{size}_{n}.png", dpi=300)

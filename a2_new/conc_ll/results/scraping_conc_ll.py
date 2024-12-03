@@ -48,32 +48,36 @@ for line in data.splitlines():
         current_running=words[0]
 
 nthreads = [1, 2, 4, 8, 16, 32, 64, 128]
-colours = ['red', 'green', 'blue', 'cyan', 'orange']
+colours = ["#1f77b4", "#2ca02c", "#9467bd", "#17becf", "#bcbd22", "#8c564b"]
 workloads = ['100/0/0', '80/10/10', '20/40/40', '0/50/50']
 
 #for a specific size plot all the workloads in a different plot
 for i in range(0, len(workloads)):
-    plt.figure(figsize=(12,8))
+    plt.figure(figsize=(10, 7))
+    plt.gca().set_facecolor("#e6e6fa")
     counter = 0
     for technique in res_1024.keys():
         if technique == 'serial':
             continue
-        plt.plot(nthreads, res_1024[technique][workloads[i]], linewidth=2, color=colours[counter], label=technique)
+        plt.plot(nthreads, res_1024[technique][workloads[i]], marker='o',
+                 linewidth=2, color=colours[counter], label=technique)
         counter += 1
     
-    plt.xlabel('Number of threads')
-    plt.xscale('log', base=2)
-    plt.ylabel('Throughput(Kops/sec)')
-    #plt.yscale('log', base=10)
-    plt.title(f"Throughput for workload {workloads[i]} for lsize = 1024")
-    plt.grid(True)
-    plt.legend(loc='best')
+    plt.gca().set_facecolor("#e6e6fa")
+    plt.xscale("log")  # Log scale for thread counts
+    plt.xticks(nthreads, [str(t) for t in nthreads])
+    plt.xlabel("Number of Threads", fontsize=12)
+    plt.ylabel("Throughput (Kops/sec)", fontsize=12)
+    plt.title(f"Throughput for Workload Pattern:\n Search/Insert/Delete: {workloads[i]}, Size=8192", fontsize=14)
+    plt.grid(which="major", axis="y", linestyle="--", alpha=0.7)
+    plt.legend(title="Locking Mechanism", fontsize=10)
+    plt.tight_layout()
+
     sanitized_workload = workloads[i].replace('/', '_')
     plt.savefig(f"{output_dir}/conc_ll_1024_{sanitized_workload}.png")
     plt.close()
     
-    #plot the normalized perfomance as well
-    plt.figure(figsize=(12,8))
+    plt.figure(figsize=(10,7))
     counter = 0
     for technique in res_1024.keys():
         if technique == 'serial':
@@ -101,21 +105,25 @@ for i in range(0, len(workloads)):
 
 #do for 8192 as well  
 for i in range(0, len(workloads)):
-    plt.figure(figsize=(12,8))
+    plt.figure(figsize=(10,7))
     counter = 0
     for technique in res_8192.keys():
         if technique == 'serial':
             continue
-        plt.plot(nthreads, res_8192[technique][workloads[i]], linewidth=2, color=colours[counter], label=technique)
+        plt.plot(nthreads, res_8192[technique][workloads[i]], marker='o',
+                 linewidth=2, color=colours[counter], label=technique)
         counter += 1
-    
-    plt.xlabel('Number of threads')
-    plt.xscale('log', base=2)
-    plt.ylabel('Throughput(Kops/sec)')
-    #plt.yscale('log', base=10)
-    plt.title(f"Throughput for workload {workloads[i]} for lsize = 8192")
-    plt.grid(True)
-    plt.legend(loc='best')
+
+    plt.gca().set_facecolor("#e6e6fa")
+    plt.xscale("log")  # Log scale for thread counts
+    plt.xticks(nthreads, [str(t) for t in nthreads])
+    plt.xlabel("Number of Threads", fontsize=12)
+    plt.ylabel("Throughput (Kops/sec)", fontsize=12)
+    plt.title(f"Throughput for Workload Pattern:\n Search/Insert/Delete: {workloads[i]}, Size=8192", fontsize=14)
+    plt.grid(which="major", axis="y", linestyle="--", alpha=0.7)
+    plt.legend(title="Locking Mechanism", fontsize=10)
+    plt.tight_layout()
+
     sanitized_workload = workloads[i].replace('/', '_')
     plt.savefig(f"{output_dir}/conc_ll_8192_{sanitized_workload}.png")
     plt.close()
