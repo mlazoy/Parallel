@@ -420,7 +420,9 @@ highlighted: (4,5,27,28,29,30,40,41,42,43,45,46,50,54,58,62,64,69,74,79,84,94,95
 
 === Aποτελέσματα 
 
-#image("../a2_new/kmeans/results/kmeans_results.png")
+#image("../a2/conc_ll/results/locks_total.png",width:95%)
+#image("../a2/conc_ll/results/locks_perloop.png",width:95%)
+
 \
 Παρατηρούμε πως :
 \
@@ -438,8 +440,6 @@ highlighted: (4,5,27,28,29,30,40,41,42,43,45,46,50,54,58,62,64,69,74,79,84,94,95
 \
 7) Οι 3 καλύτερες τεχνικές για αυτήν την άσκηση(array, clh, omp atomic) κλιμακώνουν πολύ καλά για 1 cluster πυρήνων του sandman, δηλαδή 8 νήματα. Αν χρησιμοποιούσαμε hyperthreading για τα 16 νήματα, δηλαδή βάζαμε τα 8 τελευταία νήματα εκτός των 64 λογικών, θα δούμε κλιμάκωση και για 16 νήματα όπως φαίνεται παρακάτω :
 \
-#image("../a2/conc_ll/results/locks_total.png",width:95%)
-#image("../a2/conc_ll/results/locks_perloop.png",width:95%)
 
 #pagebreak()
 
