@@ -497,8 +497,8 @@ Aντίστοιχα, για το chl_lock μειώνεται το contention γ�
 
 == Αποτελέσματα
 \
+Παρουσιάζονται τα Kops/sec με την μορφή line plots ανά κάθε διαφορετικό workload configuration
 
-Παρουσιάζονται τα Kops/sec με την μορφή line plots ανά κάθε διαφορετικό workload configuration καθως και το κανονικοποιημένο Kops/sec ανά νήμα με την μορφή barplots για κάθε εκτέλεση με n threads.
 \
 
 H serial εκδοχή μας δείχνει την δυναμική του κάθε core, δεν χρησιμοποιεί παραλληλισμό ούτε κλειδώματα και έχει σταθερό throughput ανεξάρτητα από το πλήθος των νημάτων γι'αυτό και την θεωρούμε ως σημείο αναφοράς.
@@ -553,22 +553,27 @@ H *optimistic* ακολουθεί την λογική readers-writer lock και
 \ *Workload 20/40/40  & Workload 0/50/50* \
 Aυξάνοντας παραπάνω το ποσοστό των add / delete η *lazy* χάνει σε throughput ενώ η *optimistic* κερδίζει στην περίπτωση του μικρού size=1024, και δεν παρουσιάζει αισθητές διαφορές για μεγάλο size=8192. Aυτο συμβαίνει επειδή τα conflicts για μεταβολή κοινών δεδομένων είναι σπανιότερα σε μεγάλο μέγεθος λίσταε και εφόσον ο αριθμός των queries μένει σταθερός. Έστι το overhead των locking mechanisms μένει σχετικά σταθερό χάριν στο μικρό contention. 
 \
+\
 
-Σε κάθε περίπτωση, το throughput στην πολύ μεγάλη λίστα είναι σημαντικά μικρότερο αφού όλες οι λειτουργίες είναι γραμμικές ως προς το μέγεθος της λίστας και δεν μπορεί να αξιοποιηθεί πλήρως το data locality.
+\ *Σε όλα τα Workloads,* \
+ το throughput στην πολύ μεγάλη λίστα είναι σημαντικά μικρότερο αφού όλες οι λειτουργίες είναι γραμμικές ως προς το μέγεθος της λίστας και δεν μπορεί να αξιοποιηθεί πλήρως το data locality. Eπιπλέον, η lazy τα πάει χειρότερα στο μικρό μήκος(παραπάνω φυσικές διαγραφές που κάνει επί τόπου με locks) από την non blocking που κάνει την φυσική διαγραφή αργότερα και γλιτώνει χρόνο.
+ \
+ \
+ Παρακάτω φαίνονται τα κανονικοποιημένα throughputs / thread_count σε σύγκριση με την serial ενδοχή και πως αυτά επηρεάζονται από το workload: 
 
 #pagebreak()
 
 #columns(2)[
   #image("../a2/conc_ll/results/conc_1024_1.png"),
-  #image("../a2/conc_ll/results/conc_1024_2.png")
+  #image("../a2/conc_ll/results/conc_1024_16.png")
   \
-  #image("../a2/conc_ll/results/conc_1024_4.png"),
-  #image("../a2/conc_ll/results/conc_1024_8.png")
-  \
-  #image("../a2/conc_ll/results/conc_1024_16.png"),
+  #image("../a2/conc_ll/results/conc_1024_2.png"),
   #image("../a2/conc_ll/results/conc_1024_32.png")
   \
-  #image("../a2/conc_ll/results/conc_1024_64.png"),
+  #image("../a2/conc_ll/results/conc_1024_4.png"),
+  #image("../a2/conc_ll/results/conc_1024_64.png")
+  \
+  #image("../a2/conc_ll/results/conc_1024_8.png"),
   #image("../a2/conc_ll/results/conc_1024_128.png") 
 ]
   
@@ -580,53 +585,18 @@ Aυξάνοντας παραπάνω το ποσοστό των add / delete η 
 
 #columns(2)[
 #image("../a2/conc_ll/results/conc_8192_1.png"),
-#image("../a2/conc_ll/results/conc_8192_2.png")
+#image("../a2/conc_ll/results/conc_8192_16.png")
 \
-#image("../a2/conc_ll/results/conc_8192_4.png"),
-#image("../a2/conc_ll/results/conc_8192_8.png")
-\
-#image("../a2/conc_ll/results/conc_8192_16.png"),
+#image("../a2/conc_ll/results/conc_8192_2.png"),
 #image("../a2/conc_ll/results/conc_8192_32.png")
 \
-#image("../a2/conc_ll/results/conc_8192_64.png"),
+#image("../a2/conc_ll/results/conc_8192_4.png"),
+#image("../a2/conc_ll/results/conc_8192_64.png")
+\
+#image("../a2/conc_ll/results/conc_8192_8.png"),
 #image("../a2/conc_ll/results/conc_8192_128.png")
 ]
 
-#pagebreak()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#pagebreak()
-
-Παρατηρούμε πως :
-\
-1) Στην περίπτωση που έχουμε μόνο contains την χειρότερη επίδοση την έχει η fine grain που έχει τεράστιο overhead καθώς έχει κλείδωμα για κάθε κόμβο, ενώ η coarse grain που έχει ένα global κλείδωμα τα πάει καλύτερα. 
-\
-2) Στην ίδια περίπτωση για το μεγάλο μέγεθος λίστας οι coarse grain, fine grain, optimistic έχουν φυσιολογικές επιδόσεις μέχρι 8 νήματα, με το που χρησιμοποιήσουμε παραπάνω από 1 cluster με μη κοινή L3 cache τα πάνε χάλια. Αυτό συμβαίνει διότι διασχίζουν την λίστα πολλές φορές για κάθε αλλαγή και αυτό σε συνδυασμό με το πρωτόκολλο συνάφεια κρυφής μνήμης προκαλεί τεράστιες καθυστερήσεις.
-\
-3) Η non blocking έχει πιο κακή επίδοση στη μικρή λίστα ενώ στη μεγάλη είναι το ίδιο καλή με την lazy. Αυτό είναι λογικό καθώς η φυσική διαγραφή δεν γίνεται πάντα.
-
- Σε όλες τις περιπτώσεις το oversubscription είναι κακή ιδέα καθώς η επίδοση ή μένει ίδια(όταν έχουμε μόνο contains) ή πέφτει αισθητά από τα 64 νήματα. Βλέπουμε πως όταν εμπλακεί το λειτουργικό για το scheduling η επίδοση πέφτει πολύ.
-\
 
 #pagebreak()
 
