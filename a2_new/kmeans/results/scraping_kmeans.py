@@ -35,18 +35,32 @@ for line in data.splitlines():
 
 
 nthreads = [1, 2, 4, 8, 16, 32, 64]
-colours = ['red', 'green', 'blue', 'cyan', 'magenta', 'gray', 'black', 'orange', 'darkGreen']
+colours =  [
+    "#1f77b4",  # Blue
+    "#2ca02c",  # Green
+    "#9467bd",  # Purple
+    "#17becf",  # Cyan
+    "#8c564b",  # Muted Purple
+    "#7f7f7f",  # Grayish Blue
+    "#bcbd22",  # Olive Green
+    "#93c572",   # Pistachio Green
+    "#006400"  # Deep Green
+]
 
 plt.figure(figsize=(12, 8))
+plt.gca().set_facecolor("#e6e6fa")
 counter = 0
 for technique in results_array.keys():
-    plt.plot(nthreads, results_array[technique], linewidth=2, color=colours[counter], label=technique)
+    plt.plot(nthreads, results_array[technique], linewidth=2, marker = 'o', 
+             color=colours[counter], label=technique)
     counter += 1
 plt.xlabel('Number of threads')
 plt.xscale('log', base=2)
-plt.ylabel('Time for execution (s)')
-plt.title("Perfomance of the different techniques")
-plt.grid(True)
+plt.ylabel('Total Time (secs)')
+plt.title("Time vs #threads NUMA aware")
+plt.grid(axis="y", linestyle="--", alpha=0.7)
 plt.legend(loc='best')
-plt.savefig("kmeans_results_hyper.png")
+plt.tight_layout()
+plt.savefig("kmeans_results_hyper.png", dpi=300)
 plt.close()
+
