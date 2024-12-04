@@ -565,15 +565,15 @@ Aυξάνοντας παραπάνω το ποσοστό των add / delete η 
 
 #columns(2)[
   #image("../a2/conc_ll/results/conc_1024_1.png"),
-  #image("../a2/conc_ll/results/conc_1024_16.png")
+  #image("../a2/conc_ll/results/conc_1024_4.png")
   \
-  #image("../a2/conc_ll/results/conc_1024_2.png"),
-  #image("../a2/conc_ll/results/conc_1024_32.png")
-  \
-  #image("../a2/conc_ll/results/conc_1024_4.png"),
+  #image("../a2/conc_ll/results/conc_1024_16.png"),
   #image("../a2/conc_ll/results/conc_1024_64.png")
   \
-  #image("../a2/conc_ll/results/conc_1024_8.png"),
+  #image("../a2/conc_ll/results/conc_1024_2.png"),
+  #image("../a2/conc_ll/results/conc_1024_8.png")
+  \
+  #image("../a2/conc_ll/results/conc_1024_32.png"),
   #image("../a2/conc_ll/results/conc_1024_128.png") 
 ]
   
@@ -585,15 +585,15 @@ Aυξάνοντας παραπάνω το ποσοστό των add / delete η 
 
 #columns(2)[
 #image("../a2/conc_ll/results/conc_8192_1.png"),
-#image("../a2/conc_ll/results/conc_8192_16.png")
+#image("../a2/conc_ll/results/conc_8192_4.png")
 \
-#image("../a2/conc_ll/results/conc_8192_2.png"),
-#image("../a2/conc_ll/results/conc_8192_32.png")
-\
-#image("../a2/conc_ll/results/conc_8192_4.png"),
+#image("../a2/conc_ll/results/conc_8192_16.png"),
 #image("../a2/conc_ll/results/conc_8192_64.png")
 \
-#image("../a2/conc_ll/results/conc_8192_8.png"),
+#image("../a2/conc_ll/results/conc_8192_2.png"),
+#image("../a2/conc_ll/results/conc_8192_8.png")
+\
+#image("../a2/conc_ll/results/conc_8192_32.png"),
 #image("../a2/conc_ll/results/conc_8192_128.png")
 ]
 
