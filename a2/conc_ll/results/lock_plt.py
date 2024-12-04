@@ -48,7 +48,9 @@ color_palette = [
     "#17becf",  # Cyan
     "#8c564b",  # Muted Purple
     "#7f7f7f",  # Grayish Blue
-    "#bcbd22"   # Olive Green
+    "#bcbd22",  # Olive Green
+    "#93c572",   # Pistachio Green
+    "#006400"  # Deep Green
 ]
 
 threads = [1,2,4,8,16,32,64]
@@ -76,7 +78,7 @@ plt.savefig("locks_total.png", dpi=300)
 plt.figure(figsize=(10, 7))
 plt.gca().set_facecolor("#e6e6fa")  
 plt.xscale('log')               
-for idx, (lock, times) in enumerate(total.items()):
+for idx, (lock, times) in enumerate(per_loop.items()):
     y_values = [times.get(t, None) for t in threads]
     plt.plot(
         threads, y_values, marker='o', color=color_palette[idx % len(color_palette)],
