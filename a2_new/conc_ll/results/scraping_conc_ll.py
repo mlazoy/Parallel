@@ -57,9 +57,10 @@ for i in range(0, len(workloads)):
     plt.gca().set_facecolor("#e6e6fa")
     counter = 0
     for technique in res_1024.keys():
+        y_val = res_1024[technique][workloads[i]]
         if technique == 'serial':
-            continue
-        plt.plot(nthreads, res_1024[technique][workloads[i]], marker='o',
+           y_val = [y_val for i in range(0,8)]
+        plt.plot(nthreads, y_val, marker='o',
                  linewidth=2, color=colours[counter], label=technique)
         counter += 1
     
@@ -108,9 +109,11 @@ for i in range(0, len(workloads)):
     plt.figure(figsize=(10,7))
     counter = 0
     for technique in res_8192.keys():
+        y_val = res_8192[technique][workloads[i]]
         if technique == 'serial':
-            continue
-        plt.plot(nthreads, res_8192[technique][workloads[i]], marker='o',
+           y_val = [y_val for i in range(0,8)]
+            
+        plt.plot(nthreads, y_val, marker='o',
                  linewidth=2, color=colours[counter], label=technique)
         counter += 1
 
