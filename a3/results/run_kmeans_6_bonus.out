@@ -1,0 +1,44 @@
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dataset_size = 1024.00 MB    numObjs = 67108864    numCoords = 2    numClusters = 64, block_size = 32
+
+
+|-----------Full-offload Delta Reduction GPU Kmeans------------|
+
+t_alloc: 1042.166948 ms
+
+t_alloc_gpu: 1299.259901 ms
+
+t_get_gpu: 380.185127 ms
+
+nloops = 10  : total = 8627.963066 ms
+	-> t_loop_avg = 862.796307 ms
+	-> t_loop_min = 832.277060 ms
+	-> t_loop_max = 881.763935 ms
+	-> t_cpu_avg = 0.000095 ms
+	-> t_gpu_avg = 837.402272 ms
+	-> t_transfers_avg = 0.043893 ms
+
+|-------------------------------------------|
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dataset_size = 1024.00 MB    numObjs = 67108864    numCoords = 2    numClusters = 64, block_size = 48
+
+
+|-----------Full-offload Delta Reduction GPU Kmeans------------|
+
+t_alloc: 1035.633087 ms
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dataset_size = 1024.00 MB    numObjs = 67108864    numCoords = 2    numClusters = 64, block_size = 64
+
+
+|-----------Full-offload Delta Reduction GPU Kmeans------------|
+
+t_alloc: 1034.478188 ms
+

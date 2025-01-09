@@ -1,0 +1,168 @@
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dataset_size = 1024.00 MB    numObjs = 4194304    numCoords = 32    numClusters = 64, block_size = 32
+
+
+|-----------Full-offload GPU Kmeans------------|
+
+t_alloc: 1112.847090 ms
+
+t_alloc_gpu: 1190.236807 ms
+
+t_get_gpu: 331.485033 ms
+
+nloops = 10  : total = 412.226915 ms
+	-> t_loop_avg = 41.222692 ms
+	-> t_loop_min = 35.557032 ms
+	-> t_loop_max = 62.472105 ms
+	-> t_cpu_avg = 0.000000 ms
+	-> t_gpu_avg = 40.152502 ms
+	-> t_transfers_avg = 0.012231 ms
+
+|-------------------------------------------|
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dataset_size = 1024.00 MB    numObjs = 4194304    numCoords = 32    numClusters = 64, block_size = 48
+
+
+|-----------Full-offload GPU Kmeans------------|
+
+t_alloc: 1113.033056 ms
+
+t_alloc_gpu: 1149.205923 ms
+
+t_get_gpu: 329.331875 ms
+
+nloops = 10  : total = 423.712015 ms
+	-> t_loop_avg = 42.371202 ms
+	-> t_loop_min = 38.846970 ms
+	-> t_loop_max = 46.607018 ms
+	-> t_cpu_avg = 0.000095 ms
+	-> t_gpu_avg = 41.327357 ms
+	-> t_transfers_avg = 0.012898 ms
+
+|-------------------------------------------|
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dataset_size = 1024.00 MB    numObjs = 4194304    numCoords = 32    numClusters = 64, block_size = 64
+
+
+|-----------Full-offload GPU Kmeans------------|
+
+t_alloc: 1110.467196 ms
+
+t_alloc_gpu: 1165.834904 ms
+
+t_get_gpu: 330.466032 ms
+
+nloops = 10  : total = 708.521128 ms
+	-> t_loop_avg = 70.852113 ms
+	-> t_loop_min = 69.406033 ms
+	-> t_loop_max = 72.273016 ms
+	-> t_cpu_avg = 0.000119 ms
+	-> t_gpu_avg = 69.782305 ms
+	-> t_transfers_avg = 0.012398 ms
+
+|-------------------------------------------|
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dataset_size = 1024.00 MB    numObjs = 4194304    numCoords = 32    numClusters = 64, block_size = 128
+
+
+|-----------Full-offload GPU Kmeans------------|
+
+t_alloc: 1116.480112 ms
+
+t_alloc_gpu: 1193.396091 ms
+
+t_get_gpu: 333.572865 ms
+
+nloops = 10  : total = 820.935011 ms
+	-> t_loop_avg = 82.093501 ms
+	-> t_loop_min = 80.696821 ms
+	-> t_loop_max = 83.575010 ms
+	-> t_cpu_avg = 0.000000 ms
+	-> t_gpu_avg = 81.015277 ms
+	-> t_transfers_avg = 0.012922 ms
+
+|-------------------------------------------|
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dataset_size = 1024.00 MB    numObjs = 4194304    numCoords = 32    numClusters = 64, block_size = 238
+
+
+|-----------Full-offload GPU Kmeans------------|
+
+t_alloc: 1107.959986 ms
+
+t_alloc_gpu: 1194.827795 ms
+
+t_get_gpu: 330.454826 ms
+
+nloops = 10  : total = 968.073130 ms
+	-> t_loop_avg = 96.807313 ms
+	-> t_loop_min = 95.350027 ms
+	-> t_loop_max = 98.317146 ms
+	-> t_cpu_avg = 0.000000 ms
+	-> t_gpu_avg = 95.707917 ms
+	-> t_transfers_avg = 0.012374 ms
+
+|-------------------------------------------|
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dataset_size = 1024.00 MB    numObjs = 4194304    numCoords = 32    numClusters = 64, block_size = 512
+
+
+|-----------Full-offload GPU Kmeans------------|
+
+t_alloc: 1113.148928 ms
+
+t_alloc_gpu: 1172.526836 ms
+
+t_get_gpu: 332.376957 ms
+
+nloops = 10  : total = 823.505878 ms
+	-> t_loop_avg = 82.350588 ms
+	-> t_loop_min = 80.944061 ms
+	-> t_loop_max = 83.887815 ms
+	-> t_cpu_avg = 0.000095 ms
+	-> t_gpu_avg = 81.277418 ms
+	-> t_transfers_avg = 0.012112 ms
+
+|-------------------------------------------|
+
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+dataset_size = 1024.00 MB    numObjs = 4194304    numCoords = 32    numClusters = 64, block_size = 1024
+
+
+|-----------Full-offload GPU Kmeans------------|
+
+t_alloc: 1100.466967 ms
+
+t_alloc_gpu: 1185.298920 ms
+
+t_get_gpu: 329.098940 ms
+
+nloops = 10  : total = 823.107958 ms
+	-> t_loop_avg = 82.310796 ms
+	-> t_loop_min = 80.893993 ms
+	-> t_loop_max = 83.952904 ms
+	-> t_cpu_avg = 0.000095 ms
+	-> t_gpu_avg = 81.259108 ms
+	-> t_transfers_avg = 0.012493 ms
+
+|-------------------------------------------|
+
