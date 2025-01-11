@@ -1,0 +1,171 @@
+import matplotlib.pyplot as plt
+from matplotlib.colors import to_rgba
+
+file_name = "../results/run_kmeans_5b.out"
+with open(file_name, "r") as file:
+    data1 = file.read()
+
+file_name = "../results/run_kmeans_6b.out"
+with open(file_name, "r") as file:
+    data2 = file.read()
+    
+all_data = data1 + data2
+
+methods = ["offload", "delta"]
+t_alloc = {method: {} for method in methods}
+t_alloc_gpu = {method: {} for method in methods}
+t_get_gpu = {method: {} for method in methods}
+t_run = {method: {} for method in methods}
+t_loop_avg = {method: {} for method in methods}
+t_cpu_avg = {method: {} for method in methods}
+t_gpu_avg = {method: {} for method in methods}
+t_transfers_avg = {method: {} for method in methods}
+t_alloc_seq = 181.571007
+t_run_seq = 153790.647030
+t_loop_avg_seq = 15379.064703
+
+
+runtype = "Sequential"
+coordsSize = 2
+blocksize = 32
+counter = 0
+measured_time = 0.0
+for line in all_data.splitlines():
+    words = line.split()
+    if len(words) > 10 and words[7] == "numCoords":
+        coordsSize = int(words[9])
+    if len(words) >= 15:
+        blocksize = int(words[15])
+    if len(words) > 0:
+        if words[-1].split('-')[0] == "Kmeans":
+            second_word = words[1]
+            if second_word == "Delta":
+                runtype = "delta"
+            elif second_word == "GPU":
+                runtype = "offload"
+            else:
+                runtype = "Sequential"
+        if words[-1] == "ms" and len(words) >= 3 and runtype == "Sequential":
+            measured_time = float(words[-2])
+            if words[-3] == "t_alloc:": t_alloc_seq = measured_time
+            elif words[-4] == "total": t_run_seq = measured_time
+            elif words[-4] == "t_loop_avg": t_loop_avg_seq = measured_time
+        elif words[-1] == "ms" and len(words) == 3 and runtype in methods:
+            #words[-2] is the measured time
+            measured_time = float(words[-2])
+            if words[-3] == "t_alloc:": t_alloc[runtype][blocksize] = measured_time
+            elif words[-3] == "t_alloc_gpu:" : t_alloc_gpu[runtype][blocksize] = measured_time
+            elif words[-3] == "t_get_gpu:" : t_get_gpu[runtype][blocksize] = measured_time
+        elif words[-1] == "ms" and len(words) > 3 and runtype in methods:
+            measured_time = float(words[-2])
+            if words[-4] == "total": t_run[runtype][blocksize] = measured_time
+            elif words[-4] == "t_loop_avg": t_loop_avg[runtype][blocksize] = measured_time
+            elif words[-4] == "t_cpu_avg": t_cpu_avg[runtype][blocksize] = measured_time
+            elif words[-4] == "t_gpu_avg": t_gpu_avg[runtype][blocksize] = measured_time
+            elif words[-4] == "t_transfers_avg": t_transfers_avg[runtype][blocksize] = measured_time
+    counter += 1
+
+t_seq_total = t_alloc_seq + t_run_seq
+
+t_total = {method: {} for method in methods}
+for method in methods:
+    for key in t_alloc[method]:
+        t_total[method][key] = t_alloc[method][key] + t_alloc_gpu[method][key] + t_get_gpu[method][key] + t_run[method][key]
+
+#Speedup
+plt.figure(figsize=(10, 6))
+plt.gca().set_facecolor("#e6e6fa")
+plt.plot(t_total["offload"].keys(), [t_seq_total / t_total["offload"][key] for key in t_total["offload"].keys()], label="Full-offload", marker='o', color='#FF8C00')
+plt.plot(t_total["delta"].keys(), [t_seq_total / t_total["delta"][key] for key in t_total["delta"].keys()], label="Delta reduction", marker='o', color='#2CA02C')
+plt.legend()
+plt.xlabel("Blocksize")
+plt.ylabel("Speedup")
+plt.xscale('log', base=2)
+plt.title("Speedup of different implementations for coordsSize = 2")
+plt.grid()
+plt.savefig("delta_reduction_coords_2_speedup.png")
+plt.close()
+
+#CPU, GPU, CPU-GPU transfers per loop time comparison only because allocation takes too much
+block_sizes = list(t_total["offload"].keys())
+x_labels = [str(blocksize) for blocksize in block_sizes]
+n_methods = len(methods)
+bar_width = 0.2
+
+# Define base colors and create different shades
+base_colors = {
+    "GPU execution time": "skyblue",
+    "Transfer time": "orange",
+    "CPU execution time": "green"
+}
+shades = {method: {} for method in methods}
+for i, method in enumerate(methods):
+    for component, base_color in base_colors.items():
+        alpha = 0.6 + 0.4 * i  # Adjust transparency to create distinct shades
+        shades[method][component] = to_rgba(base_color, alpha)
+
+plt.figure(figsize=(12, 8))
+plt.gca().set_facecolor("#e6e6fa")
+
+for i, method in enumerate(methods):
+    # Compute positions for this method's bars
+    method_positions = [x + i * bar_width for x in range(len(block_sizes))]
+
+    # Extract values for the stacked components
+    t_gpu_values = [t_gpu_avg[method][blocksize] for blocksize in block_sizes]
+    t_transfers_values = [t_transfers_avg[method][blocksize] for blocksize in block_sizes]
+    t_cpu_values = [t_cpu_avg[method][blocksize] for blocksize in block_sizes]
+
+    # Plot stacked bars for this method
+    bar_gpu = plt.bar(
+        method_positions, t_gpu_values, width=bar_width,
+        label=f"{method} - GPU execution time", color=shades[method]["GPU execution time"], edgecolor='black'
+    )
+    bar_transfers = plt.bar(
+        method_positions, t_transfers_values, width=bar_width, bottom=t_gpu_values,
+        label=f"{method} - Transfer time", color=shades[method]["Transfer time"], edgecolor='black'
+    )
+    bar_cpu = plt.bar(
+        method_positions, t_cpu_values, width=bar_width,
+        bottom=[t_gpu_values[j] + t_transfers_values[j] for j in range(len(t_gpu_values))],
+        label=f"{method} - CPU execution time", color=shades[method]["CPU execution time"], edgecolor='black'
+    )
+
+    # Add method labels on top of the bars
+    for j, (gpu, transfers, cpu) in enumerate(zip(t_gpu_values, t_transfers_values, t_cpu_values)):
+        total_height = gpu + transfers + cpu
+        plt.text(
+            method_positions[j], total_height + 1, method, ha='center', va='bottom',
+            fontsize=8, rotation=90, color='black'
+        )
+
+# Customize x-axis
+plt.xlabel("Block Sizes")
+plt.xticks(
+    ticks=[x + (n_methods - 1) * bar_width / 2 for x in range(len(block_sizes))],
+    labels=x_labels,
+    rotation=45
+)
+
+# Add labels, title, legend, and grid
+plt.ylabel("Execution Time (ms)")
+plt.title("CPU, Transfer, GPU average time per loop comparison for coordsSize = 2")
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize='small')  # Legend outside the plot
+plt.grid(axis='y', linestyle='--', linewidth=0.5)
+
+# Determine the maximum height of all bars (stacked values)
+max_height = max(
+    t_gpu_avg[method][blocksize] + 
+    t_transfers_avg[method][blocksize] + 
+    t_cpu_avg[method][blocksize]
+    for method in methods for blocksize in block_sizes
+)
+
+# Add some padding to the maximum height for labels
+y_max_limit = max_height + 5  # Adjust the padding value as needed
+plt.ylim(0, y_max_limit)
+
+# Save the plot
+plt.tight_layout()
+plt.savefig("delta_reduction_coords_2_comparison.png")
+plt.close()
