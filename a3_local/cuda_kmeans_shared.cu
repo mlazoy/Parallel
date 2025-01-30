@@ -39,7 +39,7 @@ double euclid_dist_2_transpose(int numCoords,
   /* TODO: Copy me from transpose version*/
     for (i = 0; i < numCoords; i++){
     abs = objects[i*numObjs + objectId] - clusters[i*numClusters + clusterId];
-    ans += abs;
+    ans += abs*abs;
     }
 
   return (ans);

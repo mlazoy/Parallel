@@ -1,0 +1,141 @@
+Version,Metric,BlockSize,Time(ms)
+cuda_kmeans_naive,total,32,8557.739019
+cuda_kmeans_naive,total,48,10334.995985
+cuda_kmeans_naive,total,64,13922.528028
+cuda_kmeans_naive,total,128,13989.368916
+cuda_kmeans_naive,total,238,14794.132948
+cuda_kmeans_naive,total,512,15015.974998
+cuda_kmeans_naive,total,1024,15411.762953
+cuda_kmeans_naive,t_alloc,32,11.18803
+cuda_kmeans_naive,t_alloc,48,11.202812
+cuda_kmeans_naive,t_alloc,64,11.181831
+cuda_kmeans_naive,t_alloc,128,11.201143
+cuda_kmeans_naive,t_alloc,238,11.183977
+cuda_kmeans_naive,t_alloc,512,11.180878
+cuda_kmeans_naive,t_alloc,1024,11.202812
+cuda_kmeans_naive,t_alloc_gpu,32,767.831087
+cuda_kmeans_naive,t_alloc_gpu,48,758.008003
+cuda_kmeans_naive,t_alloc_gpu,64,740.29088
+cuda_kmeans_naive,t_alloc_gpu,128,739.463091
+cuda_kmeans_naive,t_alloc_gpu,238,728.157997
+cuda_kmeans_naive,t_alloc_gpu,512,732.896805
+cuda_kmeans_naive,t_alloc_gpu,1024,737.754822
+cuda_kmeans_naive,t_get_gpu,32,243.429899
+cuda_kmeans_naive,t_get_gpu,48,243.887901
+cuda_kmeans_naive,t_get_gpu,64,243.619919
+cuda_kmeans_naive,t_get_gpu,128,243.660927
+cuda_kmeans_naive,t_get_gpu,238,243.574858
+cuda_kmeans_naive,t_get_gpu,512,244.009972
+cuda_kmeans_naive,t_get_gpu,1024,243.602037
+cuda_kmeans_transpose,total,32,6152.400017
+cuda_kmeans_transpose,total,48,6168.887854
+cuda_kmeans_transpose,total,64,6150.157928
+cuda_kmeans_transpose,total,128,6159.586906
+cuda_kmeans_transpose,total,238,6215.955019
+cuda_kmeans_transpose,total,512,6124.4452
+cuda_kmeans_transpose,total,1024,6135.900021
+cuda_kmeans_transpose,t_alloc,32,1093.585014
+cuda_kmeans_transpose,t_alloc,48,1094.005108
+cuda_kmeans_transpose,t_alloc,64,1093.44101
+cuda_kmeans_transpose,t_alloc,128,1094.443083
+cuda_kmeans_transpose,t_alloc,238,1097.489119
+cuda_kmeans_transpose,t_alloc,512,1094.163895
+cuda_kmeans_transpose,t_alloc,1024,1094.763041
+cuda_kmeans_transpose,t_alloc_gpu,32,1198.517084
+cuda_kmeans_transpose,t_alloc_gpu,48,1189.08906
+cuda_kmeans_transpose,t_alloc_gpu,64,1194.280148
+cuda_kmeans_transpose,t_alloc_gpu,128,1158.305168
+cuda_kmeans_transpose,t_alloc_gpu,238,1199.841022
+cuda_kmeans_transpose,t_alloc_gpu,512,1200.112104
+cuda_kmeans_transpose,t_alloc_gpu,1024,1193.742037
+cuda_kmeans_transpose,t_get_gpu,32,240.014076
+cuda_kmeans_transpose,t_get_gpu,48,239.425182
+cuda_kmeans_transpose,t_get_gpu,64,239.908934
+cuda_kmeans_transpose,t_get_gpu,128,239.301205
+cuda_kmeans_transpose,t_get_gpu,238,240.085125
+cuda_kmeans_transpose,t_get_gpu,512,239.331961
+cuda_kmeans_transpose,t_get_gpu,1024,240.160942
+cuda_kmeans_shared,total,32,4482.616901
+cuda_kmeans_shared,total,48,4625.881195
+cuda_kmeans_shared,total,64,3824.531078
+cuda_kmeans_shared,total,128,5169.360876
+cuda_kmeans_shared,total,238,5599.797964
+cuda_kmeans_shared,total,512,5516.425848
+cuda_kmeans_shared,total,1024,5507.668018
+cuda_kmeans_shared,t_alloc,32,1094.703913
+cuda_kmeans_shared,t_alloc,48,1094.590902
+cuda_kmeans_shared,t_alloc,64,1094.543934
+cuda_kmeans_shared,t_alloc,128,1094.330788
+cuda_kmeans_shared,t_alloc,238,1095.165968
+cuda_kmeans_shared,t_alloc,512,1093.78314
+cuda_kmeans_shared,t_alloc,1024,1095.025063
+cuda_kmeans_shared,t_alloc_gpu,32,1241.743803
+cuda_kmeans_shared,t_alloc_gpu,48,1207.252979
+cuda_kmeans_shared,t_alloc_gpu,64,1211.675882
+cuda_kmeans_shared,t_alloc_gpu,128,1188.086987
+cuda_kmeans_shared,t_alloc_gpu,238,1203.665018
+cuda_kmeans_shared,t_alloc_gpu,512,1201.096058
+cuda_kmeans_shared,t_alloc_gpu,1024,1189.859867
+cuda_kmeans_shared,t_get_gpu,32,240.277052
+cuda_kmeans_shared,t_get_gpu,48,239.337206
+cuda_kmeans_shared,t_get_gpu,64,239.918947
+cuda_kmeans_shared,t_get_gpu,128,239.744186
+cuda_kmeans_shared,t_get_gpu,238,240.127087
+cuda_kmeans_shared,t_get_gpu,512,239.35914
+cuda_kmeans_shared,t_get_gpu,1024,239.964008
+cuda_kmeans_Full-Offload-GPU,total,32,3167.126894
+cuda_kmeans_Full-Offload-GPU,total,48,3313.91716
+cuda_kmeans_Full-Offload-GPU,total,64,2436.549902
+cuda_kmeans_Full-Offload-GPU,total,128,3734.512091
+cuda_kmeans_Full-Offload-GPU,total,238,4356.008053
+cuda_kmeans_Full-Offload-GPU,total,512,4223.632097
+cuda_kmeans_Full-Offload-GPU,total,1024,4203.652859
+cuda_kmeans_Full-Offload-GPU,t_alloc,32,1094.343185
+cuda_kmeans_Full-Offload-GPU,t_alloc,48,1094.566822
+cuda_kmeans_Full-Offload-GPU,t_alloc,64,1095.244884
+cuda_kmeans_Full-Offload-GPU,t_alloc,128,1095.293999
+cuda_kmeans_Full-Offload-GPU,t_alloc,238,1094.120026
+cuda_kmeans_Full-Offload-GPU,t_alloc,512,1098.765135
+cuda_kmeans_Full-Offload-GPU,t_alloc,1024,1096.539974
+cuda_kmeans_Full-Offload-GPU,t_alloc_gpu,32,1203.135967
+cuda_kmeans_Full-Offload-GPU,t_alloc_gpu,48,1198.782921
+cuda_kmeans_Full-Offload-GPU,t_alloc_gpu,64,1208.130121
+cuda_kmeans_Full-Offload-GPU,t_alloc_gpu,128,1257.718086
+cuda_kmeans_Full-Offload-GPU,t_alloc_gpu,238,1206.558943
+cuda_kmeans_Full-Offload-GPU,t_alloc_gpu,512,1194.659948
+cuda_kmeans_Full-Offload-GPU,t_alloc_gpu,1024,1200.22893
+cuda_kmeans_Full-Offload-GPU,t_get_gpu,32,324.697018
+cuda_kmeans_Full-Offload-GPU,t_get_gpu,48,325.686932
+cuda_kmeans_Full-Offload-GPU,t_get_gpu,64,324.601889
+cuda_kmeans_Full-Offload-GPU,t_get_gpu,128,325.382948
+cuda_kmeans_Full-Offload-GPU,t_get_gpu,238,324.670792
+cuda_kmeans_Full-Offload-GPU,t_get_gpu,512,325.553179
+cuda_kmeans_Full-Offload-GPU,t_get_gpu,1024,324.155807
+cuda_kmeans_Full-Offload-GPU + delta reduction,total,32,3609.697104
+cuda_kmeans_Full-Offload-GPU + delta reduction,total,48,3336.170912
+cuda_kmeans_Full-Offload-GPU + delta reduction,total,64,2553.567886
+cuda_kmeans_Full-Offload-GPU + delta reduction,total,128,2575.469971
+cuda_kmeans_Full-Offload-GPU + delta reduction,total,238,4310.491085
+cuda_kmeans_Full-Offload-GPU + delta reduction,total,512,4221.276999
+cuda_kmeans_Full-Offload-GPU + delta reduction,total,1024,4200.549126
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc,32,1101.521969
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc,48,1098.264933
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc,64,1103.43504
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc,128,1100.767136
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc,238,1101.865053
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc,512,1099.360943
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc,1024,1098.834038
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc_gpu,32,1204.201937
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc_gpu,48,1197.727919
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc_gpu,64,1189.296961
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc_gpu,128,1208.539963
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc_gpu,238,1210.005999
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc_gpu,512,1229.150057
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_alloc_gpu,1024,1196.517944
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_get_gpu,32,330.24621
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_get_gpu,48,325.622082
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_get_gpu,64,329.853058
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_get_gpu,128,326.668024
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_get_gpu,238,330.029964
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_get_gpu,512,326.668978
+cuda_kmeans_Full-Offload-GPU + delta reduction,t_get_gpu,1024,326.424837

@@ -48,6 +48,11 @@ def split_versions(versions, configs):
         version_times[(versions[b],'t_alloc_gpu')] = list(t_alloc_gpu[b*num_configs:b*num_configs+num_configs])
         version_times[(versions[b],'t_get_gpu')] = list(t_get_gpu[b*num_configs:b*num_configs+num_configs])
 
+def check_split():
+    for pair_vt, times in version_times.items():
+        print("(",pair_vt[0],",",pair_vt[1],"): ", times)
+
+
 def plot_times(filename, block_sz, version):
     xlabel = list(['sequential'] + [str(b) for b in block_sz])
     ylabel = list([sequential['total']] + version_times[(version, "total")])
@@ -92,6 +97,7 @@ def plot_compare(filename, block_sz):
             plt.plot(xlabel, list(sequential["total"]/ i for i in version_times[pair_vt]), marker='o', linewidth=1.5, label = pair_vt[0])
     plt.xlabel("Block Size")
     plt.ylabel("Speedup")
+    plt.legend()
     i = 0
     if (filename == "config_big.txt"):
         i = 1
@@ -104,34 +110,42 @@ def plot_compare(filename, block_sz):
     plt.show()
 
 if __name__=="__main__":
-    filename = "config_big.txt"
-    #filename = "config_little.txt"
+    file_configs = ["config_big.txt", "config_little.txt"]
+    csv_names = ["config1_results.csv", "config2_results.csv"]
     csvfile = "version_times.csv"
     block_sz = [32, 48, 64, 128, 238, 512, 1024] 
-    kmeans_versions = ["cuda_kmeans_naive", "cuda_kmeans_transpose", "cuda_kmeans_shared", "cuda_kmeans_all_gpu"]
-
-    extract_times(filename)
-    split_versions(kmeans_versions, block_sz)
+    kmeans_versions = ["cuda_kmeans_naive", "cuda_kmeans_transpose", "cuda_kmeans_shared", 
+                       "cuda_kmeans_Full-Offload-GPU", "cuda_kmeans_Full-Offload-GPU + delta reduction"]
     
-    with open(csvfile, 'w', newline='') as csv_f:
-        writer = csv.writer(csv_f)
-        writer.writerow(["Version", "Metric", "BlockSize", "Time(ms)"])
-        for pair_vt, times in version_times.items():
-            for i in range (0,len(times)):
-                writer.writerow([pair_vt[0], pair_vt[1], block_sz[i], times[i]])
+    for f in range(0, len(file_configs)): 
+        filename = file_configs[f]
+        csv_file = csv_names[f]
 
-    # plot times 
-    plot_times(filename, block_sz, "cuda_kmeans_naive")
-    plot_times(filename, block_sz, "cuda_kmeans_transpose")
-    plot_times(filename, block_sz, "cuda_kmeans_shared")
-    plot_times(filename, block_sz, "cuda_kmeans_all_gpu")
-    # plot speedups
-    plot_speedup(filename, block_sz, "cuda_kmeans_naive")
-    plot_speedup(filename, block_sz, "cuda_kmeans_transpose")
-    plot_speedup(filename, block_sz, "cuda_kmeans_shared")
-    plot_speedup(filename, block_sz, "cuda_kmeans_all_gpu")
-    # plot all speedups 
-    plot_compare(filename, block_sz)
+        extract_times(filename)
+        split_versions(kmeans_versions, block_sz)
+        check_split()
+        
+        with open(csv_file, 'w', newline='') as csv_f:
+            writer = csv.writer(csv_f)
+            writer.writerow(["Version", "Metric", "BlockSize", "Time(ms)"])
+            for pair_vt, times in version_times.items():
+                for i in range (0,len(times)):
+                    writer.writerow([pair_vt[0], pair_vt[1], block_sz[i], times[i]])
+
+        # plot times 
+        plot_times(filename, block_sz, "cuda_kmeans_naive")
+        plot_times(filename, block_sz, "cuda_kmeans_transpose")
+        plot_times(filename, block_sz, "cuda_kmeans_shared")
+        plot_times(filename, block_sz, "cuda_kmeans_Full-Offload-GPU")
+        plot_times(filename, block_sz, "cuda_kmeans_Full-Offload-GPU + delta reduction")
+        # plot speedups
+        plot_speedup(filename, block_sz, "cuda_kmeans_naive")
+        plot_speedup(filename, block_sz, "cuda_kmeans_transpose")
+        plot_speedup(filename, block_sz, "cuda_kmeans_shared")
+        plot_speedup(filename, block_sz, "cuda_kmeans_Full-Offload-GPU")
+        plot_speedup(filename, block_sz, "cuda_kmeans_Full-Offload-GPU + delta reduction")
+        # plot all speedups 
+        plot_compare(filename, block_sz)
 
 
 

@@ -39,7 +39,7 @@ double euclid_dist_2_transpose(int numCoords,
   /* TODO: Calculate the euclid_dist of elem=objectId of objects from elem=clusterId from clusters, but for column-base format!!! */
     for (i = 0; i < numCoords; i++){
         abs = objects[i*numObjs + objectId] - clusters[i*numClusters + clusterId];
-        ans += abs;
+        ans += abs*abs;
     }
   return (ans);
 }
