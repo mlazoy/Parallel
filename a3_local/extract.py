@@ -146,6 +146,13 @@ if __name__=="__main__":
         plot_speedup(filename, block_sz, "cuda_kmeans_Full-Offload-GPU + delta reduction")
         # plot all speedups 
         plot_compare(filename, block_sz)
+        # remove data for next iteration
+        total = []
+        t_alloc = []
+        t_alloc_gpu = []
+        t_get_gpu = []
+        sequential = {}
+        version_times = {}
 
 
 

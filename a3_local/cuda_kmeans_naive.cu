@@ -21,7 +21,7 @@ inline void checkLastCudaError() {
 #endif
 
 __device__ int get_tid() {
-  return blockDim.x * blockIdx.x + threadIdx.x;
+  return blockDim.x*blockIdx.x + threadIdx.x;
 }
 
 /* square of Euclid distance between two multi-dimensional points */
@@ -135,7 +135,11 @@ void kmeans_gpu(double *objects,      /* in: [numObjs][numCoords] */
   printf("t_alloc: %lf ms\n\n", 1000 * timing);
   timing = wtime();
 
-  const unsigned int numThreadsPerClusterBlock = (numObjs > blockSize) ? blockSize : numObjs;
+  //const unsigned int numThreadsPerClusterBlock = (numObjs > blockSize) ? blockSize : numObjs;
+  int minGridSize, bestblockSize;
+  cudaOccupancyMaxPotentialBlockSize(&minGridSize, &bestblockSize, find_nearest_cluster, 0, 0);
+  const unsigned int numThreadsPerClusterBlock = bestblockSize;
+
   const unsigned int numClusterBlocks = (numObjs + numThreadsPerClusterBlock - 1) / numThreadsPerClusterBlock; /* TODO: Calculate Grid size, e.g. number of blocks. */
   const unsigned int clusterBlockSharedDataSize = 0;
 
