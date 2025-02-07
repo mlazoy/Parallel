@@ -1,0 +1,21 @@
+Running on 1 cores available:
+dataset_size = 256.00 MB    numObjs = 2097152    numCoords = 16    numClusters = 32
+        nloops =  10   (total = 27.6301s)  (per loop =  2.7630s)
+Running on 2 cores available:
+dataset_size = 256.00 MB    numObjs = 2097152    numCoords = 16    numClusters = 32
+        nloops =  10   (total = 13.8000s)  (per loop =  1.3800s)
+Running on 4 cores available:
+dataset_size = 256.00 MB    numObjs = 2097152    numCoords = 16    numClusters = 32
+        nloops =  10   (total =  6.9114s)  (per loop =  0.6911s)
+Running on 8 cores available:
+dataset_size = 256.00 MB    numObjs = 2097152    numCoords = 16    numClusters = 32
+        nloops =  10   (total =  3.4603s)  (per loop =  0.3460s)
+Running on 16 cores available:
+dataset_size = 256.00 MB    numObjs = 2097152    numCoords = 16    numClusters = 32
+        nloops =  10   (total =  1.7591s)  (per loop =  0.1759s)
+Running on 32 cores available:
+dataset_size = 256.00 MB    numObjs = 2097152    numCoords = 16    numClusters = 32
+        nloops =  10   (total =  0.9001s)  (per loop =  0.0900s)
+Running on 64 cores available:
+dataset_size = 256.00 MB    numObjs = 2097152    numCoords = 16    numClusters = 32
+        nloops =  10   (total =  0.4835s)  (per loop =  0.0484s)

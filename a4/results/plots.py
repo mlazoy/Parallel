@@ -45,13 +45,13 @@ def plot_times(procs, total_times, per_loop_times):
     add_labels(bar2)
 
     plt.tight_layout()
-    plt.savefig("mpi_kmeans.svg")
-    plt.savefig("mpi_kmeans.png")
+    plt.savefig("allreduce.svg")
+    plt.savefig("allreduce.png")
     plt.show()
 
 if __name__=="__main__":
     procs = [1,2,4,8,16,32,64]
-    total, per_loop = extract_times("run_mpi_kmeans.out")
+    total, per_loop = extract_times("allreduction.out")
     print(total, per_loop)
     plot_times(procs, total, per_loop)
     
