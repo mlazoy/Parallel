@@ -5,6 +5,8 @@
 #include "mpi.h"
 #include "utils.h"
 
+#define PRINT_RESULTS 1
+
 int main(int argc, char ** argv) {
     int rank,size;
     int global[2],local[2]; //global matrix dimensions and local matrix dimensions (2D-domain, 2D-subdomain)
@@ -231,19 +233,18 @@ int main(int argc, char ** argv) {
         gettimeofday(&tms, NULL);
 
 		if (north != MPI_PROC_NULL) {
-            err = MPI_Sendrecv(&(u_previous[1][1]), 1, row_bound, north, MPI_ANY_TAG, 
-                         &(u_previous[0][1]), 1, row_bound, north, MPI_ANY_TAG,
+            err = MPI_Sendrecv(&u_previous[1][1], 1, row_bound, north, 0, 
+                         &u_previous[0][1], 1, row_bound, north, MPI_ANY_TAG,
                          MPI_COMM_WORLD, &status);
             if (err != MPI_SUCCESS) {
                 printf("Process %d failed to communicate with North (rank %d)\n", rank, north);
                 MPI_Abort(MPI_COMM_WORLD, 1);
             }
-
         }
 
         if (south != MPI_PROC_NULL) {
-            err = MPI_Sendrecv(&(u_previous[local[0]][1]), 1, row_bound, south, MPI_ANY_TAG,
-                        &(u_previous[local[0]+1][1]), 1, row_bound, south, MPI_ANY_TAG,
+            err = MPI_Sendrecv(&u_previous[local[0]][1], 1, row_bound, south, 1,
+                        &u_previous[local[0]+1][1], 1, row_bound, south, MPI_ANY_TAG,
                         MPI_COMM_WORLD, &status);
             if (err != MPI_SUCCESS) {
                 printf("Process %d failed to communicate with North (rank %d)\n", rank, south);
@@ -252,8 +253,8 @@ int main(int argc, char ** argv) {
         }
 
         if (east != MPI_PROC_NULL) {
-            err = MPI_Sendrecv(&(u_previous[1][1]), 1, col_bound, east, MPI_ANY_TAG,
-                         &(u_previous[1][0]), 1, col_bound, east, MPI_ANY_TAG,
+            err = MPI_Sendrecv(&u_previous[1][local[1]], 1, col_bound, east, 2,
+                         &u_previous[1][local[1]+1], 1, col_bound, east, MPI_ANY_TAG,
                          MPI_COMM_WORLD, &status);
             if (err != MPI_SUCCESS) {
                 printf("Process %d failed to communicate with North (rank %d)\n", rank, east);
@@ -262,8 +263,8 @@ int main(int argc, char ** argv) {
         }
 
         if (west != MPI_PROC_NULL) {
-            err = MPI_Sendrecv(&(u_previous[1][local[1]]), 1, col_bound, west, MPI_ANY_TAG,
-                        &(u_previous[1][local[1]+1]), 1, col_bound, west, MPI_ANY_TAG,
+            err = MPI_Sendrecv(&u_previous[1][1], 1, col_bound, west, 3,
+                        &u_previous[1][0], 1, col_bound, west, MPI_ANY_TAG,
                         MPI_COMM_WORLD, &status);
             if (err != MPI_SUCCESS) {
                 printf("Process %d failed to communicate with West (rank %d)\n", rank, west);
@@ -276,8 +277,8 @@ int main(int argc, char ** argv) {
         // computation starts here
         gettimeofday(&tcs, NULL);
         // Jaccobi kernel 
-        for (i = i_min; i < i_max; i++) {
-            for (j = j_min; j < j_max; j++){
+        for (i = i_min; i <= i_max; i++) {
+            for (j = j_min; j <= j_max; j++){
                 u_current[i][j]=(u_previous[i-1][j]+u_previous[i+1][j]+u_previous[i][j-1]+u_previous[i][j+1])/4.0;
             }
         }
@@ -332,7 +333,7 @@ int main(int argc, char ** argv) {
 
 	//**************TODO: Change "Jacobi" to "GaussSeidelSOR" or "RedBlackSOR" for appropriate printing****************//
     if (rank==0) {
-        printf("Jacobi X %d Y %d Px %d Py %d Iter %d ComputationTime %lf TotalTime %lf midpoint %lf\n",global[0],global[1],grid[0],grid[1],t,comp_time,total_time,U[global[0]/2][global[1]/2]);
+        printf("Jacobi X %d Y %d Px %d Py %d Iter %d ComputationTime %lf CommunicationTime %lf TotalTime %lf midpoint %lf\n",global[0],global[1],grid[0],grid[1],t,comp_time,comm_time,total_time,U[global[0]/2][global[1]/2]);
 	
         #ifdef PRINT_RESULTS
         char * s=malloc(50*sizeof(char));
