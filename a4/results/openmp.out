@@ -1,0 +1,9 @@
+NUMA_Aware
+
+nloops =  10   (total = 12.6592s)  (per loop =  1.2659s)
+nloops =  10   (total =  6.3848s)  (per loop =  0.6385s)
+nloops =  10   (total =  3.3205s)  (per loop =  0.3321s)
+nloops =  10   (total =  1.8022s)  (per loop =  0.1802s)
+nloops =  10   (total =  0.9116s)  (per loop =  0.0912s)
+nloops =  10   (total =  0.4870s)  (per loop =  0.0487s)
+nloops =  10   (total =  0.4016s)  (per loop =  0.0402s) 

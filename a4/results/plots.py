@@ -49,9 +49,43 @@ def plot_times(procs, total_times, per_loop_times):
     plt.savefig("allreduce.png")
     plt.show()
 
+def compare(procs, mpi_times, omp_times):   
+    x = np.arange(len(procs))
+    width = 0.35
+
+    fig, ax = plt.subplots(figsize=(10, 6))
+    bar1 = ax.bar(x - width/2, mpi_times, width, label='MPI Times (s)', color="#4b0082")
+    bar2 = ax.bar(x + width/2, omp_times, width, label='OpenMP Times (s)', color='salmon')
+
+    plt.gca().set_facecolor("#e6e6fa")
+
+    ax.set_xlabel('Number of Processes')
+    ax.set_ylabel('Time (seconds)')
+    ax.set_title('Comparison between MPI & OpenMP NUMA Aware kmeans')
+    ax.set_xticks(x)
+    ax.set_xticklabels([str(p) for p in procs])
+    ax.legend()
+
+    def add_labels(bars):
+        for bar in bars:
+            yval = bar.get_height()
+            ax.text(bar.get_x() + bar.get_width() / 2, yval, round(yval, 2), ha='center', va='bottom')
+    
+    add_labels(bar1)
+    add_labels(bar2)
+
+    plt.tight_layout()
+    plt.savefig("compare.svg")
+    plt.savefig("compare.png")
+    plt.show()
+
 if __name__=="__main__":
     procs = [1,2,4,8,16,32,64]
-    total, per_loop = extract_times("allreduction.out")
-    print(total, per_loop)
-    plot_times(procs, total, per_loop)
+    mpi_total, mpi_per_loop = extract_times("allreduction.out")
+    omp_total, omp_per_loop = extract_times("openmp.out")
+    print(mpi_total, mpi_per_loop)
+    print(omp_total, omp_per_loop)
+    #plot_times(procs, mpi_total, mpi_per_loop)
+    compare(procs, mpi_times=mpi_total, omp_times=omp_total)
+
     
