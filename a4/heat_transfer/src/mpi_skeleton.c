@@ -15,8 +15,9 @@ int main(int argc, char ** argv) {
     MPI_Datatype dummy;     //dummy datatype used to align user-defined datatypes in memory
     double omega; 			//relaxation factor - useless for Jacobi
 
-    struct timeval tts,ttf,tcs,tcf;   //Timers: total-> tts,ttf, computation -> tcs,tcf
-    double ttotal=0,tcomp=0,total_time,comp_time;
+    struct timeval tts,ttf,tcs,tcf,tms,tmf;   //Timers: total-> tts,ttf, computation -> tcs,tcf
+    // communication-> tms, tmf
+    double ttotal=0,tcomp=0,tcomm=0,total_time,comp_time,comm_time;
     
     double ** U, ** u_current, ** u_previous, ** swap; //Global matrix, local current and previous matrices, pointer to swap between current and previous
     
@@ -218,37 +219,62 @@ int main(int argc, char ** argv) {
 	 	//*************TODO*******************//
 
 		/*Add appropriate timers for computation*/
-        gettimeofday(&tcs, NULL);
+        
         /*Compute and Communicate*/
         swap=u_previous;
 		u_previous=u_current;
 		u_current=swap;
 
         MPI_Status status; 
+        int err;
+        // communication starts here 
+        gettimeofday(&tms, NULL);
+
 		if (north != MPI_PROC_NULL) {
-            MPI_Sendrecv(&(u_previous[1][1]), 1, row_bound, north, MPI_ANY_TAG, 
+            err = MPI_Sendrecv(&(u_previous[1][1]), 1, row_bound, north, MPI_ANY_TAG, 
                          &(u_previous[0][1]), 1, row_bound, north, MPI_ANY_TAG,
                          MPI_COMM_WORLD, &status);
+            if (err != MPI_SUCCESS) {
+                printf("Process %d failed to communicate with North (rank %d)\n", rank, north);
+                MPI_Abort(MPI_COMM_WORLD, 1);
+            }
+
         }
 
         if (south != MPI_PROC_NULL) {
-            MPI_Sendrecv(&(u_previous[local[0]][1]), 1, row_bound, south, MPI_ANY_TAG,
+            err = MPI_Sendrecv(&(u_previous[local[0]][1]), 1, row_bound, south, MPI_ANY_TAG,
                         &(u_previous[local[0]+1][1]), 1, row_bound, south, MPI_ANY_TAG,
                         MPI_COMM_WORLD, &status);
+            if (err != MPI_SUCCESS) {
+                printf("Process %d failed to communicate with North (rank %d)\n", rank, south);
+                MPI_Abort(MPI_COMM_WORLD, 1);
+            }
         }
 
         if (east != MPI_PROC_NULL) {
-            MPI_Sendrecv(&(u_previous[1][1]), 1, col_bound, east, MPI_ANY_TAG,
+            err = MPI_Sendrecv(&(u_previous[1][1]), 1, col_bound, east, MPI_ANY_TAG,
                          &(u_previous[1][0]), 1, col_bound, east, MPI_ANY_TAG,
                          MPI_COMM_WORLD, &status);
+            if (err != MPI_SUCCESS) {
+                printf("Process %d failed to communicate with North (rank %d)\n", rank, east);
+                MPI_Abort(MPI_COMM_WORLD, 1);
+            }
         }
 
         if (west != MPI_PROC_NULL) {
-            MPI_Sendrecv(&(u_previous[1][local[1]]), 1, col_bound, west, MPI_ANY_TAG,
+            err = MPI_Sendrecv(&(u_previous[1][local[1]]), 1, col_bound, west, MPI_ANY_TAG,
                         &(u_previous[1][local[1]+1]), 1, col_bound, west, MPI_ANY_TAG,
                         MPI_COMM_WORLD, &status);
+            if (err != MPI_SUCCESS) {
+                printf("Process %d failed to communicate with West (rank %d)\n", rank, west);
+                MPI_Abort(MPI_COMM_WORLD, 1);
+            }
         }
+        // communication ends here 
+        gettimeofday(&tmf, NULL);
 
+        // computation starts here
+        gettimeofday(&tcs, NULL);
         // Jaccobi kernel 
         for (i = i_min; i < i_max; i++) {
             for (j = j_min; j < j_max; j++){
@@ -257,7 +283,9 @@ int main(int argc, char ** argv) {
         }
         // computation ends here
         gettimeofday(&tcf, NULL);
-        tcomp = (tcf.tv_sec-tcs.tv_sec)+(tcf.tv_usec-tcs.tv_usec)*0.000001;
+
+        tcomm += (tmf.tv_sec-tms.tv_sec)+(tmf.tv_usec-tms.tv_usec)*0.000001;
+        tcomp += (tcf.tv_sec-tcs.tv_sec)+(tcf.tv_usec-tcs.tv_usec)*0.000001;
 
 		#ifdef TEST_CONV
         if (t%C==0) {
@@ -282,6 +310,8 @@ int main(int argc, char ** argv) {
 
     MPI_Reduce(&ttotal,&total_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
     MPI_Reduce(&tcomp,&comp_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
+    // also reduce communication times
+    MPI_Reduce(&tcomm,&comm_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
 
 
 
