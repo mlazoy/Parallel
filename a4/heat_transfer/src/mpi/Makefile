@@ -5,10 +5,16 @@ CFLAGS = -Wall -Wextra -Wno-unused -O3
 RES=-DPRINT_RESULTS
 CONV=-DTEST_CONV
 
-all: mpi_jacobi
+all: mpi_jacobi mpi_red_black mpi_gauss_seidel
 
 mpi_jacobi: mpi_jacobi.c utils.c
 	$(MPICC) $(CFLAGS) $(RES) $(CONV) mpi_jacobi.c utils.c -o mpi_jacobi
 
+mpi_red_black : mpi_red_black.c utils.c 
+	$(MPICC) $(CFLAGS) $(RES) $(CONV) mpi_red_black.c utils.c -o mpi_red_black
+
+mpi_gauss_seidel : mpi_gauss_seidel.c utils.c 
+	$(MPICC) $(CFLAGS) $(RES) $(CONV) mpi_gauss_seidel.c utils.c -o mpi_gauss_seidel
+
 clean:
-	rm -rf *.o mpi_jacobi 
+	rm -rf *.o mpi_jacobi mpi_red_black mpi_gauss_seidel

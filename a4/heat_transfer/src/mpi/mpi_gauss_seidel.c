@@ -15,8 +15,8 @@ int main(int argc, char ** argv) {
     MPI_Datatype dummy;     //dummy datatype used to align user-defined datatypes in memory
     double omega; 			//relaxation factor - useless for Jacobi
 
-    struct timeval tts,ttf,tcs,tcf,tms,tmf,tcvs,tcvf;   //Timers: total-> tts,ttf, computation -> tcs,tcf
-    // communication-> tms, tmf, convergence-> tcnvs, tcnvf
+    struct timeval tts,ttf,tcs,tcf,tcvs,tcvf;   //Timers: total-> tts,ttf, computation -> tcs,tcf
+    //convergence-> tcnvs, tcnvf
     double ttotal=0,tcomp=0,tcomm=0,tconv=0,total_time,comp_time,comm_time,conv_time;
     
     double ** U, ** u_current, ** u_previous, ** swap; //Global matrix, local current and previous matrices, pointer to swap between current and previous
@@ -227,68 +227,54 @@ int main(int argc, char ** argv) {
 		u_previous=u_current;
 		u_current=swap;
 
-        MPI_Status status; 
+        MPI_Status prev_status[6], curr_status[2]; 
+        MPI_Request prev_reqs[6], curr_reqs[2];
+        int prev = 0, curr = 0;
+
         int err;
-        // communication starts here 
-        gettimeofday(&tms, NULL);
 
 		if (north != MPI_PROC_NULL) {
-            err = MPI_Sendrecv(&u_previous[1][1], 1, row_bound, north, 0, 
-                         &u_previous[0][1], 1, row_bound, north, MPI_ANY_TAG,
-                         MPI_COMM_WORLD, &status);
-            if (err != MPI_SUCCESS) {
-                printf("Process %d failed to communicate with North (rank %d)\n", rank, north);
-                MPI_Abort(MPI_COMM_WORLD, err);
-            }
+            err = MPI_Irecv(&(u_current[0][1]), 1, row_bound, north, MPI_ANY_TAG, MPI_COMM_WORLD, &prev_reqs[prev++]);
+            err = MPI_Isend(&(u_previous[1][1]),1, row_bound, north, 0, MPI_COMM_WORLD, &prev_reqs[prev++]);
         }
 
         if (south != MPI_PROC_NULL) {
-            err = MPI_Sendrecv(&u_previous[local[0]][1], 1, row_bound, south, 1,
-                        &u_previous[local[0]+1][1], 1, row_bound, south, MPI_ANY_TAG,
-                        MPI_COMM_WORLD, &status);
-            if (err != MPI_SUCCESS) {
-                printf("Process %d failed to communicate with North (rank %d)\n", rank, south);
-                MPI_Abort(MPI_COMM_WORLD, err);
-            }
+            err = MPI_Irecv(&(u_previous[local[0]+1][1]), 1, row_bound, south, MPI_ANY_TAG, MPI_COMM_WORLD, &prev_reqs[prev++]);
         }
 
         if (east != MPI_PROC_NULL) {
-            err = MPI_Sendrecv(&u_previous[1][local[1]], 1, col_bound, east, 2,
-                         &u_previous[1][local[1]+1], 1, col_bound, east, MPI_ANY_TAG,
-                         MPI_COMM_WORLD, &status);
-            if (err != MPI_SUCCESS) {
-                printf("Process %d failed to communicate with North (rank %d)\n", rank, east);
-                MPI_Abort(MPI_COMM_WORLD, err);
-            }
+            err = MPI_Irecv(&(u_previous[1][local[1]+1]), 1, col_bound, east, MPI_ANY_TAG, MPI_COMM_WORLD, &prev_reqs[prev++]);
         }
 
         if (west != MPI_PROC_NULL) {
-            err = MPI_Sendrecv(&u_previous[1][1], 1, col_bound, west, 3,
-                        &u_previous[1][0], 1, col_bound, west, MPI_ANY_TAG,
-                        MPI_COMM_WORLD, &status);
-            if (err != MPI_SUCCESS) {
-                printf("Process %d failed to communicate with West (rank %d)\n", rank, west);
-                MPI_Abort(MPI_COMM_WORLD, err);
-            }
+            err = MPI_Irecv(&(u_current[1][0]), 1, col_bound, west, MPI_ANY_TAG, MPI_COMM_WORLD, &prev_reqs[prev++]);
+            err = MPI_Isend(&(u_previous[1][1]),1, col_bound, west, 1, MPI_COMM_WORLD, &prev_reqs[prev++]);
         }
 
-        // communication ends here 
-        MPI_Barrier(MPI_COMM_WORLD);
-        gettimeofday(&tmf, NULL);
+        //only wait for recvs 
+        MPI_Waitall(prev, prev_reqs, prev_status);
 
         // computation starts here
         gettimeofday(&tcs, NULL);
-        // Jaccobi kernel 
-        for (i = i_min; i < i_max; i++) {
-            for (j = j_min; j < j_max; j++){
-                u_current[i][j]=(u_previous[i-1][j]+u_previous[i+1][j]+u_previous[i][j-1]+u_previous[i][j+1])/4.0;
-            }
-        }
+        // Gauss Seidel kernel 
+        for (i=i_min;i<i_max;i++)
+		    for (j=j_min;j<j_max;j++)
+			    u_current[i][j]=u_previous[i][j]+(u_current[i-1][j]+u_previous[i+1][j]+u_current[i][j-1]+u_previous[i][j+1]-4*u_previous[i][j])*omega/4.0;
         // computation ends here
         gettimeofday(&tcf, NULL);
-
-        tcomm += (tmf.tv_sec-tms.tv_sec)+(tmf.tv_usec-tms.tv_usec)*0.000001;
         tcomp += (tcf.tv_sec-tcs.tv_sec)+(tcf.tv_usec-tcs.tv_usec)*0.000001;
+
+        // send rest values 
+        if (south != MPI_PROC_NULL){
+            err = MPI_Isend(&(u_current[local[0]][1]),1, row_bound, south, 2, MPI_COMM_WORLD, &curr_reqs[curr++]);
+        }
+
+        if (east != MPI_PROC_NULL) {
+            err = MPI_Isend(&(u_current[1][local[1]]),1, col_bound, east, 3, MPI_COMM_WORLD, &curr_reqs[curr++]);
+        }
+
+        // now sends must be complete 
+        MPI_Waitall(curr, curr_reqs, curr_status);
 
 		#ifdef TEST_CONV
         if (t%C==0) {
@@ -303,6 +289,8 @@ int main(int argc, char ** argv) {
 		}		
 		#endif
 
+        MPI_Barrier(CART_COMM);
+
 
 		//************************************//
  
@@ -315,8 +303,6 @@ int main(int argc, char ** argv) {
 
     MPI_Reduce(&ttotal,&total_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
     MPI_Reduce(&tcomp,&comp_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
-    // also reduce communication and convergence times
-    MPI_Reduce(&tcomm,&comm_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
     #ifdef TEST_CONV
     MPI_Reduce(&tconv,&conv_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
     #endif
@@ -341,13 +327,13 @@ int main(int argc, char ** argv) {
 	//**************TODO: Change "Jacobi" to "GaussSeidelSOR" or "RedBlackSOR" for appropriate printing****************//
     if (rank==0) {
         printf("Jacobi X %d Y %d Px %d Py %d Iter %d TotalTime: %lf midpoint %lf\n",global[0],global[1],grid[0],grid[1],t,total_time,U[global[0]/2][global[1]/2]);
-        printf("ComputationTime: %lf CommunicationTime: %lf ", comp_time, comm_time);
+        printf("ComputationTime: %lf CommunicationTime: %lf ", comp_time, (total_time-comp_time));
         #ifdef TEST_CONV
         printf("Convergence Time: %lf ", conv_time);
         #endif
         #ifdef PRINT_RESULTS
         char * s=malloc(50*sizeof(char));
-        sprintf(s,"resJacobiMPI_%dx%d_%dx%d",global[0],global[1],grid[0],grid[1]);
+        sprintf(s,"resGaussSeidelMPI_%dx%d_%dx%d",global[0],global[1],grid[0],grid[1]);
         fprint2d(s,U,global[0],global[1]);
         free(s);
         #endif
