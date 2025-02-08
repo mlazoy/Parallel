@@ -1,21 +1,14 @@
 .KEEP_STATE:
 
 MPICC = mpicc
-
 CFLAGS = -Wall -Wextra -Wno-unused -O3
+RES=-DPRINT_RESULTS
+CONV=-DTEST_CONV
 
 all: mpi_jacobi
-#mpi_GaussSeidelSOR mpi_RedBlackSOR
 
-jacobi.o: jacobi.c
-	$(MPICC) $(CFLAGS) -c $< -o $@
-
-utils.o: utils.c
-	$(MPICC) $(CFLAGS) -c $< -o $@
-
-mpi_jacobi: jacobi.o utils.o
-	$(MPICC) $(CFLAGS) $^ -o $@ 
+mpi_jacobi: mpi_jacobi.c utils.c
+	$(MPICC) $(CFLAGS) $(RES) $(CONV) mpi_jacobi.c utils.c -o mpi_jacobi
 
 clean:
 	rm -rf *.o mpi_jacobi 
-#mpi_GaussSeidelSOR mpi_RedBlackSOR
