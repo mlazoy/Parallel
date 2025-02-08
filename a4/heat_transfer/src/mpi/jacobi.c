@@ -5,8 +5,6 @@
 #include "mpi.h"
 #include "utils.h"
 
-#define PRINT_RESULTS 1
-
 int main(int argc, char ** argv) {
     int rank,size;
     int global[2],local[2]; //global matrix dimensions and local matrix dimensions (2D-domain, 2D-subdomain)
@@ -103,7 +101,9 @@ int main(int argc, char ** argv) {
 
     //----Rank 0 defines positions and counts of local blocks (2D-subdomains) on global matrix----//
     int * scatteroffset, * scattercounts;
+    double *Uaddr;
     if (rank==0) {
+        Uaddr = &(U[0][0]);
         scatteroffset=(int*)malloc(size*sizeof(int));
         scattercounts=(int*)malloc(size*sizeof(int));
         for (i=0;i<grid[0];i++)
@@ -118,9 +118,9 @@ int main(int argc, char ** argv) {
 	//*************TODO*******************//
 
     //excluded boundaries as they are used for communication
-    MPI_Scatterv(&(U[0][0]), scattercounts, scatteroffset, global_block, 
+    MPI_Scatterv(Uaddr, scattercounts, scatteroffset, global_block, 
                 &(u_current[1][1]), 1, local_block, 0, MPI_COMM_WORLD);
-    MPI_Scatterv(&(U[0][0]), scattercounts, scatteroffset, global_block, 
+    MPI_Scatterv(Uaddr, scattercounts, scatteroffset, global_block, 
                 &(u_previous[1][1]), 1, local_block, 0, MPI_COMM_WORLD);
 	
 	/*Make sure u_current and u_previous are
@@ -142,7 +142,7 @@ int main(int argc, char ** argv) {
     MPI_Type_commit(&row_bound);
 
     MPI_Datatype col_bound;
-    MPI_Type_vector(local[0], 1, local[1] + 2, MPI_DOUBLE, &dummy);
+    MPI_Type_vector(local[0], 1, local[1]+2, MPI_DOUBLE, &dummy);
     MPI_Type_create_resized(dummy, 0, sizeof(double), &col_bound);
     MPI_Type_commit(&col_bound);
 
@@ -176,31 +176,30 @@ int main(int argc, char ** argv) {
 		-boundary processes and padded global array
 	*/
 
-    MPI_Cart_coords(CART_COMM, rank, 2, rank_grid);
     if (rank_grid[0] == 0) {// boundary proc (first row)
         i_min = 2;
-        i_max = local[0];
+        i_max = local[0]+1;
     }
     else if (rank_grid[0] == grid[0]-1) { //boundary proc (last row)
-        i_max = (local[0] - 1) - (global_padded[0] - global[0]); //check for row padding
+        i_max = local[0] - (global_padded[0] - global[0]); //check for row padding
         i_min = 1;
     }
     else {
         i_min = 1;  // 0 is for messages
-        i_max = local[0];
+        i_max = local[0]+1;
     }
 
     if (rank_grid[1] == 0) { //boundary proc (first col)
         j_min = 2;
-        j_max = local[1];
+        j_max = local[1]+1;
     }
     else if (rank_grid[1] == grid[1]-1) { //boundary proc (last col) 
-        j_max = (local[1] - 1) - (global_padded[1] - global[1]); //check for col padding
+        j_max = local[1] - (global_padded[1] - global[1]); //check for col padding
         j_min = 1;
     }
     else {
         j_min = 1;      // 0 is used for messages
-        j_max = local[1];
+        j_max = local[1]+1;
     }
 
 	//************************************//
@@ -223,6 +222,7 @@ int main(int argc, char ** argv) {
 		/*Add appropriate timers for computation*/
         
         /*Compute and Communicate*/
+
         swap=u_previous;
 		u_previous=u_current;
 		u_current=swap;
@@ -238,7 +238,7 @@ int main(int argc, char ** argv) {
                          MPI_COMM_WORLD, &status);
             if (err != MPI_SUCCESS) {
                 printf("Process %d failed to communicate with North (rank %d)\n", rank, north);
-                MPI_Abort(MPI_COMM_WORLD, 1);
+                MPI_Abort(MPI_COMM_WORLD, err);
             }
         }
 
@@ -248,7 +248,7 @@ int main(int argc, char ** argv) {
                         MPI_COMM_WORLD, &status);
             if (err != MPI_SUCCESS) {
                 printf("Process %d failed to communicate with North (rank %d)\n", rank, south);
-                MPI_Abort(MPI_COMM_WORLD, 1);
+                MPI_Abort(MPI_COMM_WORLD, err);
             }
         }
 
@@ -258,7 +258,7 @@ int main(int argc, char ** argv) {
                          MPI_COMM_WORLD, &status);
             if (err != MPI_SUCCESS) {
                 printf("Process %d failed to communicate with North (rank %d)\n", rank, east);
-                MPI_Abort(MPI_COMM_WORLD, 1);
+                MPI_Abort(MPI_COMM_WORLD, err);
             }
         }
 
@@ -268,17 +268,19 @@ int main(int argc, char ** argv) {
                         MPI_COMM_WORLD, &status);
             if (err != MPI_SUCCESS) {
                 printf("Process %d failed to communicate with West (rank %d)\n", rank, west);
-                MPI_Abort(MPI_COMM_WORLD, 1);
+                MPI_Abort(MPI_COMM_WORLD, err);
             }
         }
+
         // communication ends here 
+        MPI_Barrier(MPI_COMM_WORLD);
         gettimeofday(&tmf, NULL);
 
         // computation starts here
         gettimeofday(&tcs, NULL);
         // Jaccobi kernel 
-        for (i = i_min; i <= i_max; i++) {
-            for (j = j_min; j <= j_max; j++){
+        for (i = i_min; i < i_max; i++) {
+            for (j = j_min; j < j_max; j++){
                 u_current[i][j]=(u_previous[i-1][j]+u_previous[i+1][j]+u_previous[i][j-1]+u_previous[i][j+1])/4.0;
             }
         }
@@ -293,9 +295,8 @@ int main(int argc, char ** argv) {
 			//*************TODO**************//
 			/*Test convergence*/
             converged = converge(u_previous, u_current, i_min, i_max, j_min, j_max);
-            // reduction needed ?
             // min takes 0 if some proc has not converged locally 
-            MPI_Allreduce(&converged, &global_converged, 1, MPI_INT, MPI_MIN, MPI_COMM_WORLD);
+            MPI_Allreduce(&converged, &global_converged, 1, MPI_INT, MPI_LAND, MPI_COMM_WORLD);
 		}		
 		#endif
 
@@ -320,12 +321,13 @@ int main(int argc, char ** argv) {
    
     if (rank==0) {
             U=allocate2d(global_padded[0],global_padded[1]);
+            Uaddr = &(U[0][0]);
     }
 
 
 	//*************TODO*******************//
 
-    MPI_Gather(&(u_current[1][1]), 1, local_block, &(U[0][0]), 1, global_block, 0, MPI_COMM_WORLD);
+    MPI_Gatherv(&u_current[1][1], 1, local_block, Uaddr, scattercounts, scatteroffset, global_block, 0, MPI_COMM_WORLD);
      //************************************//
 
 
