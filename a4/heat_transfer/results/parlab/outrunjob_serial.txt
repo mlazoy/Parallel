@@ -1,0 +1,15 @@
+//with convergence
+Jacobi X 512 Y 512 Iter 236000 Time 396.433672 midpoint 2.774119
+GaussSeidelSOR X 512 Y 512 Iter 1500 Time 4.361423 midpoint 2.826997
+RedBlackSOR X 512 Y 512 Iter 1200 Time 2.456144 midpoint 2.826975
+
+//without convergence
+Jacobi X 2048 Y 2048 Iter 255 Time 7.419027 midpoint 0.000000
+GaussSeidelSOR X 2048 Y 2048 Iter 255 Time 12.079598 midpoint 0.849018
+RedBlackSOR X 2048 Y 2048 Iter 255 Time 13.187065 midpoint 0.000000
+Jacobi X 4096 Y 4096 Iter 255 Time 29.784814 midpoint 0.000000
+GaussSeidelSOR X 4096 Y 4096 Iter 255 Time 48.213828 midpoint 0.900935
+RedBlackSOR X 4096 Y 4096 Iter 255 Time 52.874210 midpoint 0.000000
+Jacobi X 6144 Y 6144 Iter 255 Time 66.690549 midpoint 0.000000
+GaussSeidelSOR X 6144 Y 6144 Iter 255 Time 108.396915 midpoint 0.942706
+RedBlackSOR X 6144 Y 6144 Iter 255 Time 118.278895 midpoint 0.000000
