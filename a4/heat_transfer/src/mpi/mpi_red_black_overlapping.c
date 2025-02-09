@@ -5,6 +5,18 @@
 #include "mpi.h"
 #include "utils.h"
 
+double omega;
+
+void update_red(double **u_current, double **u_previous, int i, int j){
+    u_current[i][j]=u_previous[i][j]+(omega/4.0)*
+        (u_previous[i-1][j]+u_previous[i+1][j]+u_previous[i][j-1]+u_previous[i][j+1]-4*u_previous[i][j]);	
+}
+
+void update_black(double **u_current, double **u_previous, int i, int j){
+    u_current[i][j]=u_previous[i][j]+(omega/4.0)*
+        (u_current[i-1][j]+u_current[i+1][j]+u_current[i][j-1]+u_current[i][j+1]-4*u_previous[i][j]);
+}
+
 int main(int argc, char ** argv) {
     int rank,size;
     int global[2],local[2]; //global matrix dimensions and local matrix dimensions (2D-domain, 2D-subdomain)
@@ -13,11 +25,12 @@ int main(int argc, char ** argv) {
     int i,j,t;
     int global_converged=0,converged=0; //flags for convergence, global and per process
     MPI_Datatype dummy;     //dummy datatype used to align user-defined datatypes in memory
-    double omega; 			//relaxation factor - useless for Jacobi
+    //double omega; 			//relaxation factor - useless for Jacobi
+    // make this global
 
     struct timeval tts,ttf,tcs,tcf,tcvs,tcvf;   //Timers: total-> tts,ttf, computation -> tcs,tcf
     // convergence-> tcvs,tcvf
-    double ttotal=0,tcomp=0,tcomm=0,total_time,comp_time,conv_time;
+    double ttotal=0,tcomp=0,tconv=0,total_time,comp_time,conv_time;
     
     double ** U, ** u_current, ** u_previous, ** swap; //Global matrix, local current and previous matrices, pointer to swap between current and previous
     
@@ -213,6 +226,10 @@ int main(int argc, char ** argv) {
  	//----Computational core----//   
 	gettimeofday(&tts, NULL);
 
+        swap=u_previous;
+		u_previous=u_current;
+		u_current=swap;
+
     // exchange black borders 
     if (north != MPI_PROC_NULL) {
         MPI_Irecv(&(u_current[0][2]), 1, RedBlack_row, north, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
@@ -220,13 +237,13 @@ int main(int argc, char ** argv) {
     }
 
     if (south != MPI_PROC_NULL) {
-        MPI_Irecv(&(u_current[local[1]+1][1]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-        MPI_Isend(&(u_current[local[1]][2]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Irecv(&(u_current[local[0]+1][1]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Isend(&(u_current[local[0]][2]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
     }
 
     if (east != MPI_PROC_NULL) {
-        MPI_Irecv(&(u_current[1][local[0]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-        MPI_Isend(&(u_current[2][local[0]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Irecv(&(u_current[1][local[1]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Isend(&(u_current[2][local[1]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
     }
 
     if (west != MPI_PROC_NULL) {
@@ -249,19 +266,24 @@ int main(int argc, char ** argv) {
 
         MPI_Waitall(black_cnt, black_reqs, black_status);
 
+        black_cnt = 0; red_cnt = 0;
+
         gettimeofday(&tcs, NULL);
         //compute red borders
-        for (i=i_min; i<i_max; i+=2) { //TODO! check iter limits
+        for (j=j_min; j<j_max; j+=2) { //TODO! check iter limits
             //first row 
-
+            update_red(u_current, u_previous, 1, j);
             //last row
+            update_red(u_current, u_previous, i_max-1, j+1);
         }
 
-        for (j=j_min+1; j<j_max; j+=2) {  //TODO! check iter limits
+        for (i=i_min+1; i<i_max-1; i+=2) {  //TODO! check iter limits
             // first column
-
+            update_red(u_current, u_previous, i+1,1);
             //last column
+            update_red(u_current, u_previous, i, j_max-1);
         }
+
         gettimeofday(&tcf, NULL);
         tcomp += (tcf.tv_sec-tcs.tv_sec)+(tcf.tv_usec-tcs.tv_usec)*0.000001;
 
@@ -272,13 +294,13 @@ int main(int argc, char ** argv) {
         }
 
         if (south != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_previous[local[1]+1][2]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
-            MPI_Isend(&(u_previous[local[1]][1]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Irecv(&(u_previous[local[0]+1][2]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Isend(&(u_previous[local[0]][1]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
         }
 
         if (east != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_previous[2][local[0]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
-            MPI_Isend(&(u_previous[1][local[0]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Irecv(&(u_previous[2][local[1]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Isend(&(u_previous[1][local[1]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
         }
 
         if (west != MPI_PROC_NULL) {
@@ -288,10 +310,13 @@ int main(int argc, char ** argv) {
 
         gettimeofday(&tcs, NULL);
         // computer red interior
-        for (i=i_min+1; i<i_max-1; i++){  //TODO! check iter limits
-            for (j=j_min+1; j<jmax-1; j++) {  //TODO! check iter limits
-                // RED SOR here
-            }
+        // RED SOR
+        // (i+j) is even
+        for (i=i_min+1; i<i_max-1; i++) {
+            if (i & 1) j = ((j_min+1)&1) ? j_min+1 : j_min+2;
+            else j = ((j_min+1)&1) ? j_min+2 : j_min+1;
+            for (j; j<j_max-1; j+=2)
+                update_red(u_current, u_previous, i, j);
         }
         gettimeofday(&tcf, NULL);
         tcomp += (tcf.tv_sec-tcs.tv_sec)+(tcf.tv_usec-tcs.tv_usec)*0.000001;
@@ -301,17 +326,20 @@ int main(int argc, char ** argv) {
 
         gettimeofday(&tcs, NULL);
         // compute black borders 
-        for (i=i_min; i<i_max; i+=2){  //TODO! check iter limits
+        for (j=j_min; j<j_max; j+=2){  //TODO! check iter limits
             // first row 
-
+            update_black(u_current, u_previous, 1, j+1);
             //last row 
+            update_black(u_current, u_previous, i_max-1, j);
         }
 
-        for (j=j_min; j<j_max; j+=2) {  //TODO! check iter limits
+        for (i=i_min+1; i<i_max-1; i+=2) {  //TODO! check iter limits
             //first column 
-
+            update_black(u_current, u_previous, i, 1);
             //last column
+            update_black(u_current, u_previous, i+1, j_max-1);
         }
+
         gettimeofday(&tcf, NULL);
         tcomp += (tcf.tv_sec-tcs.tv_sec)+(tcf.tv_usec-tcs.tv_usec)*0.000001;
 
@@ -323,13 +351,13 @@ int main(int argc, char ** argv) {
         }
 
         if (south != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_current[local[1]+1][1]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-            MPI_Isend(&(u_current[local[1]][2]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Irecv(&(u_current[local[0]+1][1]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Isend(&(u_current[local[0]][2]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
         }
 
         if (east != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_current[1][local[0]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-            MPI_Isend(&(u_current[2][local[0]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Irecv(&(u_current[1][local[1]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Isend(&(u_current[2][local[1]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
         }
 
         if (west != MPI_PROC_NULL) {
@@ -339,10 +367,13 @@ int main(int argc, char ** argv) {
 
         gettimeofday(&tcs, NULL);
         // compute black interior
-        for (i=i_min+1; i<i_max-1; i++){  //TODO! check iter limits
-            for (j=j_min+1; j<j_max-1; j++){  //TODO! check iter limits
-                // BLACK SOR
-            }
+        // BLACK SOR
+        // (i+j) is odd
+        for (i=i_min+1; i<i_max-1; i++) {
+            if (i & 1) j = ((j_min+1) & 1) ? j_min+2 : j_min+1;
+            else j = ((j_min+1) & 1) ? j_min+1 : j_min+2;
+		    for (j; j<j_max-1; j+=2)
+                update_black(u_current, u_previous, i, j);
         }
         gettimeofday(&tcf, NULL);
         tcomp += (tcf.tv_sec-tcs.tv_sec)+(tcf.tv_usec-tcs.tv_usec)*0.000001;
@@ -361,7 +392,9 @@ int main(int argc, char ** argv) {
 
 
 		//************************************//
- 
+        swap=u_previous;
+		u_previous=u_current;
+		u_current=swap;
          
         
     }
