@@ -1,0 +1,59 @@
+-------------------
+Grid = (512,512)
+-------------------
+RedBlack SOR with blocking communication: 
+RedBlackSOR X 512 Y 512 Px 8 Py 8 Iter 256 TotalTime: 0.626000 midpoint 2.251914
+ComputationTime: 0.008791 CommunicationTime: 0.563058 
+
+RedBlack SOR with Non-Blocking communication: 
+RedBlackSOR X 512 Y 512 Px 8 Py 8 Iter 256 TotalTime: 0.098265 midpoint 2.251914
+ComputationTime: 0.005163 CommunicationTime: 0.093102 
+
+RedBlack SOR with Non-blocking communication and Overlapping: 
+RedBlackSOR X 512 Y 512 Px 8 Py 8 Iter 256 TotalTime: 0.082465 midpoint 2.238740
+ComputationTime: 0.006023 CommunicationTime: 0.076442 
+
+-------------------
+Grid = (2048,2048)
+-------------------
+RedBlack SOR with blocking communication: 
+RedBlackSOR X 2048 Y 2048 Px 8 Py 8 Iter 256 TotalTime: 1.395914 midpoint 0.000000
+ComputationTime: 0.139589 CommunicationTime: 1.214348 
+
+RedBlack SOR with Non-Blocking communication: 
+RedBlackSOR X 2048 Y 2048 Px 8 Py 8 Iter 256 TotalTime: 0.451497 midpoint 0.000000
+ComputationTime: 0.101106 CommunicationTime: 0.350391 
+
+RedBlack SOR with Non-blocking communication and Overlapping: 
+RedBlackSOR X 2048 Y 2048 Px 8 Py 8 Iter 256 TotalTime: 0.160258 midpoint 0.000000
+ComputationTime: 0.104592 CommunicationTime: 0.055666 
+
+-------------------
+Grid = (4096,4096)
+-------------------
+RedBlack SOR with blocking communication: 
+RedBlackSOR X 4096 Y 4096 Px 8 Py 8 Iter 256 TotalTime: 8.488445 midpoint 0.000000
+ComputationTime: 6.192328 CommunicationTime: 3.403930 
+
+RedBlack SOR with Non-Blocking communication: 
+RedBlackSOR X 4096 Y 4096 Px 8 Py 8 Iter 256 TotalTime: 7.508396 midpoint 0.000000
+ComputationTime: 6.190389 CommunicationTime: 1.318007 
+
+RedBlack SOR with Non-blocking communication and Overlapping: 
+RedBlackSOR X 4096 Y 4096 Px 8 Py 8 Iter 256 TotalTime: 6.538501 midpoint 0.000000
+ComputationTime: 6.239829 CommunicationTime: 0.298672 
+
+-------------------
+Grid = (6144,6144)
+-------------------
+RedBlack SOR with blocking communication: 
+RedBlackSOR X 6144 Y 6144 Px 8 Py 8 Iter 256 TotalTime: 20.090822 midpoint 0.000000
+ComputationTime: 16.360462 CommunicationTime: 7.269409 
+
+RedBlack SOR with Non-Blocking communication: 
+RedBlackSOR X 6144 Y 6144 Px 8 Py 8 Iter 256 TotalTime: 18.931297 midpoint 0.000000
+ComputationTime: 16.121842 CommunicationTime: 2.809455 
+
+RedBlack SOR with Non-blocking communication and Overlapping: 
+RedBlackSOR X 6144 Y 6144 Px 8 Py 8 Iter 256 TotalTime: 16.804234 midpoint 0.000000
+ComputationTime: 16.476098 CommunicationTime: 0.328136

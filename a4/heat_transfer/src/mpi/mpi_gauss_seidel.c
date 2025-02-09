@@ -326,7 +326,7 @@ int main(int argc, char ** argv) {
 
 	//**************TODO: Change "Jacobi" to "GaussSeidelSOR" or "RedBlackSOR" for appropriate printing****************//
     if (rank==0) {
-        printf("Jacobi X %d Y %d Px %d Py %d Iter %d TotalTime: %lf midpoint %lf\n",global[0],global[1],grid[0],grid[1],t,total_time,U[global[0]/2][global[1]/2]);
+        printf("GaussSeidelSOR X %d Y %d Px %d Py %d Iter %d TotalTime: %lf midpoint %lf\n",global[0],global[1],grid[0],grid[1],t,total_time,U[global[0]/2][global[1]/2]);
         printf("ComputationTime: %lf CommunicationTime: %lf ", comp_time, (total_time-comp_time));
         #ifdef TEST_CONV
         printf("Convergence Time: %lf ", conv_time);

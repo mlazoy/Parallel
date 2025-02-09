@@ -15,9 +15,9 @@ int main(int argc, char ** argv) {
     MPI_Datatype dummy;     //dummy datatype used to align user-defined datatypes in memory
     double omega; 			//relaxation factor - useless for Jacobi
 
-    struct timeval tts,ttf,tcs,tcf,tms,tmf;   //Timers: total-> tts,ttf, computation -> tcs,tcf
-    // communication-> tms, tmf
-    double ttotal=0,tcomp=0,tcomm=0,total_time,comp_time,comm_time;
+    struct timeval tts,ttf,tcs,tcf,tms, tmf,tcvs,tcvf;   //Timers: total-> tts,ttf, computation -> tcs,tcf
+    // communication-> tms,tmf , convergence->tcvs,tcvf
+    double ttotal=0,tcomp=0,tconv=0,tcomm=0,total_time,comp_time,conv_time,comm_time;
     
     double ** U, ** u_current, ** u_previous, ** swap; //Global matrix, local current and previous matrices, pointer to swap between current and previous
     
@@ -354,10 +354,12 @@ int main(int argc, char ** argv) {
         if (t%C==0) {
 			//*************TODO**************//
 			/*Test convergence*/
+            gettimeofday(&tcvs, NULL);
             converged = converge(u_previous, u_current, i_min, i_max, j_min, j_max);
-            // min takes 0 if some proc has not converged locally 
             MPI_Allreduce(&converged, &global_converged, 1, MPI_INT, MPI_LAND, MPI_COMM_WORLD);
-		}		
+            gettimeofday(&tcvf, NULL);
+            tconv += (tcvf.tv_sec-tcvs.tv_sec)+(tcvf.tv_usec-tcvs.tv_usec)*0.000001;
+        }		
 		#endif
 
 
@@ -374,6 +376,9 @@ int main(int argc, char ** argv) {
     MPI_Reduce(&tcomp,&comp_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
     // also reduce communication times
     MPI_Reduce(&tcomm,&comm_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
+    #ifdef TEST_CONV
+    MPI_Reduce(&tconv,&conv_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
+    #endif
 
 
 
@@ -395,8 +400,11 @@ int main(int argc, char ** argv) {
 
 	//**************TODO: Change "Jacobi" to "GaussSeidelSOR" or "RedBlackSOR" for appropriate printing****************//
     if (rank==0) {
-        printf("Jacobi X %d Y %d Px %d Py %d Iter %d ComputationTime %lf CommunicationTime %lf TotalTime %lf midpoint %lf\n",global[0],global[1],grid[0],grid[1],t,comp_time,comm_time,total_time,U[global[0]/2][global[1]/2]);
-	
+        printf("RedBlackSOR X %d Y %d Px %d Py %d Iter %d TotalTime: %lf midpoint %lf\n",global[0],global[1],grid[0],grid[1],t,total_time,U[global[0]/2][global[1]/2]);
+        printf("ComputationTime: %lf CommunicationTime: %lf ", comp_time, comm_time);
+        #ifdef TEST_CONV
+        printf("Convergence Time: %lf ", conv_time);
+        #endif
         #ifdef PRINT_RESULTS
         char * s=malloc(50*sizeof(char));
         sprintf(s,"resRedBlackSORMPI_%dx%d_%dx%d",global[0],global[1],grid[0],grid[1]);

@@ -2,7 +2,6 @@
 
 MPICC = mpicc
 CFLAGS = -Wall -Wextra -Wno-unused -O3
-RES=-DPRINT_RESULTS
 CONV=-DTEST_CONV
 
 all: mpi_jacobi mpi_red_black mpi_gauss_seidel mpi_red_black_async mpi_red_black_overlapping

@@ -1,0 +1,19 @@
+Jacobi: 
+Jacobi X 512 Y 512 Px 8 Py 8 Iter 236001 TotalTime: 240.505232 midpoint 2.774119
+ComputationTime: 3.246017 CommunicationTime: 237.052048 Convergence Time: 1.220710 
+
+RedBlack SOR with blocking communication: 
+RedBlackSOR X 512 Y 512 Px 8 Py 8 Iter 1201 TotalTime: 2.698093 midpoint 2.826975
+ComputationTime: 0.040557 CommunicationTime: 2.425274 Convergence Time: 0.006389 
+
+RedBlack SOR with Non-Blocking communication: 
+RedBlackSOR X 512 Y 512 Px 8 Py 8 Iter 1201 TotalTime: 0.401030 midpoint 2.826975
+ComputationTime: 0.023893 CommunicationTime: 0.377137 Convergence Time: 0.017524 
+
+RedBlack SOR with Non-blocking communication and Overlapping: 
+RedBlackSOR X 512 Y 512 Px 8 Py 8 Iter 1201 TotalTime: 0.384912 midpoint 2.809515
+ComputationTime: 0.026678 CommunicationTime: 0.358234 Convergence Time: 0.009457 
+
+GaussSeidel SOR: 
+GaussSeidelSOR X 512 Y 512 Px 8 Py 8 Iter 1501 TotalTime: 2.807128 midpoint 2.826997
+ComputationTime: 0.073431 CommunicationTime: 2.733697 Convergence Time: 0.040656

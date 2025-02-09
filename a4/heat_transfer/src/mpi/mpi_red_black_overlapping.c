@@ -7,12 +7,12 @@
 
 double omega;
 
-void update_red(double **u_current, double **u_previous, int i, int j){
+inline void update_red(double **u_current, double **u_previous, int i, int j){
     u_current[i][j]=u_previous[i][j]+(omega/4.0)*
         (u_previous[i-1][j]+u_previous[i+1][j]+u_previous[i][j-1]+u_previous[i][j+1]-4*u_previous[i][j]);	
 }
 
-void update_black(double **u_current, double **u_previous, int i, int j){
+inline void update_black(double **u_current, double **u_previous, int i, int j){
     u_current[i][j]=u_previous[i][j]+(omega/4.0)*
         (u_current[i-1][j]+u_current[i+1][j]+u_current[i][j-1]+u_current[i][j+1]-4*u_previous[i][j]);
 }
@@ -223,32 +223,30 @@ int main(int argc, char ** argv) {
     MPI_Request red_reqs[8], black_reqs[8]; 
     int red_cnt = 0, black_cnt = 0;
 
+    MPI_Barrier(MPI_COMM_WORLD);
+
  	//----Computational core----//   
 	gettimeofday(&tts, NULL);
 
-        swap=u_previous;
-		u_previous=u_current;
-		u_current=swap;
-
     // exchange black borders 
     if (north != MPI_PROC_NULL) {
-        MPI_Irecv(&(u_current[0][2]), 1, RedBlack_row, north, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-        MPI_Isend(&(u_current[1][1]), 1, RedBlack_row, north, 0, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Irecv(&(u_previous[0][1]), 1, RedBlack_row, north, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Isend(&(u_previous[1][2]), 1, RedBlack_row, north, 0, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
     }
 
     if (south != MPI_PROC_NULL) {
-        MPI_Irecv(&(u_current[local[0]+1][1]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-        MPI_Isend(&(u_current[local[0]][2]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Irecv(&(u_previous[local[0]+1][2]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Isend(&(u_previous[local[0]][1]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
     }
 
     if (east != MPI_PROC_NULL) {
-        MPI_Irecv(&(u_current[1][local[1]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-        MPI_Isend(&(u_current[2][local[1]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Irecv(&(u_previous[2][local[1]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Isend(&(u_previous[1][local[1]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
     }
 
     if (west != MPI_PROC_NULL) {
-        MPI_Irecv(&(u_current[2][0]), 1, RedBlack_col, west, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-        MPI_Isend(&(u_current[1][1]), 1, RedBlack_col, west, 3, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Irecv(&(u_previous[1][0]), 1, RedBlack_col, west, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+        MPI_Isend(&(u_previous[2][1]), 1, RedBlack_col, west, 3, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
     }
 
 
@@ -266,22 +264,37 @@ int main(int argc, char ** argv) {
 
         MPI_Waitall(black_cnt, black_reqs, black_status);
 
+        swap=u_previous;
+        u_previous=u_current;
+        u_current=swap;
+
         black_cnt = 0; red_cnt = 0;
 
         gettimeofday(&tcs, NULL);
         //compute red borders
-        for (j=j_min; j<j_max; j+=2) { //TODO! check iter limits
-            //first row 
-            update_red(u_current, u_previous, 1, j);
-            //last row
-            update_red(u_current, u_previous, i_max-1, j+1);
+
+        if (north != MPI_PROC_NULL) {
+            for (j=1; j<=local[1]; j+=2) 
+                //first row 
+                update_red(u_current, u_previous, 1, j);
         }
 
-        for (i=i_min+1; i<i_max-1; i+=2) {  //TODO! check iter limits
-            // first column
-            update_red(u_current, u_previous, i+1,1);
-            //last column
-            update_red(u_current, u_previous, i, j_max-1);
+        if (south != MPI_PROC_NULL) {
+            for (j=1; j<=local[1]; j+=2) 
+                //last row
+                update_red(u_current, u_previous, local[0], j+1);
+        }
+
+        if (west != MPI_PROC_NULL) {
+            for (i=2; i<local[0]; i+=2)
+                // first column
+                update_red(u_current, u_previous, i+1,1);
+        }
+
+        if (east != MPI_PROC_NULL) {
+            for (i=2; i<local[0]; i+=2)
+                //last column
+                update_red(u_current, u_previous, i, local[1]);
         }
 
         gettimeofday(&tcf, NULL);
@@ -289,33 +302,31 @@ int main(int argc, char ** argv) {
 
         //exchange red borders
         if (north != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_previous[0][1]), 1, RedBlack_row, north, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
-            MPI_Isend(&(u_previous[1][2]), 1, RedBlack_row, north, 0, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Irecv(&(u_current[0][2]), 1, RedBlack_row, north, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Isend(&(u_current[1][1]), 1, RedBlack_row, north, 0, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
         }
 
         if (south != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_previous[local[0]+1][2]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
-            MPI_Isend(&(u_previous[local[0]][1]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Irecv(&(u_current[local[0]+1][1]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Isend(&(u_current[local[0]][2]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
         }
 
         if (east != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_previous[2][local[1]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
-            MPI_Isend(&(u_previous[1][local[1]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Irecv(&(u_current[1][local[1]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Isend(&(u_current[2][local[1]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
         }
 
         if (west != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_previous[1][0]), 1, RedBlack_col, west, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
-            MPI_Isend(&(u_previous[2][1]), 1, RedBlack_col, west, 3, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Irecv(&(u_current[2][0]), 1, RedBlack_col, west, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Isend(&(u_current[1][1]), 1, RedBlack_col, west, 3, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
         }
 
         gettimeofday(&tcs, NULL);
         // computer red interior
         // RED SOR
         // (i+j) is even
-        for (i=i_min+1; i<i_max-1; i++) {
-            if (i & 1) j = ((j_min+1)&1) ? j_min+1 : j_min+2;
-            else j = ((j_min+1)&1) ? j_min+2 : j_min+1;
-            for (j; j<j_max-1; j+=2)
+        for (i=2; i<local[0]; i++) {
+            for (j=(i&1)?3:2; j<local[1]; j+=2)
                 update_red(u_current, u_previous, i, j);
         }
         gettimeofday(&tcf, NULL);
@@ -326,18 +337,27 @@ int main(int argc, char ** argv) {
 
         gettimeofday(&tcs, NULL);
         // compute black borders 
-        for (j=j_min; j<j_max; j+=2){  //TODO! check iter limits
-            // first row 
-            update_black(u_current, u_previous, 1, j+1);
-            //last row 
-            update_black(u_current, u_previous, i_max-1, j);
+        if (north != MPI_PROC_NULL){
+            for (j=1; j<=local[1]; j+=2)
+                // first row 
+                update_black(u_current, u_previous, 1, j+1);
+        }
+        if (south != MPI_PROC_NULL) {
+            for (j=1; j<=local[1]; j+=2)
+                //last row 
+                update_black(u_current, u_previous, local[0], j);
         }
 
-        for (i=i_min+1; i<i_max-1; i+=2) {  //TODO! check iter limits
-            //first column 
-            update_black(u_current, u_previous, i, 1);
-            //last column
-            update_black(u_current, u_previous, i+1, j_max-1);
+        if (west != MPI_PROC_NULL) {
+            for (i=2; i<local[0]; i+=2) 
+                //first column 
+                update_black(u_current, u_previous, i, 1);
+        }
+
+        if (east != MPI_PROC_NULL) {
+            for (i=2; i<local[0]; i+=2)
+                //last column
+                update_black(u_current, u_previous, i+1, local[1]);
         }
 
         gettimeofday(&tcf, NULL);
@@ -346,33 +366,31 @@ int main(int argc, char ** argv) {
 
         //exchange black borders
         if (north != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_current[0][2]), 1, RedBlack_row, north, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-            MPI_Isend(&(u_current[1][1]), 1, RedBlack_row, north, 0, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Irecv(&(u_current[0][1]), 1, RedBlack_row, north, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Isend(&(u_current[1][2]), 1, RedBlack_row, north, 0, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
         }
 
         if (south != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_current[local[0]+1][1]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-            MPI_Isend(&(u_current[local[0]][2]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Irecv(&(u_current[local[0]+1][2]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Isend(&(u_current[local[0]][1]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
         }
 
         if (east != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_current[1][local[1]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-            MPI_Isend(&(u_current[2][local[1]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Irecv(&(u_current[2][local[1]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Isend(&(u_current[1][local[1]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
         }
 
         if (west != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_current[2][0]), 1, RedBlack_col, west, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-            MPI_Isend(&(u_current[1][1]), 1, RedBlack_col, west, 3, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Irecv(&(u_current[1][0]), 1, RedBlack_col, west, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Isend(&(u_current[2][1]), 1, RedBlack_col, west, 3, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
         }
 
         gettimeofday(&tcs, NULL);
         // compute black interior
         // BLACK SOR
         // (i+j) is odd
-        for (i=i_min+1; i<i_max-1; i++) {
-            if (i & 1) j = ((j_min+1) & 1) ? j_min+2 : j_min+1;
-            else j = ((j_min+1) & 1) ? j_min+1 : j_min+2;
-		    for (j; j<j_max-1; j+=2)
+        for (i=2; i<local[0]; i++) {
+		    for (j=(i&1)?2:3; j<local[1]; j+=2)
                 update_black(u_current, u_previous, i, j);
         }
         gettimeofday(&tcf, NULL);
@@ -390,13 +408,8 @@ int main(int argc, char ** argv) {
 		}		
 		#endif
 
-
 		//************************************//
-        swap=u_previous;
-		u_previous=u_current;
-		u_current=swap;
-         
-        
+           
     }
     gettimeofday(&ttf,NULL);
 

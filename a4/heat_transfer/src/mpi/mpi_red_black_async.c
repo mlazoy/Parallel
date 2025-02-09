@@ -15,9 +15,9 @@ int main(int argc, char ** argv) {
     MPI_Datatype dummy;     //dummy datatype used to align user-defined datatypes in memory
     double omega; 			//relaxation factor - useless for Jacobi
 
-    struct timeval tts,ttf,tcs,tcf,tms,tmf;   //Timers: total-> tts,ttf, computation -> tcs,tcf
-    // communication-> tms, tmf
-    double ttotal=0,tcomp=0,tcomm=0,total_time,comp_time,comm_time;
+    struct timeval tts,ttf,tcs,tcf,tcvs,tcvf;   //Timers: total-> tts,ttf, computation -> tcs,tcf
+    // convergence-> tcvs,tcvf
+    double ttotal=0,tcomp=0,tconv=0,total_time,comp_time,conv_time;
     
     double ** U, ** u_current, ** u_previous, ** swap; //Global matrix, local current and previous matrices, pointer to swap between current and previous
     
@@ -233,8 +233,6 @@ int main(int argc, char ** argv) {
         MPI_Request red_reqs[8], black_reqs[8]; 
         int red_cnt = 0, black_cnt = 0;
         int err;
-        // communication starts here 
-        gettimeofday(&tms, NULL);
 
 		if (north != MPI_PROC_NULL) {
             MPI_Irecv(&(u_previous[0][1]), 1, RedBlack_row, north, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
@@ -257,8 +255,6 @@ int main(int argc, char ** argv) {
         }
 
         MPI_Waitall(red_cnt, red_reqs, red_status);
-        // communication ends here 
-        gettimeofday(&tmf, NULL);
 
         // computation starts here
         gettimeofday(&tcs, NULL);
@@ -273,12 +269,9 @@ int main(int argc, char ** argv) {
         // computation ends here
         gettimeofday(&tcf, NULL);
 
-        tcomm += (tmf.tv_sec-tms.tv_sec)+(tmf.tv_usec-tms.tv_usec)*0.000001;
         tcomp += (tcf.tv_sec-tcs.tv_sec)+(tcf.tv_usec-tcs.tv_usec)*0.000001;
 
         //MPI_Barrier(MPI_COMM_WORLD);
-
-        gettimeofday(&tms, NULL);
 
         if (north != MPI_PROC_NULL) {
             MPI_Irecv(&(u_current[0][2]), 1, RedBlack_row, north, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
@@ -301,7 +294,6 @@ int main(int argc, char ** argv) {
         }
 
         MPI_Waitall(black_cnt, black_reqs, black_status);
-        gettimeofday(&tmf, NULL);
 
         // computation starts here
         gettimeofday(&tcs, NULL);
@@ -316,7 +308,6 @@ int main(int argc, char ** argv) {
         // computation ends here
         gettimeofday(&tcf, NULL);
 
-        tcomm += (tmf.tv_sec-tms.tv_sec)+(tmf.tv_usec-tms.tv_usec)*0.000001;
         tcomp += (tcf.tv_sec-tcs.tv_sec)+(tcf.tv_usec-tcs.tv_usec)*0.000001;
 
         //MPI_Barrier(MPI_COMM_WORLD);
@@ -325,9 +316,11 @@ int main(int argc, char ** argv) {
         if (t%C==0) {
 			//*************TODO**************//
 			/*Test convergence*/
+            gettimeofday(&tcvs, NULL);
             converged = converge(u_previous, u_current, i_min, i_max, j_min, j_max);
-            // min takes 0 if some proc has not converged locally 
             MPI_Allreduce(&converged, &global_converged, 1, MPI_INT, MPI_LAND, MPI_COMM_WORLD);
+            gettimeofday(&tcvf, NULL);
+            tconv += (tcvf.tv_sec-tcvs.tv_sec)+(tcvf.tv_usec-tcvs.tv_usec)*0.000001;
 		}		
 		#endif
 
@@ -343,8 +336,9 @@ int main(int argc, char ** argv) {
 
     MPI_Reduce(&ttotal,&total_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
     MPI_Reduce(&tcomp,&comp_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
-    // also reduce communication times
-    MPI_Reduce(&tcomm,&comm_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
+    #ifdef TEST_CONV
+    MPI_Reduce(&tconv,&conv_time,1,MPI_DOUBLE,MPI_MAX,0,MPI_COMM_WORLD);
+    #endif
 
 
 
@@ -366,8 +360,11 @@ int main(int argc, char ** argv) {
 
 	//**************TODO: Change "Jacobi" to "GaussSeidelSOR" or "RedBlackSOR" for appropriate printing****************//
     if (rank==0) {
-        printf("Jacobi X %d Y %d Px %d Py %d Iter %d ComputationTime %lf CommunicationTime %lf TotalTime %lf midpoint %lf\n",global[0],global[1],grid[0],grid[1],t,comp_time,comm_time,total_time,U[global[0]/2][global[1]/2]);
-	
+        printf("RedBlackSOR X %d Y %d Px %d Py %d Iter %d TotalTime: %lf midpoint %lf\n",global[0],global[1],grid[0],grid[1],t,total_time,U[global[0]/2][global[1]/2]);
+        printf("ComputationTime: %lf CommunicationTime: %lf ", comp_time, (total_time-comp_time));
+        #ifdef TEST_CONV
+        printf("Convergence Time: %lf ", conv_time);
+        #endif
         #ifdef PRINT_RESULTS
         char * s=malloc(50*sizeof(char));
         sprintf(s,"resRedBlackSORMPI_%dx%d_%dx%d",global[0],global[1],grid[0],grid[1]);
