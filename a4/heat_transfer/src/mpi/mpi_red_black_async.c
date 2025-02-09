@@ -137,14 +137,6 @@ int main(int argc, char ** argv) {
 	//----Define datatypes or allocate buffers for message passing----//
 
 	//*************TODO*******************//
-    MPI_Datatype row_bound;
-    MPI_Type_contiguous(local[1], MPI_DOUBLE, &row_bound); 
-    MPI_Type_commit(&row_bound);
-
-    MPI_Datatype col_bound;
-    MPI_Type_vector(local[0], 1, local[1]+2, MPI_DOUBLE, &dummy);
-    MPI_Type_create_resized(dummy, 0, sizeof(double), &col_bound);
-    MPI_Type_commit(&col_bound);
 
     MPI_Datatype RedBlack_row;
     MPI_Type_vector(local[1]/2, 1, 2, MPI_DOUBLE, &dummy);
@@ -283,7 +275,7 @@ int main(int argc, char ** argv) {
         tcomm += (tmf.tv_sec-tms.tv_sec)+(tmf.tv_usec-tms.tv_usec)*0.000001;
         tcomp += (tcf.tv_sec-tcs.tv_sec)+(tcf.tv_usec-tcs.tv_usec)*0.000001;
 
-        MPI_Barrier(MPI_COMM_WORLD);
+        //MPI_Barrier(MPI_COMM_WORLD);
 
         gettimeofday(&tms, NULL);
 
@@ -324,7 +316,7 @@ int main(int argc, char ** argv) {
         tcomm += (tmf.tv_sec-tms.tv_sec)+(tmf.tv_usec-tms.tv_usec)*0.000001;
         tcomp += (tcf.tv_sec-tcs.tv_sec)+(tcf.tv_usec-tcs.tv_usec)*0.000001;
 
-        MPI_Barrier(MPI_COMM_WORLD);
+        //MPI_Barrier(MPI_COMM_WORLD);
 
 		#ifdef TEST_CONV
         if (t%C==0) {
