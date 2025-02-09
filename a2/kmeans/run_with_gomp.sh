@@ -28,7 +28,7 @@ for i in 1 2 4 8 16 32 64; do
     export OMP_NUM_THREADS=$i
     
     if [[ $i -eq 16 ]]; then
-        export GOMP_CPU_AFFINITY="$(seq -s, 0 7),$(seq -s, 32 40)"
+        export GOMP_CPU_AFFINITY="$(seq -s, 0 7),$(seq -s, 32 39)"
     else
         export GOMP_CPU_AFFINITY="$(seq -s, 0 $((i - 1)))"
     fi
