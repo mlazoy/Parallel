@@ -152,7 +152,7 @@ int main(int argc, char ** argv) {
     MPI_Type_commit(&RedBlack_row);
 
     MPI_Datatype RedBlack_col;
-    MPI_Type_vector(local[0]/2, 1, 2*local[1]+4, MPI_DOUBLE, &dummy);
+    MPI_Type_vector(local[0]/2, 1, 2*(local[1]+2), MPI_DOUBLE, &dummy);
     MPI_Type_create_resized(dummy, 0, sizeof(double), &RedBlack_col);
     MPI_Type_commit(&RedBlack_col);
 
@@ -245,23 +245,23 @@ int main(int argc, char ** argv) {
         gettimeofday(&tms, NULL);
 
 		if (north != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_previous[0][1]), 1, row_bound, north, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
-            MPI_Isend(&(u_previous[1][1]), 1, row_bound, north, 0, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Irecv(&(u_previous[0][1]), 1, RedBlack_row, north, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Isend(&(u_previous[1][2]), 1, RedBlack_row, north, 0, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
         }
 
         if (south != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_previous[local[0]+1][1]), 1, row_bound, south, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
-            MPI_Isend(&(u_previous[local[0]][1]), 1, row_bound, south, 1, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Irecv(&(u_previous[local[1]+1][2]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Isend(&(u_previous[local[1]][1]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
         }
 
         if (east != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_previous[1][local[1]+1]), 1, col_bound, east, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
-            MPI_Isend(&(u_previous[1][local[1]]), 1, col_bound, east, 2, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Irecv(&(u_previous[2][local[0]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Isend(&(u_previous[1][local[0]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
         }
 
         if (west != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_previous[1][0]), 1, col_bound, west, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
-            MPI_Isend(&(u_previous[1][1]), 1, col_bound, west, 3, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Irecv(&(u_previous[1][0]), 1, RedBlack_col, west, MPI_ANY_TAG, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
+            MPI_Isend(&(u_previous[2][1]), 1, RedBlack_col, west, 3, MPI_COMM_WORLD, &red_reqs[red_cnt++]);
         }
 
         MPI_Waitall(red_cnt, red_reqs, red_status);
@@ -288,23 +288,23 @@ int main(int argc, char ** argv) {
         gettimeofday(&tms, NULL);
 
         if (north != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_current[0][1]), 1, row_bound, north, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-            MPI_Isend(&(u_current[1][1]), 1, row_bound, north, 0, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Irecv(&(u_current[0][2]), 1, RedBlack_row, north, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Isend(&(u_current[1][1]), 1, RedBlack_row, north, 0, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
         }
 
         if (south != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_current[local[0]+1][1]), 1, row_bound, south, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-            MPI_Isend(&(u_current[local[0]][1]), 1, row_bound, south, 1, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Irecv(&(u_current[local[1]+1][1]), 1, RedBlack_row, south, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Isend(&(u_current[local[1]][2]), 1, RedBlack_row, south, 1, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
         }
 
         if (east != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_current[1][local[1]+1]), 1, col_bound, east, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-            MPI_Isend(&(u_current[1][local[1]]), 1, col_bound, east, 2, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Irecv(&(u_current[1][local[0]+1]), 1, RedBlack_col, east, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Isend(&(u_current[2][local[0]]), 1, RedBlack_col, east, 2, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
         }
 
         if (west != MPI_PROC_NULL) {
-            MPI_Irecv(&(u_current[1][0]), 1, col_bound, west, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
-            MPI_Isend(&(u_current[1][1]), 1, col_bound, west, 3, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Irecv(&(u_current[2][0]), 1, RedBlack_col, west, MPI_ANY_TAG, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
+            MPI_Isend(&(u_current[1][1]), 1, RedBlack_col, west, 3, MPI_COMM_WORLD, &black_reqs[black_cnt++]);
         }
 
         MPI_Waitall(black_cnt, black_reqs, black_status);
