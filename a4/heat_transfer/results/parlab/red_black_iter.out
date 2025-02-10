@@ -1,127 +1,197 @@
 Running mpi_red_black with 2048 x 2048 grid 1 1 (1 processes)
 RedBlackSOR X 2048 Y 2048 Px 1 Py 1 Iter 256 TotalTime: 18.621999 midpoint 0.000000
-ComputationTime: 18.621033 CommunicationTime: 0.000459 Running mpi_red_black with 2048 x 2048 grid 1 2 (2 processes)
+ComputationTime: 18.621033 CommunicationTime: 0.000459 
+Running mpi_red_black with 2048 x 2048 grid 1 2 (2 processes)
 RedBlackSOR X 2048 Y 2048 Px 1 Py 2 Iter 256 TotalTime: 12.413848 midpoint 0.000000
-ComputationTime: 12.251376 CommunicationTime: 0.138220 Running mpi_red_black with 2048 x 2048 grid 2 2 (4 processes)
+ComputationTime: 12.251376 CommunicationTime: 0.138220 
+Running mpi_red_black with 2048 x 2048 grid 2 2 (4 processes)
 RedBlackSOR X 2048 Y 2048 Px 2 Py 2 Iter 256 TotalTime: 9.226621 midpoint 0.000000
-ComputationTime: 9.003645 CommunicationTime: 0.270643 Running mpi_red_black with 2048 x 2048 grid 2 4 (8 processes)
+ComputationTime: 9.003645 CommunicationTime: 0.270643 
+Running mpi_red_black with 2048 x 2048 grid 2 4 (8 processes)
 RedBlackSOR X 2048 Y 2048 Px 2 Py 4 Iter 256 TotalTime: 9.114317 midpoint 0.000000
-ComputationTime: 8.669498 CommunicationTime: 0.510452 Running mpi_red_black with 2048 x 2048 grid 4 4 (16 processes)
+ComputationTime: 8.669498 CommunicationTime: 0.510452 
+Running mpi_red_black with 2048 x 2048 grid 4 4 (16 processes)
 RedBlackSOR X 2048 Y 2048 Px 4 Py 4 Iter 256 TotalTime: 4.560013 midpoint 0.000000
-ComputationTime: 3.862935 CommunicationTime: 0.758508 Running mpi_red_black with 2048 x 2048 grid 4 8 (32 processes)
+ComputationTime: 3.862935 CommunicationTime: 0.758508 
+Running mpi_red_black with 2048 x 2048 grid 4 8 (32 processes)
 RedBlackSOR X 2048 Y 2048 Px 4 Py 8 Iter 256 TotalTime: 1.911446 midpoint 0.000000
-ComputationTime: 1.036471 CommunicationTime: 0.917240 Running mpi_red_black with 2048 x 2048 grid 8 8 (64 processes)
+ComputationTime: 1.036471 CommunicationTime: 0.917240 
+Running mpi_red_black with 2048 x 2048 grid 8 8 (64 processes)
 RedBlackSOR X 2048 Y 2048 Px 8 Py 8 Iter 256 TotalTime: 1.401580 midpoint 0.000000
-ComputationTime: 0.136563 CommunicationTime: 1.221536 Running mpi_red_black with 4096 x 4096 grid 1 1 (1 processes)
+ComputationTime: 0.136563 CommunicationTime: 1.221536 
+
+Running mpi_red_black with 4096 x 4096 grid 1 1 (1 processes)
 RedBlackSOR X 4096 Y 4096 Px 1 Py 1 Iter 256 TotalTime: 74.458270 midpoint 0.000000
-ComputationTime: 74.457255 CommunicationTime: 0.000503 Running mpi_red_black with 4096 x 4096 grid 1 2 (2 processes)
+ComputationTime: 74.457255 CommunicationTime: 0.000503 
+Running mpi_red_black with 4096 x 4096 grid 1 2 (2 processes)
 RedBlackSOR X 4096 Y 4096 Px 1 Py 2 Iter 256 TotalTime: 49.218963 midpoint 0.000000
-ComputationTime: 48.900394 CommunicationTime: 0.288194 Running mpi_red_black with 4096 x 4096 grid 2 2 (4 processes)
+ComputationTime: 48.900394 CommunicationTime: 0.288194 
+Running mpi_red_black with 4096 x 4096 grid 2 2 (4 processes)
 RedBlackSOR X 4096 Y 4096 Px 2 Py 2 Iter 256 TotalTime: 35.820189 midpoint 0.000000
-ComputationTime: 35.403593 CommunicationTime: 0.756486 Running mpi_red_black with 4096 x 4096 grid 2 4 (8 processes)
+ComputationTime: 35.403593 CommunicationTime: 0.756486 
+Running mpi_red_black with 4096 x 4096 grid 2 4 (8 processes)
 RedBlackSOR X 4096 Y 4096 Px 2 Py 4 Iter 256 TotalTime: 36.402089 midpoint 0.000000
-ComputationTime: 35.467166 CommunicationTime: 1.269007 Running mpi_red_black with 4096 x 4096 grid 4 4 (16 processes)
+ComputationTime: 35.467166 CommunicationTime: 1.269007 
+Running mpi_red_black with 4096 x 4096 grid 4 4 (16 processes)
 RedBlackSOR X 4096 Y 4096 Px 4 Py 4 Iter 256 TotalTime: 19.899789 midpoint 0.000000
-ComputationTime: 18.544905 CommunicationTime: 1.899563 Running mpi_red_black with 4096 x 4096 grid 4 8 (32 processes)
+ComputationTime: 18.544905 CommunicationTime: 1.899563 
+Running mpi_red_black with 4096 x 4096 grid 4 8 (32 processes)
 RedBlackSOR X 4096 Y 4096 Px 4 Py 8 Iter 256 TotalTime: 10.935558 midpoint 0.000000
-ComputationTime: 8.963456 CommunicationTime: 2.243201 Running mpi_red_black with 4096 x 4096 grid 8 8 (64 processes)
+ComputationTime: 8.963456 CommunicationTime: 2.243201 
+Running mpi_red_black with 4096 x 4096 grid 8 8 (64 processes)
 RedBlackSOR X 4096 Y 4096 Px 8 Py 8 Iter 256 TotalTime: 8.428985 midpoint 0.000000
-ComputationTime: 6.236527 CommunicationTime: 3.399535 Running mpi_red_black with 6144 x 6144 grid 1 1 (1 processes)
+ComputationTime: 6.236527 CommunicationTime: 3.399535 
+
+Running mpi_red_black with 6144 x 6144 grid 1 1 (1 processes)
 RedBlackSOR X 6144 Y 6144 Px 1 Py 1 Iter 256 TotalTime: 167.906872 midpoint 0.000000
-ComputationTime: 167.905880 CommunicationTime: 0.000472 Running mpi_red_black with 6144 x 6144 grid 1 2 (2 processes)
+ComputationTime: 167.905880 CommunicationTime: 0.000472 
+Running mpi_red_black with 6144 x 6144 grid 1 2 (2 processes)
 RedBlackSOR X 6144 Y 6144 Px 1 Py 2 Iter 256 TotalTime: 110.068809 midpoint 0.000000
-ComputationTime: 109.527860 CommunicationTime: 0.521616 Running mpi_red_black with 6144 x 6144 grid 2 2 (4 processes)
+ComputationTime: 109.527860 CommunicationTime: 0.521616 
+Running mpi_red_black with 6144 x 6144 grid 2 2 (4 processes)
 RedBlackSOR X 6144 Y 6144 Px 2 Py 2 Iter 256 TotalTime: 78.356112 midpoint 0.000000
-ComputationTime: 77.633694 CommunicationTime: 1.353908 Running mpi_red_black with 6144 x 6144 grid 2 4 (8 processes)
+ComputationTime: 77.633694 CommunicationTime: 1.353908 
+Running mpi_red_black with 6144 x 6144 grid 2 4 (8 processes)
 RedBlackSOR X 6144 Y 6144 Px 2 Py 4 Iter 256 TotalTime: 79.128849 midpoint 0.000000
-ComputationTime: 77.716382 CommunicationTime: 2.118832 Running mpi_red_black with 6144 x 6144 grid 4 4 (16 processes)
+ComputationTime: 77.716382 CommunicationTime: 2.118832 
+Running mpi_red_black with 6144 x 6144 grid 4 4 (16 processes)
 RedBlackSOR X 6144 Y 6144 Px 4 Py 4 Iter 256 TotalTime: 44.238078 midpoint 0.000000
-ComputationTime: 41.859606 CommunicationTime: 4.295355 Running mpi_red_black with 6144 x 6144 grid 4 8 (32 processes)
+ComputationTime: 41.859606 CommunicationTime: 4.295355 
+Running mpi_red_black with 6144 x 6144 grid 4 8 (32 processes)
 RedBlackSOR X 6144 Y 6144 Px 4 Py 8 Iter 256 TotalTime: 24.297984 midpoint 0.000000
-ComputationTime: 20.935049 CommunicationTime: 4.398278 Running mpi_red_black with 6144 x 6144 grid 8 8 (64 processes)
+ComputationTime: 20.935049 CommunicationTime: 4.398278 
+Running mpi_red_black with 6144 x 6144 grid 8 8 (64 processes)
 RedBlackSOR X 6144 Y 6144 Px 8 Py 8 Iter 256 TotalTime: 20.071735 midpoint 0.000000
-ComputationTime: 16.303791 CommunicationTime: 7.208731 Running mpi_red_black_async with 2048 x 2048 grid 1 1 (1 processes)
+ComputationTime: 16.303791 CommunicationTime: 7.208731 
+
+Running mpi_red_black_async with 2048 x 2048 grid 1 1 (1 processes)
 RedBlackSOR X 2048 Y 2048 Px 1 Py 1 Iter 256 TotalTime: 18.391848 midpoint 0.000000
-ComputationTime: 18.391127 CommunicationTime: 0.000721 Running mpi_red_black_async with 2048 x 2048 grid 1 2 (2 processes)
+ComputationTime: 18.391127 CommunicationTime: 0.000721 
+Running mpi_red_black_async with 2048 x 2048 grid 1 2 (2 processes)
 RedBlackSOR X 2048 Y 2048 Px 1 Py 2 Iter 256 TotalTime: 12.326579 midpoint 0.000000
-ComputationTime: 12.172466 CommunicationTime: 0.154113 Running mpi_red_black_async with 2048 x 2048 grid 2 2 (4 processes)
+ComputationTime: 12.172466 CommunicationTime: 0.154113 
+Running mpi_red_black_async with 2048 x 2048 grid 2 2 (4 processes)
 RedBlackSOR X 2048 Y 2048 Px 2 Py 2 Iter 256 TotalTime: 9.117233 midpoint 0.000000
-ComputationTime: 8.949112 CommunicationTime: 0.168121 Running mpi_red_black_async with 2048 x 2048 grid 2 4 (8 processes)
+ComputationTime: 8.949112 CommunicationTime: 0.168121 
+Running mpi_red_black_async with 2048 x 2048 grid 2 4 (8 processes)
 RedBlackSOR X 2048 Y 2048 Px 2 Py 4 Iter 256 TotalTime: 8.926681 midpoint 0.000000
-ComputationTime: 8.608131 CommunicationTime: 0.318550 Running mpi_red_black_async with 2048 x 2048 grid 4 4 (16 processes)
+ComputationTime: 8.608131 CommunicationTime: 0.318550 
+Running mpi_red_black_async with 2048 x 2048 grid 4 4 (16 processes)
 RedBlackSOR X 2048 Y 2048 Px 4 Py 4 Iter 256 TotalTime: 4.254476 midpoint 0.000000
-ComputationTime: 3.830916 CommunicationTime: 0.423560 Running mpi_red_black_async with 2048 x 2048 grid 4 8 (32 processes)
+ComputationTime: 3.830916 CommunicationTime: 0.423560 
+Running mpi_red_black_async with 2048 x 2048 grid 4 8 (32 processes)
 RedBlackSOR X 2048 Y 2048 Px 4 Py 8 Iter 256 TotalTime: 1.231368 midpoint 0.000000
-ComputationTime: 0.845516 CommunicationTime: 0.385852 Running mpi_red_black_async with 2048 x 2048 grid 8 8 (64 processes)
+ComputationTime: 0.845516 CommunicationTime: 0.385852 
+Running mpi_red_black_async with 2048 x 2048 grid 8 8 (64 processes)
 RedBlackSOR X 2048 Y 2048 Px 8 Py 8 Iter 256 TotalTime: 0.442270 midpoint 0.000000
-ComputationTime: 0.115157 CommunicationTime: 0.327113 Running mpi_red_black_async with 4096 x 4096 grid 1 1 (1 processes)
+ComputationTime: 0.115157 CommunicationTime: 0.327113 
+
+Running mpi_red_black_async with 4096 x 4096 grid 1 1 (1 processes)
 RedBlackSOR X 4096 Y 4096 Px 1 Py 1 Iter 256 TotalTime: 73.540617 midpoint 0.000000
-ComputationTime: 73.539721 CommunicationTime: 0.000896 Running mpi_red_black_async with 4096 x 4096 grid 1 2 (2 processes)
+ComputationTime: 73.539721 CommunicationTime: 0.000896 
+Running mpi_red_black_async with 4096 x 4096 grid 1 2 (2 processes)
 RedBlackSOR X 4096 Y 4096 Px 1 Py 2 Iter 256 TotalTime: 48.835040 midpoint 0.000000
-ComputationTime: 48.544763 CommunicationTime: 0.290277 Running mpi_red_black_async with 4096 x 4096 grid 2 2 (4 processes)
+ComputationTime: 48.544763 CommunicationTime: 0.290277 
+Running mpi_red_black_async with 4096 x 4096 grid 2 2 (4 processes)
 RedBlackSOR X 4096 Y 4096 Px 2 Py 2 Iter 256 TotalTime: 35.544447 midpoint 0.000000
-ComputationTime: 35.175811 CommunicationTime: 0.368636 Running mpi_red_black_async with 4096 x 4096 grid 2 4 (8 processes)
+ComputationTime: 35.175811 CommunicationTime: 0.368636 
+Running mpi_red_black_async with 4096 x 4096 grid 2 4 (8 processes)
 RedBlackSOR X 4096 Y 4096 Px 2 Py 4 Iter 256 TotalTime: 35.914445 midpoint 0.000000
-ComputationTime: 34.860925 CommunicationTime: 1.053520 Running mpi_red_black_async with 4096 x 4096 grid 4 4 (16 processes)
+ComputationTime: 34.860925 CommunicationTime: 1.053520 
+Running mpi_red_black_async with 4096 x 4096 grid 4 4 (16 processes)
 RedBlackSOR X 4096 Y 4096 Px 4 Py 4 Iter 256 TotalTime: 19.463873 midpoint 0.000000
-ComputationTime: 18.249172 CommunicationTime: 1.214701 Running mpi_red_black_async with 4096 x 4096 grid 4 8 (32 processes)
+ComputationTime: 18.249172 CommunicationTime: 1.214701 
+Running mpi_red_black_async with 4096 x 4096 grid 4 8 (32 processes)
 RedBlackSOR X 4096 Y 4096 Px 4 Py 8 Iter 256 TotalTime: 10.212783 midpoint 0.000000
-ComputationTime: 8.756448 CommunicationTime: 1.456335 Running mpi_red_black_async with 4096 x 4096 grid 8 8 (64 processes)
+ComputationTime: 8.756448 CommunicationTime: 1.456335 
+Running mpi_red_black_async with 4096 x 4096 grid 8 8 (64 processes)
 RedBlackSOR X 4096 Y 4096 Px 8 Py 8 Iter 256 TotalTime: 7.515673 midpoint 0.000000
-ComputationTime: 6.153624 CommunicationTime: 1.362049 Running mpi_red_black_async with 6144 x 6144 grid 1 1 (1 processes)
+ComputationTime: 6.153624 CommunicationTime: 1.362049 
+
+Running mpi_red_black_async with 6144 x 6144 grid 1 1 (1 processes)
 RedBlackSOR X 6144 Y 6144 Px 1 Py 1 Iter 256 TotalTime: 165.593747 midpoint 0.000000
-ComputationTime: 165.592798 CommunicationTime: 0.000949 Running mpi_red_black_async with 6144 x 6144 grid 1 2 (2 processes)
+ComputationTime: 165.592798 CommunicationTime: 0.000949 
+Running mpi_red_black_async with 6144 x 6144 grid 1 2 (2 processes)
 RedBlackSOR X 6144 Y 6144 Px 1 Py 2 Iter 256 TotalTime: 109.163530 midpoint 0.000000
-ComputationTime: 108.696132 CommunicationTime: 0.467398 Running mpi_red_black_async with 6144 x 6144 grid 2 2 (4 processes)
+ComputationTime: 108.696132 CommunicationTime: 0.467398 
+Running mpi_red_black_async with 6144 x 6144 grid 2 2 (4 processes)
 RedBlackSOR X 6144 Y 6144 Px 2 Py 2 Iter 256 TotalTime: 78.202543 midpoint 0.000000
-ComputationTime: 77.582049 CommunicationTime: 0.620494 Running mpi_red_black_async with 6144 x 6144 grid 2 4 (8 processes)
+ComputationTime: 77.582049 CommunicationTime: 0.620494 
+Running mpi_red_black_async with 6144 x 6144 grid 2 4 (8 processes)
 RedBlackSOR X 6144 Y 6144 Px 2 Py 4 Iter 256 TotalTime: 78.572981 midpoint 0.000000
-ComputationTime: 77.137744 CommunicationTime: 1.435237 Running mpi_red_black_async with 6144 x 6144 grid 4 4 (16 processes)
+ComputationTime: 77.137744 CommunicationTime: 1.435237 
+Running mpi_red_black_async with 6144 x 6144 grid 4 4 (16 processes)
 RedBlackSOR X 6144 Y 6144 Px 4 Py 4 Iter 256 TotalTime: 43.636173 midpoint 0.000000
-ComputationTime: 41.221105 CommunicationTime: 2.415068 Running mpi_red_black_async with 6144 x 6144 grid 4 8 (32 processes)
+ComputationTime: 41.221105 CommunicationTime: 2.415068 
+Running mpi_red_black_async with 6144 x 6144 grid 4 8 (32 processes)
 RedBlackSOR X 6144 Y 6144 Px 4 Py 8 Iter 256 TotalTime: 23.337335 midpoint 0.000000
-ComputationTime: 20.410141 CommunicationTime: 2.927194 Running mpi_red_black_async with 6144 x 6144 grid 8 8 (64 processes)
+ComputationTime: 20.410141 CommunicationTime: 2.927194 
+Running mpi_red_black_async with 6144 x 6144 grid 8 8 (64 processes)
 RedBlackSOR X 6144 Y 6144 Px 8 Py 8 Iter 256 TotalTime: 18.915418 midpoint 0.000000
-ComputationTime: 16.089359 CommunicationTime: 2.826059 Running mpi_red_black_overlapping with 2048 x 2048 grid 1 1 (1 processes)
+ComputationTime: 16.089359 CommunicationTime: 2.826059 
+
+Running mpi_red_black_overlapping with 2048 x 2048 grid 1 1 (1 processes)
 RedBlackSOR X 2048 Y 2048 Px 1 Py 1 Iter 256 TotalTime: 18.384868 midpoint 0.000000
-ComputationTime: 18.384053 CommunicationTime: 0.000815 Running mpi_red_black_overlapping with 2048 x 2048 grid 1 2 (2 processes)
+ComputationTime: 18.384053 CommunicationTime: 0.000815 
+Running mpi_red_black_overlapping with 2048 x 2048 grid 1 2 (2 processes)
 RedBlackSOR X 2048 Y 2048 Px 1 Py 2 Iter 256 TotalTime: 12.385319 midpoint 0.000000
-ComputationTime: 12.231687 CommunicationTime: 0.153632 Running mpi_red_black_overlapping with 2048 x 2048 grid 2 2 (4 processes)
+ComputationTime: 12.231687 CommunicationTime: 0.153632 
+Running mpi_red_black_overlapping with 2048 x 2048 grid 2 2 (4 processes)
 RedBlackSOR X 2048 Y 2048 Px 2 Py 2 Iter 256 TotalTime: 9.129634 midpoint 0.000000
-ComputationTime: 9.016274 CommunicationTime: 0.113360 Running mpi_red_black_overlapping with 2048 x 2048 grid 2 4 (8 processes)
+ComputationTime: 9.016274 CommunicationTime: 0.113360 
+Running mpi_red_black_overlapping with 2048 x 2048 grid 2 4 (8 processes)
 RedBlackSOR X 2048 Y 2048 Px 2 Py 4 Iter 256 TotalTime: 8.937756 midpoint 0.000000
-ComputationTime: 8.684552 CommunicationTime: 0.253204 Running mpi_red_black_overlapping with 2048 x 2048 grid 4 4 (16 processes)
+ComputationTime: 8.684552 CommunicationTime: 0.253204 
+Running mpi_red_black_overlapping with 2048 x 2048 grid 4 4 (16 processes)
 RedBlackSOR X 2048 Y 2048 Px 4 Py 4 Iter 256 TotalTime: 4.116802 midpoint 0.000000
-ComputationTime: 3.826692 CommunicationTime: 0.290110 Running mpi_red_black_overlapping with 2048 x 2048 grid 4 8 (32 processes)
+ComputationTime: 3.826692 CommunicationTime: 0.290110 
+Running mpi_red_black_overlapping with 2048 x 2048 grid 4 8 (32 processes)
 RedBlackSOR X 2048 Y 2048 Px 4 Py 8 Iter 256 TotalTime: 1.012520 midpoint 0.000000
-ComputationTime: 0.907244 CommunicationTime: 0.105276 Running mpi_red_black_overlapping with 2048 x 2048 grid 8 8 (64 processes)
+ComputationTime: 0.907244 CommunicationTime: 0.105276 
+Running mpi_red_black_overlapping with 2048 x 2048 grid 8 8 (64 processes)
 RedBlackSOR X 2048 Y 2048 Px 8 Py 8 Iter 256 TotalTime: 0.149442 midpoint 0.000000
-ComputationTime: 0.098660 CommunicationTime: 0.050782 Running mpi_red_black_overlapping with 4096 x 4096 grid 1 1 (1 processes)
+ComputationTime: 0.098660 CommunicationTime: 0.050782 
+
+Running mpi_red_black_overlapping with 4096 x 4096 grid 1 1 (1 processes)
 RedBlackSOR X 4096 Y 4096 Px 1 Py 1 Iter 256 TotalTime: 73.526048 midpoint 0.000000
-ComputationTime: 73.525057 CommunicationTime: 0.000991 Running mpi_red_black_overlapping with 4096 x 4096 grid 1 2 (2 processes)
+ComputationTime: 73.525057 CommunicationTime: 0.000991 
+Running mpi_red_black_overlapping with 4096 x 4096 grid 1 2 (2 processes)
 RedBlackSOR X 4096 Y 4096 Px 1 Py 2 Iter 256 TotalTime: 49.035545 midpoint 0.000000
-ComputationTime: 48.737643 CommunicationTime: 0.297902 Running mpi_red_black_overlapping with 4096 x 4096 grid 2 2 (4 processes)
+ComputationTime: 48.737643 CommunicationTime: 0.297902 
+Running mpi_red_black_overlapping with 4096 x 4096 grid 2 2 (4 processes)
 RedBlackSOR X 4096 Y 4096 Px 2 Py 2 Iter 256 TotalTime: 35.514664 midpoint 0.000000
-ComputationTime: 35.259318 CommunicationTime: 0.255346 Running mpi_red_black_overlapping with 4096 x 4096 grid 2 4 (8 processes)
+ComputationTime: 35.259318 CommunicationTime: 0.255346 
+Running mpi_red_black_overlapping with 4096 x 4096 grid 2 4 (8 processes)
 RedBlackSOR X 4096 Y 4096 Px 2 Py 4 Iter 256 TotalTime: 36.035795 midpoint 0.000000
-ComputationTime: 35.554755 CommunicationTime: 0.481040 Running mpi_red_black_overlapping with 4096 x 4096 grid 4 4 (16 processes)
+ComputationTime: 35.554755 CommunicationTime: 0.481040 
+Running mpi_red_black_overlapping with 4096 x 4096 grid 4 4 (16 processes)
 RedBlackSOR X 4096 Y 4096 Px 4 Py 4 Iter 256 TotalTime: 18.929134 midpoint 0.000000
-ComputationTime: 18.604665 CommunicationTime: 0.324469 Running mpi_red_black_overlapping with 4096 x 4096 grid 4 8 (32 processes)
+ComputationTime: 18.604665 CommunicationTime: 0.324469 
+Running mpi_red_black_overlapping with 4096 x 4096 grid 4 8 (32 processes)
 RedBlackSOR X 4096 Y 4096 Px 4 Py 8 Iter 256 TotalTime: 9.375893 midpoint 0.000000
-ComputationTime: 8.909070 CommunicationTime: 0.466823 Running mpi_red_black_overlapping with 4096 x 4096 grid 8 8 (64 processes)
+ComputationTime: 8.909070 CommunicationTime: 0.466823 
+Running mpi_red_black_overlapping with 4096 x 4096 grid 8 8 (64 processes)
 RedBlackSOR X 4096 Y 4096 Px 8 Py 8 Iter 256 TotalTime: 6.563258 midpoint 0.000000
-ComputationTime: 6.281795 CommunicationTime: 0.281463 Running mpi_red_black_overlapping with 6144 x 6144 grid 1 1 (1 processes)
+ComputationTime: 6.281795 CommunicationTime: 0.281463 
+
+Running mpi_red_black_overlapping with 6144 x 6144 grid 1 1 (1 processes)
 RedBlackSOR X 6144 Y 6144 Px 1 Py 1 Iter 256 TotalTime: 165.525965 midpoint 0.000000
-ComputationTime: 165.524949 CommunicationTime: 0.001016 Running mpi_red_black_overlapping with 6144 x 6144 grid 1 2 (2 processes)
+ComputationTime: 165.524949 CommunicationTime: 0.001016 
+Running mpi_red_black_overlapping with 6144 x 6144 grid 1 2 (2 processes)
 RedBlackSOR X 6144 Y 6144 Px 1 Py 2 Iter 256 TotalTime: 109.371432 midpoint 0.000000
-ComputationTime: 108.901900 CommunicationTime: 0.469532 Running mpi_red_black_overlapping with 6144 x 6144 grid 2 2 (4 processes)
+ComputationTime: 108.901900 CommunicationTime: 0.469532 
+Running mpi_red_black_overlapping with 6144 x 6144 grid 2 2 (4 processes)
 RedBlackSOR X 6144 Y 6144 Px 2 Py 2 Iter 256 TotalTime: 77.784063 midpoint 0.000000
-ComputationTime: 77.376515 CommunicationTime: 0.407548 Running mpi_red_black_overlapping with 6144 x 6144 grid 2 4 (8 processes)
+ComputationTime: 77.376515 CommunicationTime: 0.407548 
+Running mpi_red_black_overlapping with 6144 x 6144 grid 2 4 (8 processes)
 RedBlackSOR X 6144 Y 6144 Px 2 Py 4 Iter 256 TotalTime: 78.462488 midpoint 0.000000
-ComputationTime: 77.748486 CommunicationTime: 0.714002 Running mpi_red_black_overlapping with 6144 x 6144 grid 4 4 (16 processes)
+ComputationTime: 77.748486 CommunicationTime: 0.714002 
+Running mpi_red_black_overlapping with 6144 x 6144 grid 4 4 (16 processes)
 RedBlackSOR X 6144 Y 6144 Px 4 Py 4 Iter 256 TotalTime: 42.333971 midpoint 0.000000
-ComputationTime: 41.780880 CommunicationTime: 0.553091 Running mpi_red_black_overlapping with 6144 x 6144 grid 4 8 (32 processes)
+ComputationTime: 41.780880 CommunicationTime: 0.553091 
+Running mpi_red_black_overlapping with 6144 x 6144 grid 4 8 (32 processes)
 RedBlackSOR X 6144 Y 6144 Px 4 Py 8 Iter 256 TotalTime: 21.484457 midpoint 0.000000
-ComputationTime: 20.936936 CommunicationTime: 0.547521 Running mpi_red_black_overlapping with 6144 x 6144 grid 8 8 (64 processes)
+ComputationTime: 20.936936 CommunicationTime: 0.547521 
+Running mpi_red_black_overlapping with 6144 x 6144 grid 8 8 (64 processes)
 RedBlackSOR X 6144 Y 6144 Px 8 Py 8 Iter 256 TotalTime: 16.885205 midpoint 0.000000
 ComputationTime: 16.427706 CommunicationTime: 0.457499
