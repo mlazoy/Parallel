@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 total_times = []
 computation_times = []
 communication_times = []
-t_serial = 13.187065
+t_serial = [float(13.187065), float(52.874210), float(118.278895)]
 
 with open("red_black_iter.out", "r") as file:
     lines = file.readlines()
@@ -83,7 +83,7 @@ def plot_speedups(time_vecs, grid, type_index):
     plt.gca().set_facecolor("#e6e6fa") 
     x = np.linspace(0, 6, 7)
     for i in range(0,3):
-        plt.plot(x,[t_serial/j for j in time_vecs[i]], marker='o', color=colors[i], label=version[i])
+        plt.plot(x, [t_serial[grid]/j for j in time_vecs[i]], marker='o', color=colors[i], label=version[i])
     
     plt.xlabel("# MPI processes")
     plt.ylabel(r"$\frac{t_{\text{serial}}}{t_{\text{mpi}}}$", fontsize=20, fontweight='bold')
@@ -98,10 +98,13 @@ total_grid1 = [impl1_total_grid1, impl2_total_grid1, impl3_total_grid1]
 total_grid2 = [impl1_total_grid2, impl2_total_grid2, impl3_total_grid2]
 total_grid3 = [impl1_total_grid3, impl2_total_grid3, impl3_total_grid3]
 
+print("Total Grid 1:", total_grid1)
+print("Total Grid 2:", total_grid2)
+print("Total Grid 3:", total_grid3)
 #plot speedups first
 plot_speedups(total_grid1,0,0)
-plot_speedups(total_grid1,1,0)
-plot_speedups(total_grid1,2,0)
+plot_speedups(total_grid2,1,0)
+plot_speedups(total_grid3,2,0)
 
 plot_times(total_grid1, 0, 0)
 plot_times(total_grid2, 1, 0)

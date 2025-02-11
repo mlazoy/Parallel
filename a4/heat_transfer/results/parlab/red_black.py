@@ -2,6 +2,8 @@ import re
 import matplotlib.pyplot as plt
 import numpy as np
 
+t_serial = 2.456144
+
 # Define regex patterns
 grid_pattern = re.compile(r"Grid = \((\d+),(\d+)\)")
 implementation_pattern = re.compile(r"RedBlack SOR with (.+):")
@@ -88,7 +90,7 @@ plt.xlabel("Grid Size")
 plt.ylabel("Total Time (s)")
 plt.title("Total Execution Time for all 3 RedBlackSOR Implementations")
 plt.legend()
-plt.savefig("red_black_toatl.png")
+plt.savefig("red_black_total.png")
 plt.show()
 
 # Plot 2: Communication Times
@@ -107,3 +109,5 @@ plt.title("Communication Time for all 3 RedBlackSOR Implementations")
 plt.legend()
 plt.savefig("red_black_comm.png")
 plt.show()
+
+    
