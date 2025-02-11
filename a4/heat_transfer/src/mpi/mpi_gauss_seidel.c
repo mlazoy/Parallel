@@ -289,7 +289,8 @@ int main(int argc, char ** argv) {
 		}		
 		#endif
 
-        MPI_Barrier(CART_COMM);
+        //barrier not needed, waitall is enough
+        //MPI_Barrier(CART_COMM);
 
 
 		//************************************//
