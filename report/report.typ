@@ -95,36 +95,36 @@
 
 = Περιεχόμενα
 \
-1. #link(<game_of_life>)[Conway's Game of Life]
+1. #link(<game_of_life>)[*Conway's Game of Life*]
 #h(2em)1.1 #link(<game_of_life_code>)[Υλοποίηση]
 \ #h(2em)1.2 #link(<game_of_life_res>)[Αποτελέσματα Μετρήσεων]
 \ #h(2em)1.3 #link(<game_of_life_graph>)[Γραφική Απεικόνιση και Παρατηρήσεις]
 \ #h(2em)1.4 #link(<game_of_life_bonus>)[Bonus]
 \
 \
-2. #link(<kmeans_openmp>)[Παραλληλοποίηση και βελτιστοποίηση του αλγορίθμου K-means]
-#h(2em)2.1 #link(<kmeans_openmp_shared>)[Shared Clusters]
+2. #link(<kmeans_openmp>)[*Παραλληλοποίηση και βελτιστοποίηση Αλγορίθμων σε κοινό χώρο διευθύνσεων με χρήση ΟpenMP*]
+#h(2em)2.1 #link(<kmeans_openmp_shared>)[*Kmeans* - Shared Clusters]
 \ #h(3em)2.1.1 #link(<shared_code>)[Υλοποίηση]
 \ #h(3em)2.1.2 #link(<shared_gomp>)[Εκμετάλλευση του GOMP_CPU_AFFINITY]
-\ #h(2em)2.2 #link(<kmeans_openmp_copied>)[Copied Clusters & Reduce]
+\ #h(2em)2.2 #link(<kmeans_openmp_copied>)[*Kmeans* - Copied Clusters & Reduce]
 \ #h(3em)2.2.1 #link(<copied_code>)[Υλοποίηση]
 \ #h(3em)2.2.2 #link(<copied_small_dataset>)[Δοκιμές με μικρότερο dataset]
 \ #h(3em)2.2.3 #link(<copied_first_touch>)[First-touch Policy]
 \ #h(3em)2.2.4 #link(<copied_numa_aware>)[Numa-aware initialization]
-\ #h(2em)2.3 #link(<fw_openmp>)[FLOYD WARSHALL]
+\ #h(2em)2.3 #link(<fw_openmp>)[*Floyd Warshall*]
 \ #h(3em)2.3.1 #link(<fw_recursive>)[Recursive]
 \ #h(4em)2.3.1.1 #link(<fw_sr_code>)[Υλοποίηση]
 \ #h(4em)2.3.1.2 #link(<fw_sr_res>)[Αποτελέσματα]
 \ #h(3em)2.3.2 #link(<fw_tiled>)[Tiled]
 \ #h(4em)2.3.2.1 #link(<fw_tiled_code>)[Υλοποίηση]
 \ #h(4em)2.3.2.2 #link(<fw_tiled_res>)[Αποτελέσματα]
-\ #h(2em)2.4 #link(<locks>)[Αμοιβαίος Αποκλεισμός-Κλειδώαμτα]
+\ #h(2em)2.4 #link(<locks>)[*Αμοιβαίος Αποκλεισμός-Κλειδώαμτα*]
 \ #h(3em)2.4.1 #link(<locks_descriptions>)[Τεχνικές συγχρονισμού]
 \ #h(3em)2.4.2 #link(<locks_res>)[Αποτελέσματα]
-\ #h(2em)2.5 #link(<sync_structs>)[Ταυτόχρονες Δομές δεδομένων]
+\ #h(2em)2.5 #link(<sync_structs>)[*Ταυτόχρονες Δομές δεδομένων*]
 \ #h(3em)2.5.1 #link(<coarse_lock>)[Coarse-grain locking]
 \ #h(3em)2.5.2 #link(<fine_lock>)[Fine-grain locking]
-\ #h(3em)2.5.3 #link(<opt_lock>)[Optimistic synchronization])
+\ #h(3em)2.5.3 #link(<opt_lock>)[Optimistic synchronization]
 \ #h(3em)2.5.4 #link(<lazy_lock>)[Lazy synchronization]
 \ #h(3em)2.5.5 #link(<non_blocking_lock>)[Non-blocking synchronization]
 \ #h(3em)2.5.6 #link(<sync_structs_res>)[Αποτελέσματα]
@@ -133,7 +133,7 @@
 \ #h(4em)2.5.6.3 #link(<res_20_40_40>)[Αποτελέσματα για 20% reads, 40% updates, 40% inserts]
 \
 \
-3. #link(<cuda>)[Παραλληλοποίηση και βελτιστοποίηση αλγορίθμων σε επεξεργαστές γραφικών]
+3. #link(<cuda>)[*Παραλληλοποίηση και βελτιστοποίηση αλγορίθμων σε επεξεργαστές γραφικών - GPGPUs*]
 #h(2em)3.1 #link(<cuda_naive>)[Naive]
 \ #h(2em)3.2 #link(<cuda_transpose>)[Transpose]
 \ #h(2em)3.3 #link(<cuda_shared>)[Shared]
@@ -142,7 +142,7 @@
 \ #h(2em)3.6 #link(<cuda_delta_reduction>)[Delta Reduction (All-GPU)]
 \
 \
-4. #link(<mpi>)[Παραλληλοποίηση και βελτιστοποίηση αλγορίθμων με χρήση MPI]
+4. #link(<mpi>)[*Παραλληλοποίηση και βελτιστοποίηση αλγορίθμων σε μοντέλο ανταλλαγής μηνυμάτων  με χρήση MPI*]
 #h(2em)4.1 #link(<mpi_kmeans>)[Άλλη μια παραλληλοποίηση του K-means]
 \ #h(2em)4.2 #link(<mpi_heat_transfer>)[Heat transfer]
 \ #h(3em)4.2.1 #link(<mpi_jacobi>)[Jacobi]
@@ -1036,7 +1036,7 @@ Tα αντίστοιχα speedup plots κρατώντας σταθερό των 
 Στην συνέχεια μελετάμε μόνο την καλύτερη από τις 3 υλοποιήσεις, δηλ. την Red-Black(SOR)-Overlapping.
 
 === Σενάριο Σύγκλισης <mpi_convergence>
-Για το σενάριο σύγκλισης δημιουργούμε τα 3 εκτελέσιμα περνώντας δυναμικά το DCONV Flag κατά την μεταγλώττιση και εξετάζουμε σταθερό μέγεθος πίνακα 512x512 με 64 MPI διεργασίες. Προκύπτει το παρακάτω διάγραμμα με 4 μπάρες ανά αλγόριθμο, οι οποίες με την σειρά αναπαριστούν τον συνολικό χρόνο εκτέλεσης, το χρόνο υπολογισμών, το χρόνο επικοινωνίας και τον χρόνο σύγκλισης αντίστοιχα.
+Για το σενάριο σύγκλισης δημιουργούμε τα 3 εκτελέσιμα περνώντας δυναμικά το -DTEST_CONV Flag κατά την μεταγλώττιση και εξετάζουμε σταθερό μέγεθος πίνακα 512x512 με 64 MPI διεργασίες. Προκύπτει το παρακάτω διάγραμμα με 4 μπάρες ανά αλγόριθμο, οι οποίες με την σειρά αναπαριστούν τον συνολικό χρόνο εκτέλεσης, το χρόνο υπολογισμών, το χρόνο επικοινωνίας και τον χρόνο σύγκλισης αντίστοιχα.
 \
 #image("../a4/heat_transfer/results/local/convergence.png") 
 
@@ -1045,7 +1045,7 @@ Tα αντίστοιχα speedup plots κρατώντας σταθερό των 
 \
 
 === Σενάριο σταθερού αριθμού επαναλήψεων Τ = 256 <mpi_non_convergence>
-Για το σενάριο σταθερού αριθμού επαναλήψεων, δημιουργούμε εκ νέου τα 3 εκτελέσιμα χωρίς το DCONC Flag και εξετάζουμε τιε επιδόσεις τους για μεταβήτό αριθμό MPI διεργασιών (1, 2, 4, 8, 16, 32, 64) και μεταβλητά μεγέθη πίνακα (2048x2048, 4096x4096, 6144x6144). Τα διαγράμματα επιτάχυνσης για κάθε μέγεθος πίνακα φαίνονται παρακάτω. Επισημαίνεται πως οι σειριακές μέθοδοι δεν είχαν τον ίδιο χρόνο εκτέλεσης για τους 3 αλγορίθμους.
+Για το σενάριο σταθερού αριθμού επαναλήψεων, δημιουργούμε εκ νέου τα 3 εκτελέσιμα χωρίς το -DTEST_CONV Flag και εξετάζουμε τιε επιδόσεις τους για μεταβήτό αριθμό MPI διεργασιών (1, 2, 4, 8, 16, 32, 64) και μεταβλητά μεγέθη πίνακα (2048x2048, 4096x4096, 6144x6144). Τα διαγράμματα επιτάχυνσης για κάθε μέγεθος πίνακα φαίνονται παρακάτω. Επισημαίνεται πως οι σειριακές μέθοδοι δεν είχαν τον ίδιο χρόνο εκτέλεσης για τους 3 αλγορίθμους.
 \
 #align(center)[
   #image("../a4/heat_transfer/results/parlab/speedup_2048.png", width:85%)
